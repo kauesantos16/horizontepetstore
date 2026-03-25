@@ -1,0 +1,1404 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Horizonte Builder</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap" rel="stylesheet">
+<style>
+/* ================================================================
+   ALL SELECTORS SCOPED UNDER #hzb (Horizonte Builder)
+   to avoid conflicts when embedded externally.
+================================================================ */
+
+/* Reset inside scope */
+#hzb *, #hzb *::before, #hzb *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Tokens */
+#hzb {
+  --g900: #0f2e13;
+  --g700: #1a4a1f;
+  --g500: #2d6e35;
+  --g400: #4a9155;
+  --g100: #e8f5e9;
+  --am:   #c8920a;
+  --al:   #f0b429;
+  --ap:   #fef9ed;
+  --bg:   #f5f1e8;
+  --bgc:  #ffffff;
+  --bgp:  #ede9de;
+  --bgi:  #faf8f3;
+  --bd:   #d4cdb8;
+  --bd2:  #e8e2d4;
+  --th:   #161610;
+  --tb:   #3a3a2e;
+  --tm:   #7a7a64;
+  --ss:   0 1px 4px rgba(0,0,0,.06);
+  --sm:   0 3px 14px rgba(0,0,0,.09);
+  --sl:   0 8px 32px rgba(0,0,0,.13);
+  --r:    12px;
+  --rs:   8px;
+  --lw:   264px;  /* left sidebar */
+  --rw:   300px;  /* right sidebar */
+  --th2:  52px;   /* topbar height */
+
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--tb);
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Full page wrapper so #hzb can be the root */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'DM Sans', sans-serif;
+  background: #f5f1e8;
+}
+
+/* ================================================================
+   TOPBAR
+================================================================ */
+#hzb .topbar {
+  height: var(--th2);
+  background: var(--g700);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 18px 0 20px;
+  flex-shrink: 0;
+  z-index: 200;
+  box-shadow: 0 2px 12px rgba(0,0,0,.25);
+}
+
+#hzb .brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'DM Serif Display', serif;
+  color: #fff;
+  font-size: 1.1rem;
+  letter-spacing: .01em;
+}
+
+#hzb .brand .badge {
+  background: var(--am);
+  color: #fff;
+  font-family: 'DM Sans', sans-serif;
+  font-size: .62rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  padding: 2px 7px;
+  border-radius: 20px;
+  text-transform: uppercase;
+}
+
+#hzb .topbar-r {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+#hzb .btn-gold {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  border-radius: 20px;
+  padding: 7px 15px;
+  font-size: .79rem;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  background: var(--am);
+  color: #fff;
+  transition: background .2s, transform .15s;
+}
+#hzb .btn-gold:hover { background: var(--al); transform: translateY(-1px); }
+
+/* ================================================================
+   SHELL (3-column layout)
+================================================================ */
+#hzb .shell {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* ================================================================
+   LEFT SIDEBAR — section list
+================================================================ */
+#hzb .sb-left {
+  width: var(--lw);
+  background: var(--bgc);
+  border-right: 1px solid var(--bd);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+#hzb .sb-top {
+  padding: 14px 13px 10px;
+  border-bottom: 1px solid var(--bd2);
+  flex-shrink: 0;
+}
+
+#hzb .sb-label {
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--tm);
+  margin-bottom: 10px;
+}
+
+#hzb .add-wrap { position: relative; }
+
+#hzb .btn-add {
+  width: 100%;
+  background: var(--g700);
+  color: #fff;
+  border: none;
+  border-radius: var(--rs);
+  padding: 9px 13px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: .82rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: background .2s;
+}
+#hzb .btn-add:hover { background: var(--g500); }
+
+#hzb .sec-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0; right: 0;
+  background: var(--bgc);
+  border: 1px solid var(--bd);
+  border-radius: var(--rs);
+  box-shadow: var(--sl);
+  z-index: 300;
+  overflow: hidden;
+  display: none;
+  animation: hzb-fd .15s ease;
+}
+#hzb .sec-menu.open { display: block; }
+
+@keyframes hzb-fd {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+#hzb .mi {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  cursor: pointer;
+  font-size: .83rem;
+  color: var(--tb);
+  transition: background .15s;
+  border-bottom: 1px solid var(--bd2);
+}
+#hzb .mi:last-child { border-bottom: none; }
+#hzb .mi:hover { background: var(--bgp); color: var(--th); }
+#hzb .mi-ico { width: 28px; height: 28px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: .9rem; flex-shrink: 0; }
+#hzb .mi-name { font-weight: 600; font-size: .82rem; }
+#hzb .mi-desc { font-size: .71rem; color: var(--tm); }
+
+#hzb .sec-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px 10px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+#hzb .sec-list::-webkit-scrollbar { width: 4px; }
+#hzb .sec-list::-webkit-scrollbar-thumb { background: var(--bd); border-radius: 2px; }
+
+#hzb .sc {
+  border: 1px solid var(--bd2);
+  border-radius: var(--rs);
+  background: var(--bgi);
+  cursor: pointer;
+  transition: border-color .2s, background .2s;
+  user-select: none;
+}
+#hzb .sc:hover { border-color: var(--g400); }
+#hzb .sc.active { border-color: var(--g400); background: var(--g100); box-shadow: 0 0 0 2px rgba(74,145,85,.14); }
+#hzb .sc-inner { display: flex; align-items: center; gap: 8px; padding: 8px 9px; }
+#hzb .sc-drag { color: var(--tm); font-size: .85rem; cursor: grab; opacity: .5; flex-shrink: 0; }
+#hzb .sc-drag:active { cursor: grabbing; }
+#hzb .sc-ico { width: 30px; height: 30px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: .95rem; flex-shrink: 0; }
+#hzb .sc-info { flex: 1; min-width: 0; }
+#hzb .sc-name { font-size: .82rem; font-weight: 500; color: var(--th); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#hzb .sc-type { font-size: .7rem; color: var(--tm); }
+#hzb .sc-acts { display: flex; gap: 2px; flex-shrink: 0; }
+#hzb .sc-btn {
+  width: 22px; height: 22px; border: none; background: none; cursor: pointer;
+  border-radius: 4px; display: flex; align-items: center; justify-content: center;
+  font-size: .7rem; color: var(--tm); opacity: 0; transition: background .15s, opacity .15s, color .15s;
+}
+#hzb .sc:hover .sc-btn, #hzb .sc.active .sc-btn { opacity: 1; }
+#hzb .sc-btn:hover { background: var(--bd); color: var(--th); }
+#hzb .sc-btn.del:hover { background: #ffeaea; color: #c0392b; }
+
+#hzb .sb-empty {
+  text-align: center;
+  padding: 28px 16px;
+  color: var(--tm);
+  font-size: .8rem;
+  font-style: italic;
+  line-height: 1.6;
+}
+
+/* section type icon bg */
+#hzb .t-descfaq .sc-ico { background: #e8f5e9; }
+#hzb .t-dif      .sc-ico { background: #fff8e1; }
+#hzb .t-dep      .sc-ico { background: #e8eaf6; }
+#hzb .t-cta      .sc-ico { background: #fce4ec; }
+#hzb .t-faqg     .sc-ico { background: #e0f2f1; }
+
+/* ================================================================
+   CENTER — always-visible preview
+================================================================ */
+#hzb .center {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+#hzb .center-top {
+  height: 38px;
+  background: var(--bgp);
+  border-bottom: 1px solid var(--bd2);
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+#hzb .center-top span {
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--tm);
+}
+
+#hzb .prev-dots { display: flex; gap: 5px; }
+#hzb .prev-dots span { width: 9px; height: 9px; border-radius: 50%; }
+
+#hzb .center-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px;
+}
+#hzb .center-body::-webkit-scrollbar { width: 6px; }
+#hzb .center-body::-webkit-scrollbar-thumb { background: var(--bd); border-radius: 3px; }
+
+/* preview frame */
+#hzb .pframe {
+  background: var(--bgc);
+  border: 1px solid var(--bd);
+  border-radius: var(--r);
+  box-shadow: var(--sl);
+  overflow: hidden;
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+#hzb .pempty {
+  padding: 60px;
+  text-align: center;
+  color: var(--tm);
+  font-size: .9rem;
+  font-style: italic;
+}
+
+/* ---- preview section styles ---- */
+#hzb .ps-div { height: 1px; background: var(--bd2); }
+
+#hzb .ps-descfaq {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 44px;
+  padding: 42px 48px;
+  align-items: start;
+}
+#hzb .ps-desc {
+  font-size: .94rem;
+  line-height: 1.8;
+  color: var(--tb);
+}
+#hzb .ps-desc p + p { margin-top: .9em; }
+#hzb .ps-desc ul { padding-left: 1.4em; margin: .4em 0; }
+#hzb .ps-desc ol { padding-left: 1.6em; margin: .4em 0; }
+#hzb .ps-desc li { margin-bottom: .2em; }
+#hzb .ps-desc strong { font-weight: 600; color: var(--th); }
+#hzb .ps-desc em { font-style: italic; }
+
+#hzb .ps-faq { display: flex; flex-direction: column; gap: 8px; }
+#hzb .ps-fi { border: 1px solid var(--bd); border-radius: 8px; overflow: hidden; }
+#hzb .ps-ft {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 12px 16px; cursor: pointer;
+  font-size: .88rem; font-weight: 500; color: var(--th);
+  gap: 10px; background: var(--bgc); border: none; width: 100%;
+  text-align: left; transition: background .15s;
+}
+#hzb .ps-ft:hover { background: var(--bgp); }
+#hzb .ps-fic { flex-shrink: 0; font-size: .85rem; color: var(--tm); transition: transform .3s, color .2s; }
+#hzb .ps-fi.open .ps-fic { transform: rotate(45deg); color: var(--g400); }
+#hzb .ps-fb { max-height: 0; overflow: hidden; transition: max-height .35s cubic-bezier(.4,0,.2,1); }
+#hzb .ps-fi.open .ps-fb { max-height: 600px; }
+#hzb .ps-fb-inner {
+  padding: 10px 16px 14px;
+  font-size: .85rem;
+  line-height: 1.7;
+  color: var(--tb);
+  border-top: 1px solid var(--bd);
+}
+#hzb .ps-fb-inner ul { padding-left: 1.4em; margin: .3em 0; }
+#hzb .ps-fb-inner ol { padding-left: 1.6em; margin: .3em 0; }
+#hzb .ps-fb-inner li { margin-bottom: .2em; }
+#hzb .ps-fb-inner strong { font-weight: 600; }
+#hzb .ps-fb-inner em { font-style: italic; }
+
+/* placeholder sections */
+#hzb .ps-placeholder {
+  padding: 32px 48px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--bgp);
+  border-left: 3px solid var(--bd);
+}
+#hzb .ps-ph-ico { font-size: 1.4rem; opacity: .5; }
+#hzb .ps-ph-info .ps-ph-name { font-size: .88rem; font-weight: 600; color: var(--th); }
+#hzb .ps-ph-info .ps-ph-id { font-size: .76rem; color: var(--tm); font-family: 'Courier New', monospace; margin-top: 2px; }
+#hzb .ps-ph-info .ps-ph-note { font-size: .76rem; color: var(--tm); margin-top: 4px; font-style: italic; }
+
+/* ================================================================
+   RIGHT SIDEBAR — editor
+================================================================ */
+#hzb .sb-right {
+  width: var(--rw);
+  background: var(--bgc);
+  border-left: 1px solid var(--bd);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  overflow: hidden;
+  transition: width .25s ease;
+}
+
+#hzb .sb-right.collapsed {
+  width: 0;
+  border-left: none;
+  overflow: hidden;
+}
+
+#hzb .ed-head {
+  height: 38px;
+  background: var(--bgp);
+  border-bottom: 1px solid var(--bd2);
+  display: flex;
+  align-items: center;
+  padding: 0 13px;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+#hzb .ed-head-ico { font-size: .9rem; }
+#hzb .ed-head-title { font-size: .8rem; font-weight: 600; color: var(--th); flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+#hzb .ed-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 14px;
+}
+#hzb .ed-body::-webkit-scrollbar { width: 4px; }
+#hzb .ed-body::-webkit-scrollbar-thumb { background: var(--bd); border-radius: 2px; }
+
+#hzb .ed-nosel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: 10px;
+  color: var(--tm);
+  text-align: center;
+  padding: 20px;
+}
+#hzb .ed-nosel .ico { font-size: 1.8rem; opacity: .35; }
+#hzb .ed-nosel p { font-size: .8rem; line-height: 1.6; }
+
+/* editor panels */
+#hzb .ep {
+  background: var(--bgc);
+  border: 1px solid var(--bd);
+  border-radius: var(--r);
+  margin-bottom: 12px;
+  overflow: hidden;
+  box-shadow: var(--ss);
+}
+#hzb .ep:last-child { margin-bottom: 0; }
+#hzb .eh {
+  background: var(--bgp);
+  border-bottom: 1px solid var(--bd2);
+  padding: 9px 13px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: .79rem;
+  font-weight: 600;
+  color: var(--th);
+}
+#hzb .eh .dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+#hzb .eb { padding: 12px; }
+#hzb .fr { margin-bottom: 10px; }
+#hzb .fr:last-child { margin-bottom: 0; }
+
+#hzb label.lb {
+  display: block;
+  font-size: .71rem;
+  font-weight: 600;
+  color: var(--tm);
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+#hzb input[type=text].inp {
+  width: 100%;
+  background: var(--bgi);
+  border: 1px solid var(--bd);
+  border-radius: var(--rs);
+  padding: 7px 10px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: .85rem;
+  color: var(--tb);
+  outline: none;
+  transition: border-color .2s;
+}
+#hzb input[type=text].inp:focus { border-color: var(--g400); }
+
+/* ================================================================
+   RICH TEXT EDITOR
+================================================================ */
+#hzb .rte-wrap {
+  border: 1px solid var(--bd);
+  border-radius: var(--rs);
+  overflow: hidden;
+  background: var(--bgc);
+}
+
+#hzb .rte-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  padding: 5px 7px;
+  background: var(--bgp);
+  border-bottom: 1px solid var(--bd2);
+}
+
+#hzb .rte-btn {
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  font-size: .78rem;
+  font-weight: 700;
+  color: var(--tb);
+  transition: background .15s, border-color .15s;
+  flex-shrink: 0;
+}
+#hzb .rte-btn:hover { background: var(--bd2); border-color: var(--bd); }
+#hzb .rte-btn.active { background: var(--g100); border-color: var(--g400); color: var(--g700); }
+
+#hzb .rte-sep {
+  width: 1px;
+  background: var(--bd);
+  margin: 3px 2px;
+  flex-shrink: 0;
+}
+
+#hzb .rte-area {
+  min-height: 100px;
+  padding: 10px 11px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: .85rem;
+  line-height: 1.75;
+  color: var(--tb);
+  outline: none;
+  background: var(--bgi);
+  overflow-y: auto;
+}
+#hzb .rte-area[data-size="lg"] { min-height: 130px; }
+#hzb .rte-area p { margin: 0 0 .4em; }
+#hzb .rte-area ul { padding-left: 1.4em; margin: .3em 0; }
+#hzb .rte-area ol { padding-left: 1.6em; margin: .3em 0; }
+#hzb .rte-area li { margin-bottom: .15em; }
+#hzb .rte-area:empty::before { content: attr(data-placeholder); color: var(--tm); font-style: italic; pointer-events: none; }
+
+/* ================================================================
+   FAQ ITEMS in editor
+================================================================ */
+#hzb .rl { display: flex; flex-direction: column; gap: 7px; margin-bottom: 10px; }
+
+#hzb .ri {
+  border: 1px solid var(--bd2);
+  border-radius: var(--rs);
+  overflow: hidden;
+  background: var(--bgi);
+}
+#hzb .rh {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 9px;
+  background: var(--bgp);
+  border-bottom: 1px solid var(--bd2);
+}
+#hzb .rdrag { cursor: grab; color: var(--tm); font-size: .8rem; opacity: .5; }
+#hzb .rdrag:active { cursor: grabbing; }
+#hzb .rnum { font-size: .68rem; font-weight: 700; color: var(--tm); background: var(--bd2); border-radius: 4px; padding: 1px 5px; }
+#hzb .rlbl { flex: 1; font-size: .78rem; font-weight: 500; color: var(--th); }
+#hzb .rdel { background: none; border: none; cursor: pointer; color: var(--tm); border-radius: 4px; padding: 3px 5px; font-size: .72rem; font-family: 'DM Sans', sans-serif; transition: background .15s, color .15s; }
+#hzb .rdel:hover { background: #ffeaea; color: #c0392b; }
+#hzb .rb { padding: 9px; display: flex; flex-direction: column; gap: 7px; }
+
+#hzb .btn-add-rep {
+  width: 100%;
+  background: none;
+  border: 2px dashed var(--bd);
+  border-radius: var(--rs);
+  padding: 7px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: .79rem;
+  color: var(--g400);
+  cursor: pointer;
+  font-weight: 500;
+  transition: border-color .2s, background .15s;
+}
+#hzb .btn-add-rep:hover { border-color: var(--g400); background: var(--bgp); }
+
+/* ================================================================
+   EXPORT PANEL (overlay)
+================================================================ */
+#hzb .exp-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.45);
+  z-index: 500;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+#hzb .exp-overlay.open { display: flex; }
+
+#hzb .exp-modal {
+  background: var(--bgc);
+  border-radius: var(--r);
+  box-shadow: var(--sl);
+  width: 100%;
+  max-width: 700px;
+  max-height: 88vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: hzb-rise .2s ease;
+}
+@keyframes hzb-rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+#hzb .exp-head {
+  background: var(--g700);
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+#hzb .exp-head h2 { font-family: 'DM Serif Display', serif; color: #fff; font-size: 1.05rem; }
+#hzb .exp-head-r { display: flex; gap: 8px; align-items: center; }
+
+#hzb .btn-close-exp {
+  background: rgba(255,255,255,.15);
+  border: 1px solid rgba(255,255,255,.25);
+  color: #fff;
+  border-radius: 6px;
+  width: 28px; height: 28px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  font-size: .9rem;
+  transition: background .15s;
+}
+#hzb .btn-close-exp:hover { background: rgba(255,255,255,.28); }
+
+#hzb .exp-info {
+  background: var(--ap);
+  border-bottom: 1px solid #e0c97a;
+  padding: 10px 16px;
+  font-size: .81rem;
+  color: #7a5000;
+  display: flex;
+  gap: 7px;
+  align-items: flex-start;
+  line-height: 1.55;
+  flex-shrink: 0;
+}
+
+#hzb .exp-body { overflow-y: auto; flex: 1; }
+
+#hzb .cwrap {
+  background: #0d1117;
+  overflow: hidden;
+}
+#hzb .ctop {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 9px 16px;
+  background: #161b22;
+  border-bottom: 1px solid #30363d;
+  flex-shrink: 0;
+}
+#hzb .cdots { display: flex; gap: 5px; }
+#hzb .cdots span { width: 9px; height: 9px; border-radius: 50%; }
+#hzb .clang { font-size: .71rem; color: #6e7681; letter-spacing: .05em; }
+
+#hzb .btn-copy {
+  background: var(--g500);
+  border: none;
+  color: #fff;
+  border-radius: 6px;
+  padding: 5px 12px;
+  font-size: .75rem;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .2s;
+}
+#hzb .btn-copy:hover { background: var(--g400); }
+#hzb .btn-copy.ok { background: #27ae60; }
+
+#hzb .carea {
+  color: #e6edf3;
+  font-family: 'Courier New', monospace;
+  font-size: .72rem;
+  line-height: 1.65;
+  padding: 16px 18px;
+  overflow-x: auto;
+  white-space: pre;
+  max-height: 52vh;
+  overflow-y: auto;
+}
+#hzb .carea::-webkit-scrollbar { width: 5px; height: 5px; }
+#hzb .carea::-webkit-scrollbar-thumb { background: #30363d; border-radius: 3px; }
+
+/* ================================================================
+   TOAST
+================================================================ */
+#hzb .toast {
+  position: fixed;
+  bottom: 22px; right: 22px;
+  background: var(--g700);
+  color: #fff;
+  padding: 10px 18px;
+  border-radius: 10px;
+  font-size: .82rem;
+  font-family: 'DM Sans', sans-serif;
+  box-shadow: var(--sl);
+  transform: translateY(60px);
+  opacity: 0;
+  transition: transform .3s, opacity .3s;
+  z-index: 999;
+}
+#hzb .toast.on { transform: translateY(0); opacity: 1; }
+
+/* ================================================================
+   RESPONSIVE
+================================================================ */
+@media (max-width: 900px) {
+  #hzb { --lw: 220px; --rw: 260px; }
+}
+@media (max-width: 680px) {
+  #hzb .shell { flex-direction: column; overflow: auto; }
+  #hzb { height: auto; overflow: auto; }
+  #hzb .sb-left { width: 100%; border-right: none; border-bottom: 1px solid var(--bd); max-height: 240px; }
+  #hzb .sb-right { width: 100% !important; border-left: none; border-top: 1px solid var(--bd); }
+  #hzb .ps-descfaq { grid-template-columns: 1fr; padding: 24px 18px; gap: 20px; }
+  #hzb .ps-placeholder { padding: 22px 18px; }
+  #hzb .center-body { padding: 14px; }
+}
+</style>
+</head>
+<body>
+<div id="hzb">
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="brand">
+      🌿 Horizonte Builder <span class="badge">Beta</span>
+    </div>
+    <div class="topbar-r">
+      <button class="btn-gold" onclick="HZB.openExport()">⬇ Exportar HTML</button>
+    </div>
+  </header>
+
+  <!-- SHELL -->
+  <div class="shell">
+
+    <!-- ========== LEFT SIDEBAR ========== -->
+    <aside class="sb-left">
+      <div class="sb-top">
+        <div class="sb-label">Seções</div>
+        <div class="add-wrap">
+          <button class="btn-add" onclick="HZB.toggleMenu()">+ Adicionar seção <span>▾</span></button>
+          <div class="sec-menu" id="hzb-smenu">
+            <div class="mi" onclick="HZB.addSec('descfaq')">
+              <div class="mi-ico" style="background:#e8f5e9">📄</div>
+              <div><div class="mi-name">Descrição + FAQ</div><div class="mi-desc">Texto rico e accordion</div></div>
+            </div>
+            <div class="mi" onclick="HZB.addSec('dif')">
+              <div class="mi-ico" style="background:#fff8e1">⭐</div>
+              <div><div class="mi-name">Diferenciais</div><div class="mi-desc">Cards de destaque</div></div>
+            </div>
+            <div class="mi" onclick="HZB.addSec('dep')">
+              <div class="mi-ico" style="background:#e8eaf6">💬</div>
+              <div><div class="mi-name">Depoimentos</div><div class="mi-desc">Avaliações de clientes</div></div>
+            </div>
+            <div class="mi" onclick="HZB.addSec('cta')">
+              <div class="mi-ico" style="background:#fce4ec">🚀</div>
+              <div><div class="mi-name">CTA de Serviço</div><div class="mi-desc">Chamada de ação</div></div>
+            </div>
+            <div class="mi" onclick="HZB.addSec('faqg')">
+              <div class="mi-ico" style="background:#e0f2f1">❓</div>
+              <div><div class="mi-name">FAQ Geral</div><div class="mi-desc">Perguntas frequentes</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="sec-list" id="hzb-slist">
+        <div class="sb-empty" id="hzb-sempty">Nenhuma seção ainda.<br>Clique em <strong>+ Adicionar</strong>.</div>
+      </div>
+    </aside>
+
+    <!-- ========== CENTER — PREVIEW ========== -->
+    <main class="center">
+      <div class="center-top">
+        <div class="prev-dots">
+          <span style="background:#ff5f57"></span>
+          <span style="background:#febc2e"></span>
+          <span style="background:#28c840"></span>
+        </div>
+        <span>Preview — página do produto</span>
+      </div>
+      <div class="center-body">
+        <div class="pframe">
+          <div id="hzb-preview">
+            <div class="pempty">Adicione seções para ver a pré-visualização.</div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- ========== RIGHT SIDEBAR — EDITOR ========== -->
+    <aside class="sb-right collapsed" id="hzb-sbright">
+      <div class="ed-head">
+        <span class="ed-head-ico" id="hzb-ed-ico">✏️</span>
+        <span class="ed-head-title" id="hzb-ed-title">Editor</span>
+      </div>
+      <div class="ed-body" id="hzb-ed-body">
+        <div class="ed-nosel">
+          <div class="ico">👈</div>
+          <p>Selecione uma seção na lista para editar aqui.</p>
+        </div>
+      </div>
+    </aside>
+
+  </div><!-- .shell -->
+
+  <!-- ========== EXPORT MODAL ========== -->
+  <div class="exp-overlay" id="hzb-expoverlay" onclick="HZB.closeExportOnBg(event)">
+    <div class="exp-modal">
+      <div class="exp-head">
+        <h2>HTML gerado para Tray</h2>
+        <div class="exp-head-r">
+          <button class="btn-copy" id="hzb-cpybtn" onclick="HZB.copyCode()">📋 Copiar</button>
+          <button class="btn-close-exp" onclick="HZB.closeExport()" title="Fechar">✕</button>
+        </div>
+      </div>
+      <div class="exp-info">
+        ℹ️ Cole este HTML no campo <strong>Descrição</strong> do produto na plataforma Tray. As seções sem conteúdo recebem um <code style="background:rgba(0,0,0,.07);padding:1px 4px;border-radius:3px">id</code> único para injeção via JS externo.
+      </div>
+      <div class="exp-body">
+        <div class="cwrap">
+          <div class="ctop">
+            <div style="display:flex;align-items:center;gap:12px">
+              <div class="cdots">
+                <span style="background:#ff5f57"></span>
+                <span style="background:#febc2e"></span>
+                <span style="background:#28c840"></span>
+              </div>
+              <span class="clang">HTML / CSS inline</span>
+            </div>
+          </div>
+          <div class="carea" id="hzb-carea"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="hzb-toast"></div>
+
+</div><!-- #hzb -->
+
+<script>
+const HZB = (() => {
+  // ======================================================
+  // STATE
+  // ======================================================
+  let secs     = [];
+  let activeId = null;
+  let dragSrc  = null;
+
+  const META = {
+    descfaq: { lbl: 'Descrição + FAQ', ico: '📄', col: '#4a9155' },
+    dif:     { lbl: 'Diferenciais',    ico: '⭐', col: '#c8920a' },
+    dep:     { lbl: 'Depoimentos',     ico: '💬', col: '#5c6bc0' },
+    cta:     { lbl: 'CTA de Serviço',  ico: '🚀', col: '#e91e63' },
+    faqg:    { lbl: 'FAQ Geral',       ico: '❓', col: '#00897b' },
+  };
+
+  function uid() { return 'hz' + Date.now() + Math.floor(Math.random() * 9999); }
+
+  function defData(t) {
+    switch (t) {
+      case 'descfaq': return {
+        desc: '<p>Aveia sem Casca da Horizonte Pet Store é <strong>100% natural</strong>, selecionada especialmente para satisfazer as necessidades nutricionais de aves exóticas, ornamentais e domésticas.</p><p>Grãos inteiros, limpos e perfeitamente processados — sem casca — para facilitar a digestão e garantir aproveitamento máximo.</p>',
+        faqs: [
+          { id: uid(), q: 'Benefícios da Semente de Aveia sem Casca para pássaros', a: '<p>A aveia sem casca oferece vários benefícios:</p><ul><li>Rica em fibras e proteínas</li><li>Fácil digestão</li><li>Ideal para aves de pequeno e médio porte</li></ul>' },
+          { id: uid(), q: 'Como é a embalagem e conservação das sementes?', a: '<p>O ideal é conservar o produto em <strong>ambiente seco e limpo</strong>, sem umidade, protegido da luz solar, longe do ataque de carunchos e outros insetos.</p>' },
+        ]
+      };
+      default: return {};
+    }
+  }
+
+  // ======================================================
+  // SECTION OPS
+  // ======================================================
+  function addSec(t) {
+    closeMenu();
+    const s = { id: uid(), type: t, name: META[t].lbl, data: defData(t) };
+    secs.push(s);
+    renderSB();
+    selectSec(s.id);
+    toast('✅ Seção "' + META[t].lbl + '" adicionada');
+    renderPreview();
+  }
+
+  function delSec(id) {
+    secs = secs.filter(s => s.id !== id);
+    if (activeId === id) {
+      activeId = secs.length ? secs[0].id : null;
+    }
+    renderSB();
+    if (activeId) { selectSec(activeId); } else { collapseEditor(); }
+    renderPreview();
+  }
+
+  function moveSec(id, d) {
+    const i = secs.findIndex(s => s.id === id);
+    const ni = i + d;
+    if (ni < 0 || ni >= secs.length) return;
+    [secs[i], secs[ni]] = [secs[ni], secs[i]];
+    renderSB();
+    renderPreview();
+  }
+
+  function selectSec(id) {
+    activeId = id;
+    renderSB();
+    renderEditor();
+    renderPreview();
+  }
+
+  function gsec(id) { return secs.find(s => s.id === id); }
+
+  // ======================================================
+  // SIDEBAR
+  // ======================================================
+  function renderSB() {
+    const list = document.getElementById('hzb-slist');
+    list.innerHTML = '';
+    if (!secs.length) {
+      list.innerHTML = '<div class="sb-empty">Nenhuma seção ainda.<br>Clique em <strong>+ Adicionar</strong>.</div>';
+      return;
+    }
+    secs.forEach((s) => {
+      const m = META[s.type];
+      const c = document.createElement('div');
+      c.className = `sc t-${s.type}${activeId === s.id ? ' active' : ''}`;
+      c.dataset.id = s.id;
+      c.draggable = true;
+      c.innerHTML = `
+        <div class="sc-inner">
+          <span class="sc-drag" title="Arrastar">⠿</span>
+          <div class="sc-ico">${m.ico}</div>
+          <div class="sc-info">
+            <div class="sc-name">${xe(s.name)}</div>
+            <div class="sc-type">${m.lbl}</div>
+          </div>
+          <div class="sc-acts">
+            <button class="sc-btn" title="Subir" onclick="event.stopPropagation();HZB.moveSec('${s.id}',-1)">↑</button>
+            <button class="sc-btn" title="Descer" onclick="event.stopPropagation();HZB.moveSec('${s.id}',1)">↓</button>
+            <button class="sc-btn del" title="Remover" onclick="event.stopPropagation();HZB.delSec('${s.id}')">✕</button>
+          </div>
+        </div>`;
+      c.addEventListener('click', () => selectSec(s.id));
+      // drag
+      c.addEventListener('dragstart', ev => { dragSrc = s.id; ev.dataTransfer.effectAllowed = 'move'; });
+      c.addEventListener('dragend', () => c.classList.remove('drag-ov'));
+      c.addEventListener('dragover', ev => { ev.preventDefault(); c.classList.add('drag-ov'); });
+      c.addEventListener('dragleave', () => c.classList.remove('drag-ov'));
+      c.addEventListener('drop', ev => {
+        ev.preventDefault(); c.classList.remove('drag-ov');
+        if (dragSrc === s.id) return;
+        const si = secs.findIndex(x => x.id === dragSrc);
+        const di = secs.findIndex(x => x.id === s.id);
+        const [mv] = secs.splice(si, 1);
+        secs.splice(di, 0, mv);
+        renderSB(); renderPreview();
+      });
+      list.appendChild(c);
+    });
+  }
+
+  // ======================================================
+  // EDITOR (right sidebar)
+  // ======================================================
+  function collapseEditor() {
+    document.getElementById('hzb-sbright').classList.add('collapsed');
+    document.getElementById('hzb-ed-body').innerHTML =
+      '<div class="ed-nosel"><div class="ico">👈</div><p>Selecione uma seção na lista para editar aqui.</p></div>';
+  }
+
+  function renderEditor() {
+    const s = gsec(activeId);
+    if (!s) { collapseEditor(); return; }
+    const sbr = document.getElementById('hzb-sbright');
+    sbr.classList.remove('collapsed');
+    document.getElementById('hzb-ed-ico').textContent = META[s.type].ico;
+    document.getElementById('hzb-ed-title').textContent = s.name;
+
+    const body = document.getElementById('hzb-ed-body');
+    body.innerHTML = '';
+
+    // Section name
+    const namePanel = panel('Nome da seção', s.type, `
+      <div class="fr">
+        <label class="lb">Rótulo interno</label>
+        <input type="text" class="inp" id="hzb-secname-${s.id}" value="${xe(s.name)}">
+      </div>`);
+    body.appendChild(namePanel);
+    document.getElementById(`hzb-secname-${s.id}`).addEventListener('input', function () {
+      gsec(s.id).name = this.value;
+      document.getElementById('hzb-ed-title').textContent = this.value;
+      renderSB();
+    });
+
+    if (s.type === 'descfaq') {
+      body.appendChild(buildDescFaqEditor(s));
+    }
+    // other types: no content editor
+  }
+
+  function panel(title, type, innerHtml) {
+    const col = META[type].col;
+    const d = document.createElement('div');
+    d.className = 'ep';
+    d.innerHTML = `<div class="eh"><div class="dot" style="background:${col}"></div>${xe(title)}</div><div class="eb">${innerHtml}</div>`;
+    return d;
+  }
+
+  // ======================================================
+  // DESC + FAQ EDITOR
+  // ======================================================
+  function buildDescFaqEditor(s) {
+    const frag = document.createDocumentFragment();
+
+    // Description
+    const descWrap = document.createElement('div');
+    descWrap.className = 'ep';
+    descWrap.innerHTML = `
+      <div class="eh"><div class="dot" style="background:#4a9155"></div>Descrição do produto</div>
+      <div class="eb">
+        <div class="fr">
+          ${rteHTML('hzb-desc-' + s.id, 'lg', 'Escreva a descrição...')}
+        </div>
+      </div>`;
+    frag.appendChild(descWrap);
+
+    // FAQ
+    const faqWrap = document.createElement('div');
+    faqWrap.className = 'ep';
+    faqWrap.innerHTML = `
+      <div class="eh"><div class="dot" style="background:#c8920a"></div>FAQ do produto</div>
+      <div class="eb">
+        <div class="rl" id="hzb-faqlist-${s.id}"></div>
+        <button class="btn-add-rep" onclick="HZB.addFaq('${s.id}')">+ Adicionar pergunta</button>
+      </div>`;
+    frag.appendChild(faqWrap);
+
+    // After DOM insertion, init RTE
+    requestAnimationFrame(() => {
+      initRTE(document.getElementById('hzb-desc-' + s.id), s.data.desc, html => {
+        gsec(s.id).data.desc = html;
+        renderPreview();
+      });
+      renderFaqList(s.id);
+    });
+
+    return frag;
+  }
+
+  function renderFaqList(secId) {
+    const s = gsec(secId);
+    if (!s) return;
+    const list = document.getElementById('hzb-faqlist-' + secId);
+    if (!list) return;
+    list.innerHTML = '';
+
+    s.data.faqs.forEach((f, i) => {
+      const item = document.createElement('div');
+      item.className = 'ri';
+      item.dataset.fid = f.id;
+      item.innerHTML = `
+        <div class="rh">
+          <span class="rdrag">⠿</span>
+          <span class="rnum">#${i + 1}</span>
+          <span class="rlbl">Pergunta</span>
+          <button class="rdel" onclick="HZB.remFaq('${secId}','${f.id}')">✕</button>
+        </div>
+        <div class="rb">
+          <div>
+            <label class="lb">Pergunta</label>
+            <input type="text" class="inp" id="hzb-fq-${f.id}" value="${xe(f.q)}"
+              placeholder="Pergunta...">
+          </div>
+          <div>
+            <label class="lb">Resposta</label>
+            ${rteHTML('hzb-fa-' + f.id, 'sm', 'Resposta...')}
+          </div>
+        </div>`;
+      list.appendChild(item);
+
+      requestAnimationFrame(() => {
+        const qInput = document.getElementById('hzb-fq-' + f.id);
+        if (qInput) {
+          qInput.addEventListener('input', function () {
+            const faq = gsec(secId).data.faqs.find(x => x.id === f.id);
+            if (faq) { faq.q = this.value; renderPreview(); }
+          });
+        }
+        const aEl = document.getElementById('hzb-fa-' + f.id);
+        if (aEl) {
+          initRTE(aEl, f.a, html => {
+            const faq = gsec(secId).data.faqs.find(x => x.id === f.id);
+            if (faq) { faq.a = html; renderPreview(); }
+          });
+        }
+      });
+    });
+  }
+
+  function addFaq(secId) {
+    const s = gsec(secId);
+    s.data.faqs.push({ id: uid(), q: '', a: '' });
+    renderFaqList(secId);
+    renderPreview();
+  }
+
+  function remFaq(secId, fid) {
+    const s = gsec(secId);
+    s.data.faqs = s.data.faqs.filter(f => f.id !== fid);
+    renderFaqList(secId);
+    renderPreview();
+  }
+
+  // ======================================================
+  // RICH TEXT EDITOR
+  // ======================================================
+  function rteHTML(id, size, placeholder) {
+    return `
+      <div class="rte-wrap">
+        <div class="rte-toolbar" data-rte="${id}">
+          <button class="rte-btn" data-cmd="bold" title="Negrito"><b>B</b></button>
+          <button class="rte-btn" data-cmd="italic" title="Itálico"><i>I</i></button>
+          <div class="rte-sep"></div>
+          <button class="rte-btn" data-cmd="insertUnorderedList" title="Lista com bullets">• lista</button>
+          <button class="rte-btn" data-cmd="insertOrderedList" title="Lista numerada">1. lista</button>
+          <div class="rte-sep"></div>
+          <button class="rte-btn" data-cmd="removeFormat" title="Limpar formatação">✕ fmt</button>
+        </div>
+        <div class="rte-area" id="${id}" data-size="${size}" contenteditable="true"
+          data-placeholder="${placeholder}"></div>
+      </div>`;
+  }
+
+  function initRTE(el, initialHtml, onChange) {
+    if (!el) return;
+    el.innerHTML = initialHtml || '';
+
+    const toolbar = el.closest('.rte-wrap').querySelector('.rte-toolbar');
+    toolbar.querySelectorAll('.rte-btn').forEach(btn => {
+      btn.addEventListener('mousedown', e => {
+        e.preventDefault();
+        const cmd = btn.dataset.cmd;
+        document.execCommand(cmd, false, null);
+        el.focus();
+        onChange(el.innerHTML);
+        updateToolbarState(toolbar, el);
+      });
+    });
+
+    el.addEventListener('input', () => {
+      onChange(el.innerHTML);
+      updateToolbarState(toolbar, el);
+    });
+    el.addEventListener('keyup', () => updateToolbarState(toolbar, el));
+    el.addEventListener('mouseup', () => updateToolbarState(toolbar, el));
+    el.addEventListener('focus', () => updateToolbarState(toolbar, el));
+  }
+
+  function updateToolbarState(toolbar, el) {
+    toolbar.querySelectorAll('.rte-btn[data-cmd]').forEach(btn => {
+      const cmd = btn.dataset.cmd;
+      try {
+        const active = document.queryCommandState(cmd);
+        btn.classList.toggle('active', active);
+      } catch (e) {}
+    });
+  }
+
+  // ======================================================
+  // PREVIEW
+  // ======================================================
+  function renderPreview() {
+    const pc = document.getElementById('hzb-preview');
+    if (!secs.length) {
+      pc.innerHTML = '<div class="pempty">Adicione seções para ver a pré-visualização.</div>';
+      return;
+    }
+    pc.innerHTML = secs.map((s, i) => {
+      const div = i < secs.length - 1 ? '<div class="ps-div"></div>' : '';
+      return renderSecPreview(s) + div;
+    }).join('');
+
+    // bind FAQ toggles
+    pc.querySelectorAll('.ps-ft').forEach(btn => {
+      btn.addEventListener('click', () => btn.closest('.ps-fi').classList.toggle('open'));
+    });
+  }
+
+  function renderSecPreview(s) {
+    if (s.type === 'descfaq') {
+      const d = s.data;
+      const ff = d.faqs.map(f => `
+        <div class="ps-fi">
+          <button class="ps-ft"><span>${xe(f.q || 'Pergunta')}</span><span class="ps-fic">+</span></button>
+          <div class="ps-fb"><div class="ps-fb-inner">${f.a || '<em>Sem resposta.</em>'}</div></div>
+        </div>`).join('');
+      return `
+        <div class="ps-descfaq">
+          <div class="ps-desc">${d.desc || '<em style="opacity:.5">Sem descrição.</em>'}</div>
+          <div class="ps-faq">${ff || '<p style="color:var(--tm);font-style:italic;font-size:.85rem">Nenhuma pergunta ainda.</p>'}</div>
+        </div>`;
+    }
+
+    // Placeholder for other sections
+    const m = META[s.type];
+    return `
+      <div class="ps-placeholder">
+        <div class="ps-ph-ico">${m.ico}</div>
+        <div class="ps-ph-info">
+          <div class="ps-ph-name">${xe(s.name)}</div>
+          <div class="ps-ph-id">id: "${s.id}"</div>
+          <div class="ps-ph-note">Conteúdo e design serão injetados via JS externo.</div>
+        </div>
+      </div>`;
+  }
+
+  // ======================================================
+  // EXPORT
+  // ======================================================
+  function genHTML() {
+    if (!secs.length) return '<!-- Nenhuma seção adicionada. -->';
+
+    const sectionsCode = secs.map((s, i) => {
+      const div = i < secs.length - 1 ? '\n  <div class="hz-div"></div>' : '';
+      return expSec(s) + div;
+    }).join('\n\n');
+
+    return `<!-- Horizonte Builder — gerado automaticamente -->
+<!-- Cole no campo Descrição do produto na plataforma Tray -->
+<style>
+#hz-pg{font-family:'Helvetica Neue',Arial,sans-serif;color:#3a3a2e}
+#hz-pg *{box-sizing:border-box}
+#hz-pg .hz-div{height:1px;background:#e0dbd0}
+/* Desc + FAQ */
+#hz-pg .hz-df{display:flex;gap:48px;padding:44px 52px;align-items:flex-start}
+#hz-pg .hz-desc{flex:1;font-size:.95rem;line-height:1.8}
+#hz-pg .hz-desc p+p{margin-top:.8em}
+#hz-pg .hz-desc ul{padding-left:1.4em;margin:.4em 0}
+#hz-pg .hz-desc ol{padding-left:1.6em;margin:.4em 0}
+#hz-pg .hz-desc li{margin-bottom:.2em}
+#hz-pg .hz-desc strong{font-weight:600;color:#161610}
+#hz-pg .hz-faq{flex:1;display:flex;flex-direction:column;gap:8px}
+#hz-pg .hz-fi{border:1px solid #d4cdb8;border-radius:8px;overflow:hidden}
+#hz-pg .hz-ft{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;cursor:pointer;font-size:.9rem;font-weight:500;color:#161610;background:#fff;border:none;width:100%;text-align:left;gap:10px;transition:background .15s}
+#hz-pg .hz-ft:hover{background:#f5f1e8}
+#hz-pg .hz-fic{flex-shrink:0;font-size:.85rem;color:#7a7a64;transition:transform .3s}
+#hz-pg .hz-fi.open .hz-fic{transform:rotate(45deg);color:#4a9155}
+#hz-pg .hz-fb{max-height:0;overflow:hidden;transition:max-height .35s ease}
+#hz-pg .hz-fi.open .hz-fb{max-height:800px}
+#hz-pg .hz-fb-i{padding:10px 16px 14px;font-size:.85rem;line-height:1.7;border-top:1px solid #d4cdb8}
+#hz-pg .hz-fb-i ul{padding-left:1.4em;margin:.3em 0}
+#hz-pg .hz-fb-i ol{padding-left:1.6em;margin:.3em 0}
+#hz-pg .hz-fb-i li{margin-bottom:.2em}
+#hz-pg .hz-fb-i strong{font-weight:600}
+/* Responsive */
+@media(max-width:640px){
+  #hz-pg .hz-df{flex-direction:column;padding:26px 18px;gap:22px}
+}
+</style>
+
+<div id="hz-pg">
+  ${sectionsCode}
+</div>
+
+<script>
+(function(){
+  document.querySelectorAll('#hz-pg .hz-ft').forEach(function(b){
+    b.addEventListener('click',function(){b.closest('.hz-fi').classList.toggle('open')});
+  });
+})();
+<\/script>`;
+  }
+
+  function expSec(s) {
+    const c = `  <!-- ${META[s.type].lbl}: ${xe(s.name)} -->`;
+    if (s.type === 'descfaq') {
+      const d = s.data;
+      const ff = d.faqs.map(f => `
+    <div class="hz-fi">
+      <button class="hz-ft"><span>${xe(f.q)}</span><span class="hz-fic">+</span></button>
+      <div class="hz-fb"><div class="hz-fb-i">${f.a}</div></div>
+    </div>`).join('');
+      return `${c}
+  <div class="hz-df">
+    <div class="hz-desc">${d.desc}</div>
+    <div class="hz-faq">${ff}
+    </div>
+  </div>`;
+    }
+
+    // Other types: just a div with ID
+    return `${c}
+  <div id="${s.id}">
+    <!-- Conteúdo injetado via JS externo -->
+  </div>`;
+  }
+
+  // ======================================================
+  // EXPORT MODAL
+  // ======================================================
+  function openExport() {
+    document.getElementById('hzb-carea').textContent = genHTML();
+    document.getElementById('hzb-expoverlay').classList.add('open');
+  }
+  function closeExport() {
+    document.getElementById('hzb-expoverlay').classList.remove('open');
+  }
+  function closeExportOnBg(e) {
+    if (e.target === document.getElementById('hzb-expoverlay')) closeExport();
+  }
+  function copyCode() {
+    navigator.clipboard.writeText(document.getElementById('hzb-carea').textContent).then(() => {
+      const b = document.getElementById('hzb-cpybtn');
+      b.textContent = '✓ Copiado!';
+      b.classList.add('ok');
+      toast('📋 Código copiado!');
+      setTimeout(() => { b.textContent = '📋 Copiar'; b.classList.remove('ok'); }, 2200);
+    });
+  }
+
+  // ======================================================
+  // MENU
+  // ======================================================
+  function toggleMenu() {
+    document.getElementById('hzb-smenu').classList.toggle('open');
+  }
+  function closeMenu() {
+    document.getElementById('hzb-smenu').classList.remove('open');
+  }
+  document.addEventListener('click', ev => {
+    if (!ev.target.closest('.add-wrap')) closeMenu();
+  });
+
+  // ======================================================
+  // UTILS
+  // ======================================================
+  function xe(s) {
+    return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+  function toast(msg) {
+    const t = document.getElementById('hzb-toast');
+    t.textContent = msg;
+    t.classList.add('on');
+    setTimeout(() => t.classList.remove('on'), 2400);
+  }
+
+  // public API
+  return {
+    addSec, delSec, moveSec, selectSec,
+    addFaq, remFaq,
+    toggleMenu, closeMenu,
+    openExport, closeExport, closeExportOnBg, copyCode,
+    // for inline event handlers that need secId as string
+    moveSec: (id, d) => moveSec(id, d),
+  };
+})();
+</script>
+</body>
+</html>
