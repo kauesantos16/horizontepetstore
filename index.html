@@ -100,7 +100,8 @@ html, body { height: 100%; margin: 0; padding: 0; font-family: 'DM Sans', sans-s
 #hzb .ps-fi { border: 1px solid var(--bd); border-radius: 8px; overflow: hidden; }
 #hzb .ps-ft { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; cursor: pointer; font-size: .88rem; font-weight: 500; color: var(--th); gap: 10px; background: var(--bgc); border: none; width: 100%; text-align: left; transition: background .15s; }
 #hzb .ps-ft:hover { background: var(--bgp); }
-#hzb .ps-fic { flex-shrink: 0; font-size: .85rem; color: var(--tm); transition: transform .3s, color .2s; }
+#hzb .ps-fic { flex-shrink: 0; color: var(--tm); transition: transform .3s, color .2s; display: flex; align-items: center; }
+#hzb .ps-fic svg { width: 16px; height: 16px; display: block; }
 #hzb .ps-fi.open .ps-fic { transform: rotate(45deg); color: var(--g400); }
 #hzb .ps-fb { max-height: 0; overflow: hidden; transition: max-height .35s cubic-bezier(.4,0,.2,1); }
 #hzb .ps-fi.open .ps-fb { max-height: 600px; }
@@ -425,6 +426,7 @@ const HZB = (() => {
   // CONSTANTS
   // =====================================================
   const CHK_SVG = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M4.5 12.75L10.5 18.75L19.5 5.25" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  const FAQ_ICO = '<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M11 11V5H13V11H19V13H13V19H11V13H5V11H11Z" fill="currentColor"/></svg>';
 
   // =====================================================
   // STATE
@@ -1140,7 +1142,7 @@ const HZB = (() => {
     const d = s.data;
     const ff = d.faqs.map(f => `
       <div class="ps-fi">
-        <button class="ps-ft" aria-expanded="false" aria-controls="psfb-${f.id}"><span>${xe(f.q || 'Pergunta')}</span><span class="ps-fic" aria-hidden="true">+</span></button>
+        <button class="ps-ft" aria-expanded="false" aria-controls="psfb-${f.id}"><span>${xe(f.q || 'Pergunta')}</span><span class="ps-fic" aria-hidden="true">${FAQ_ICO}</span></button>
         <div class="ps-fb" id="psfb-${f.id}" role="region"><div class="ps-fb-inner">${f.a || '<em>Sem resposta.</em>'}</div></div>
       </div>`).join('');
     return `
@@ -1245,7 +1247,7 @@ const HZB = (() => {
     function renderFaqItems(list) {
       return list.map(f => `
         <div class="ps-fi">
-          <button class="ps-ft" aria-expanded="false" aria-controls="psfb-${f.id}"><span>${xe(f.q || 'Pergunta')}</span><span class="ps-fic" aria-hidden="true">+</span></button>
+          <button class="ps-ft" aria-expanded="false" aria-controls="psfb-${f.id}"><span>${xe(f.q || 'Pergunta')}</span><span class="ps-fic" aria-hidden="true">${FAQ_ICO}</span></button>
           <div class="ps-fb" id="psfb-${f.id}" role="region"><div class="ps-fb-inner">${f.a || '<em>Sem resposta.</em>'}</div></div>
         </div>`).join('');
     }
@@ -1295,7 +1297,8 @@ const HZB = (() => {
 #hz-pg .hz-fi{border:1px solid #d4cdb8;border-radius:8px;overflow:hidden}
 #hz-pg .hz-ft{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;cursor:pointer;font-size:.9rem;font-weight:500;color:#092312;background:#fff;border:none;width:100%;text-align:left;gap:10px;transition:background .15s}
 #hz-pg .hz-ft:hover{background:#f5f1e8}
-#hz-pg .hz-fic{flex-shrink:0;font-size:.85rem;color:#7a7a64;transition:transform .3s}
+#hz-pg .hz-fic{flex-shrink:0;color:#7a7a64;transition:transform .3s;display:flex;align-items:center}
+#hz-pg .hz-fic svg{width:16px;height:16px;display:block}
 #hz-pg .hz-fi.open .hz-fic{transform:rotate(45deg);color:#4a9155}
 #hz-pg .hz-fb{max-height:0;overflow:hidden;transition:max-height .35s ease}
 #hz-pg .hz-fi.open .hz-fb{max-height:800px}
@@ -1416,7 +1419,7 @@ const HZB = (() => {
     <div class="hz-fi">
       <button class="hz-ft" aria-expanded="false" aria-controls="hz-fb-${f.id}">
         <span>${xe(f.q)}</span>
-        <span class="hz-fic" aria-hidden="true">+</span>
+        <span class="hz-fic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M11 11V5H13V11H19V13H13V19H11V13H5V11H11Z" fill="currentColor"/></svg></span>
       </button>
       <div class="hz-fb" id="hz-fb-${f.id}" role="region">
         <div class="hz-fb-i">${f.a}</div>
@@ -1512,7 +1515,7 @@ const HZB = (() => {
     const right = faqs.slice(half);
     function faqItems(list) {
       return list.map(f =>
-        `<div class="hz-fi" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question"><button class="hz-ft" aria-expanded="false" aria-controls="hz-fb-${f.id}"><span itemprop="name">${xe(f.q)}</span><span class="hz-fic" aria-hidden="true">+</span></button><div class="hz-fb" id="hz-fb-${f.id}" role="region" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer"><div class="hz-fb-i" itemprop="text">${f.a || ''}</div></div></div>`
+        `<div class="hz-fi" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question"><button class="hz-ft" aria-expanded="false" aria-controls="hz-fb-${f.id}"><span itemprop="name">${xe(f.q)}</span><span class="hz-fic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M11 11V5H13V11H19V13H13V19H11V13H5V11H11Z" fill="currentColor"/></svg></span></button><div class="hz-fb" id="hz-fb-${f.id}" role="region" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer"><div class="hz-fb-i" itemprop="text">${f.a || ''}</div></div></div>`
       ).join('');
     }
     return `<section class="hz-faqg" aria-label="${xe(d.title)}" itemscope itemtype="https://schema.org/FAQPage">
