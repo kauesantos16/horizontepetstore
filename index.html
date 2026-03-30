@@ -7,237 +7,52 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap" rel="stylesheet">
 <style>
-/* ================================================================
-   ALL SELECTORS SCOPED UNDER #hzb (Horizonte Builder)
-   to avoid conflicts when embedded externally.
-================================================================ */
+#hzb *, #hzb *::before, #hzb *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* Reset inside scope */
-#hzb *, #hzb *::before, #hzb *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-/* Tokens */
 #hzb {
-  --g900: #0f2e13;
-  --g700: #1a4a1f;
-  --g500: #2d6e35;
-  --g400: #4a9155;
-  --g100: #e8f5e9;
-  --am:   #c8920a;
-  --al:   #f0b429;
-  --ap:   #fef9ed;
-  --bg:   #f5f1e8;
-  --bgc:  #ffffff;
-  --bgp:  #ede9de;
-  --bgi:  #faf8f3;
-  --bd:   #d4cdb8;
-  --bd2:  #e8e2d4;
-  --th:   #161610;
-  --tb:   #3a3a2e;
-  --tm:   #7a7a64;
-  --ss:   0 1px 4px rgba(0,0,0,.06);
-  --sm:   0 3px 14px rgba(0,0,0,.09);
-  --sl:   0 8px 32px rgba(0,0,0,.13);
-  --r:    12px;
-  --rs:   8px;
-  --lw:   264px;  /* left sidebar */
-  --rw:   300px;  /* right sidebar */
-  --th2:  52px;   /* topbar height */
-
-  font-family: 'DM Sans', sans-serif;
-  background: var(--bg);
-  color: var(--tb);
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
+  --g900: #0f2e13; --g700: #1a4a1f; --g500: #2d6e35; --g400: #4a9155; --g100: #e8f5e9;
+  --am: #c8920a; --al: #f0b429; --ap: #fef9ed;
+  --bg: #f5f1e8; --bgc: #ffffff; --bgp: #ede9de; --bgi: #faf8f3;
+  --bd: #d4cdb8; --bd2: #e8e2d4;
+  --th: #092312; --tb: #092312; --tm: #7a7a64;
+  --ss: 0 1px 4px rgba(0,0,0,.06); --sm: 0 3px 14px rgba(0,0,0,.09); --sl: 0 8px 32px rgba(0,0,0,.13);
+  --r: 12px; --rs: 8px; --lw: 264px; --rw: 300px; --th2: 52px;
+  font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--tb);
+  height: 100vh; display: flex; flex-direction: column; overflow: hidden;
 }
+html, body { height: 100%; margin: 0; padding: 0; font-family: 'DM Sans', sans-serif; background: #f5f1e8; }
 
-/* Full page wrapper so #hzb can be the root */
-html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  font-family: 'DM Sans', sans-serif;
-  background: #f5f1e8;
-}
-
-/* ================================================================
-   TOPBAR
-================================================================ */
-#hzb .topbar {
-  height: var(--th2);
-  background: var(--g700);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 18px 0 20px;
-  flex-shrink: 0;
-  z-index: 200;
-  box-shadow: 0 2px 12px rgba(0,0,0,.25);
-}
-
-#hzb .brand {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-family: 'DM Serif Display', serif;
-  color: #fff;
-  font-size: 1.1rem;
-  letter-spacing: .01em;
-}
-
-#hzb .brand .badge {
-  background: var(--am);
-  color: #fff;
-  font-family: 'DM Sans', sans-serif;
-  font-size: .62rem;
-  font-weight: 700;
-  letter-spacing: .1em;
-  padding: 2px 7px;
-  border-radius: 20px;
-  text-transform: uppercase;
-}
-
-#hzb .topbar-r {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-#hzb .btn-gold {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  border-radius: 20px;
-  padding: 7px 15px;
-  font-size: .79rem;
-  font-family: 'DM Sans', sans-serif;
-  font-weight: 600;
-  cursor: pointer;
-  border: none;
-  background: var(--am);
-  color: #fff;
-  transition: background .2s, transform .15s;
-}
+/* TOPBAR */
+#hzb .topbar { height: var(--th2); background: var(--g700); display: flex; align-items: center; justify-content: space-between; padding: 0 18px 0 20px; flex-shrink: 0; z-index: 200; box-shadow: 0 2px 12px rgba(0,0,0,.25); }
+#hzb .brand { display: flex; align-items: center; gap: 10px; font-family: 'DM Serif Display', serif; color: #fff; font-size: 1.1rem; letter-spacing: .01em; }
+#hzb .brand .badge { background: var(--am); color: #fff; font-family: 'DM Sans', sans-serif; font-size: .62rem; font-weight: 700; letter-spacing: .1em; padding: 2px 7px; border-radius: 20px; text-transform: uppercase; }
+#hzb .topbar-r { display: flex; align-items: center; gap: 8px; }
+#hzb .btn-gold { display: flex; align-items: center; gap: 5px; border-radius: 20px; padding: 7px 15px; font-size: .79rem; font-family: 'DM Sans', sans-serif; font-weight: 600; cursor: pointer; border: none; background: var(--am); color: #fff; transition: background .2s, transform .15s; }
 #hzb .btn-gold:hover { background: var(--al); transform: translateY(-1px); }
 
-/* ================================================================
-   SHELL (3-column layout)
-================================================================ */
-#hzb .shell {
-  display: flex;
-  flex: 1;
-  overflow: hidden;
-}
+/* SHELL */
+#hzb .shell { display: flex; flex: 1; overflow: hidden; }
 
-/* ================================================================
-   LEFT SIDEBAR — section list
-================================================================ */
-#hzb .sb-left {
-  width: var(--lw);
-  background: var(--bgc);
-  border-right: 1px solid var(--bd);
-  display: flex;
-  flex-direction: column;
-  flex-shrink: 0;
-  overflow: hidden;
-}
-
-#hzb .sb-top {
-  padding: 14px 13px 10px;
-  border-bottom: 1px solid var(--bd2);
-  flex-shrink: 0;
-}
-
-#hzb .sb-label {
-  font-size: .68rem;
-  font-weight: 700;
-  letter-spacing: .1em;
-  text-transform: uppercase;
-  color: var(--tm);
-  margin-bottom: 10px;
-}
-
+/* LEFT SIDEBAR */
+#hzb .sb-left { width: var(--lw); background: var(--bgc); border-right: 1px solid var(--bd); display: flex; flex-direction: column; flex-shrink: 0; overflow: hidden; }
+#hzb .sb-top { padding: 14px 13px 10px; border-bottom: 1px solid var(--bd2); flex-shrink: 0; }
+#hzb .sb-label { font-size: .68rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--tm); margin-bottom: 10px; }
 #hzb .add-wrap { position: relative; }
-
-#hzb .btn-add {
-  width: 100%;
-  background: var(--g700);
-  color: #fff;
-  border: none;
-  border-radius: var(--rs);
-  padding: 9px 13px;
-  font-family: 'DM Sans', sans-serif;
-  font-size: .82rem;
-  font-weight: 600;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  transition: background .2s;
-}
+#hzb .btn-add { width: 100%; background: var(--g700); color: #fff; border: none; border-radius: var(--rs); padding: 9px 13px; font-family: 'DM Sans', sans-serif; font-size: .82rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: space-between; transition: background .2s; }
 #hzb .btn-add:hover { background: var(--g500); }
-
-#hzb .sec-menu {
-  position: absolute;
-  top: calc(100% + 6px);
-  left: 0; right: 0;
-  background: var(--bgc);
-  border: 1px solid var(--bd);
-  border-radius: var(--rs);
-  box-shadow: var(--sl);
-  z-index: 300;
-  overflow: hidden;
-  display: none;
-  animation: hzb-fd .15s ease;
-}
+#hzb .sec-menu { position: absolute; top: calc(100% + 6px); left: 0; right: 0; background: var(--bgc); border: 1px solid var(--bd); border-radius: var(--rs); box-shadow: var(--sl); z-index: 300; overflow: hidden; display: none; animation: hzb-fd .15s ease; }
 #hzb .sec-menu.open { display: block; }
-
-@keyframes hzb-fd {
-  from { opacity: 0; transform: translateY(-6px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-#hzb .mi {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 9px 12px;
-  cursor: pointer;
-  font-size: .83rem;
-  color: var(--tb);
-  transition: background .15s;
-  border-bottom: 1px solid var(--bd2);
-}
+@keyframes hzb-fd { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+#hzb .mi { display: flex; align-items: center; gap: 10px; padding: 9px 12px; cursor: pointer; font-size: .83rem; color: var(--tb); transition: background .15s; border-bottom: 1px solid var(--bd2); }
 #hzb .mi:last-child { border-bottom: none; }
 #hzb .mi:hover { background: var(--bgp); color: var(--th); }
 #hzb .mi-ico { width: 28px; height: 28px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: .9rem; flex-shrink: 0; }
 #hzb .mi-name { font-weight: 600; font-size: .82rem; }
 #hzb .mi-desc { font-size: .71rem; color: var(--tm); }
-
-#hzb .sec-list {
-  flex: 1;
-  overflow-y: auto;
-  padding: 10px 10px 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
+#hzb .sec-list { flex: 1; overflow-y: auto; padding: 10px 10px 16px; display: flex; flex-direction: column; gap: 6px; }
 #hzb .sec-list::-webkit-scrollbar { width: 4px; }
 #hzb .sec-list::-webkit-scrollbar-thumb { background: var(--bd); border-radius: 2px; }
-
-#hzb .sc {
-  border: 1px solid var(--bd2);
-  border-radius: var(--rs);
-  background: var(--bgi);
-  cursor: pointer;
-  transition: border-color .2s, background .2s;
-  user-select: none;
-}
+#hzb .sc { border: 1px solid var(--bd2); border-radius: var(--rs); background: var(--bgi); cursor: pointer; transition: border-color .2s, background .2s; user-select: none; }
 #hzb .sc:hover { border-color: var(--g400); }
 #hzb .sc.active { border-color: var(--g400); background: var(--g100); box-shadow: 0 0 0 2px rgba(74,145,85,.14); }
 #hzb .sc-inner { display: flex; align-items: center; gap: 8px; padding: 8px 9px; }
@@ -248,317 +63,146 @@ html, body {
 #hzb .sc-name { font-size: .82rem; font-weight: 500; color: var(--th); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 #hzb .sc-type { font-size: .7rem; color: var(--tm); }
 #hzb .sc-acts { display: flex; gap: 2px; flex-shrink: 0; }
-#hzb .sc-btn {
-  width: 22px; height: 22px; border: none; background: none; cursor: pointer;
-  border-radius: 4px; display: flex; align-items: center; justify-content: center;
-  font-size: .7rem; color: var(--tm); opacity: 0; transition: background .15s, opacity .15s, color .15s;
-}
+#hzb .sc-btn { width: 22px; height: 22px; border: none; background: none; cursor: pointer; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: .7rem; color: var(--tm); opacity: 0; transition: background .15s, opacity .15s, color .15s; }
 #hzb .sc:hover .sc-btn, #hzb .sc.active .sc-btn { opacity: 1; }
 #hzb .sc-btn:hover { background: var(--bd); color: var(--th); }
 #hzb .sc-btn.del:hover { background: #ffeaea; color: #c0392b; }
-
-#hzb .sb-empty {
-  text-align: center;
-  padding: 28px 16px;
-  color: var(--tm);
-  font-size: .8rem;
-  font-style: italic;
-  line-height: 1.6;
-}
-
-/* section type icon bg */
+#hzb .sb-empty { text-align: center; padding: 28px 16px; color: var(--tm); font-size: .8rem; font-style: italic; line-height: 1.6; }
 #hzb .t-descfaq .sc-ico { background: #e8f5e9; }
 #hzb .t-dif      .sc-ico { background: #fff8e1; }
 #hzb .t-dep      .sc-ico { background: #e8eaf6; }
 #hzb .t-cta      .sc-ico { background: #fce4ec; }
 #hzb .t-faqg     .sc-ico { background: #e0f2f1; }
 
-/* ================================================================
-   CENTER — always-visible preview
-================================================================ */
-#hzb .center {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  background: var(--bg);
-}
-
-#hzb .center-top {
-  height: 38px;
-  background: var(--bgp);
-  border-bottom: 1px solid var(--bd2);
-  display: flex;
-  align-items: center;
-  padding: 0 16px;
-  gap: 6px;
-  flex-shrink: 0;
-}
-
-#hzb .center-top span {
-  font-size: .7rem;
-  font-weight: 700;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  color: var(--tm);
-}
-
+/* CENTER */
+#hzb .center { flex: 1; display: flex; flex-direction: column; overflow: hidden; background: var(--bg); }
+#hzb .center-top { height: 38px; background: var(--bgp); border-bottom: 1px solid var(--bd2); display: flex; align-items: center; padding: 0 16px; gap: 6px; flex-shrink: 0; }
+#hzb .center-top span { font-size: .7rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--tm); }
 #hzb .prev-dots { display: flex; gap: 5px; }
 #hzb .prev-dots span { width: 9px; height: 9px; border-radius: 50%; }
-
-#hzb .center-body {
-  flex: 1;
-  overflow-y: auto;
-  padding: 24px;
-}
+#hzb .center-body { flex: 1; overflow-y: auto; padding: 24px; }
 #hzb .center-body::-webkit-scrollbar { width: 6px; }
 #hzb .center-body::-webkit-scrollbar-thumb { background: var(--bd); border-radius: 3px; }
+#hzb .pframe { background: var(--bgc); border: 1px solid var(--bd); border-radius: var(--r); box-shadow: var(--sl); overflow: hidden; max-width: 860px; margin: 0 auto; }
+#hzb .pempty { padding: 60px; text-align: center; color: var(--tm); font-size: .9rem; font-style: italic; }
 
-/* preview frame */
-#hzb .pframe {
-  background: var(--bgc);
-  border: 1px solid var(--bd);
-  border-radius: var(--r);
-  box-shadow: var(--sl);
-  overflow: hidden;
-  max-width: 860px;
-  margin: 0 auto;
-}
-
-#hzb .pempty {
-  padding: 60px;
-  text-align: center;
-  color: var(--tm);
-  font-size: .9rem;
-  font-style: italic;
-}
-
-/* ---- preview section styles ---- */
+/* ---- PREVIEW: Desc+FAQ ---- */
 #hzb .ps-div { height: 1px; background: var(--bd2); }
-
-#hzb .ps-descfaq {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 44px;
-  padding: 42px 48px;
-  align-items: start;
-}
-#hzb .ps-desc {
-  font-size: .94rem;
-  line-height: 1.8;
-  color: var(--tb);
-}
+#hzb .ps-descfaq { display: grid; grid-template-columns: 1fr 1fr; gap: 44px; padding: 42px 0; align-items: start; }
+#hzb .ps-desc { font-size: .94rem; line-height: 1.8; color: var(--tb); }
 #hzb .ps-desc p + p { margin-top: .9em; }
 #hzb .ps-desc ul { padding-left: 1.4em; margin: .4em 0; }
 #hzb .ps-desc ol { padding-left: 1.6em; margin: .4em 0; }
 #hzb .ps-desc li { margin-bottom: .2em; }
 #hzb .ps-desc strong { font-weight: 600; color: var(--th); }
 #hzb .ps-desc em { font-style: italic; }
-
 #hzb .ps-faq { display: flex; flex-direction: column; gap: 8px; }
 #hzb .ps-fi { border: 1px solid var(--bd); border-radius: 8px; overflow: hidden; }
-#hzb .ps-ft {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 12px 16px; cursor: pointer;
-  font-size: .88rem; font-weight: 500; color: var(--th);
-  gap: 10px; background: var(--bgc); border: none; width: 100%;
-  text-align: left; transition: background .15s;
-}
+#hzb .ps-ft { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; cursor: pointer; font-size: .88rem; font-weight: 500; color: var(--th); gap: 10px; background: var(--bgc); border: none; width: 100%; text-align: left; transition: background .15s; }
 #hzb .ps-ft:hover { background: var(--bgp); }
 #hzb .ps-fic { flex-shrink: 0; font-size: .85rem; color: var(--tm); transition: transform .3s, color .2s; }
 #hzb .ps-fi.open .ps-fic { transform: rotate(45deg); color: var(--g400); }
 #hzb .ps-fb { max-height: 0; overflow: hidden; transition: max-height .35s cubic-bezier(.4,0,.2,1); }
 #hzb .ps-fi.open .ps-fb { max-height: 600px; }
-#hzb .ps-fb-inner {
-  padding: 10px 16px 14px;
-  font-size: .85rem;
-  line-height: 1.7;
-  color: var(--tb);
-  border-top: 1px solid var(--bd);
-}
+#hzb .ps-fb-inner { padding: 10px 16px 14px; font-size: .85rem; line-height: 1.7; color: var(--tb); border-top: 1px solid var(--bd); }
 #hzb .ps-fb-inner ul { padding-left: 1.4em; margin: .3em 0; }
 #hzb .ps-fb-inner ol { padding-left: 1.6em; margin: .3em 0; }
 #hzb .ps-fb-inner li { margin-bottom: .2em; }
 #hzb .ps-fb-inner strong { font-weight: 600; }
 #hzb .ps-fb-inner em { font-style: italic; }
 
-/* placeholder sections */
-#hzb .ps-placeholder {
-  padding: 32px 48px;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  background: var(--bgp);
-  border-left: 3px solid var(--bd);
-}
+/* ---- PREVIEW: Diferenciais ---- */
+#hzb .ps-dif { padding: 44px 0; }
+#hzb .ps-dif-row { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; margin-bottom: 40px; }
+#hzb .ps-dif-row:last-child { margin-bottom: 0; }
+#hzb .ps-dif-title { font-size: 3rem; line-height: 1.1; color: var(--th); margin-bottom: 14px; }
+#hzb .ps-dif-title span { display: block; font-weight: 400; }
+#hzb .ps-dif-title strong { display: block; font-weight: 700; }
+#hzb .ps-dif-intro { font-size: .88rem; line-height: 1.8; color: var(--tb); }
+#hzb .ps-dif-intro strong { font-weight: 700; color: var(--th); }
+#hzb .ps-dif-img { width: 100%; border-radius: 16px; object-fit: cover; display: block; }
+#hzb .ps-dif-imgph { background: var(--bgp); border-radius: 16px; aspect-ratio: 4/3; display: flex; align-items: center; justify-content: center; color: var(--tm); font-size: .8rem; }
+#hzb .ps-dif-items { display: flex; flex-direction: column; gap: 12px; }
+#hzb .ps-dif-item { display: flex; align-items: flex-start; gap: 10px; font-size: .86rem; line-height: 1.65; color: var(--tb); }
+#hzb .ps-dif-chk { width: 22px; height: 22px; border-radius: 50%; background: var(--g400); display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
+
+/* ---- PREVIEW: Depoimentos ---- */
+#hzb .ps-dep { padding: 44px 0; }
+#hzb .ps-dep-title { font-size: 1rem; font-weight: 600; color: var(--th); margin-bottom: 20px; }
+#hzb .ps-dep-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; align-items: start; }
+#hzb .ps-dep-featured { background: #fff; border-radius: 12px; border: 1px solid var(--bd); overflow: hidden; }
+#hzb .ps-dep-media { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; }
+#hzb .ps-dep-nomed { aspect-ratio: 4/3; background: var(--bgp); display: flex; align-items: center; justify-content: center; color: var(--tm); font-size: .8rem; }
+#hzb .ps-dep-ytw { position: relative; }
+#hzb .ps-dep-ytw img { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; }
+#hzb .ps-dep-play { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 40px; height: 40px; background: rgba(0,0,0,.7); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1rem; }
+#hzb .ps-dep-fquote { padding: 12px 14px 4px; font-size: .82rem; line-height: 1.65; color: var(--tb); font-style: italic; }
+#hzb .ps-dep-author { padding: 6px 14px 12px; font-size: .78rem; font-weight: 600; color: var(--th); }
+#hzb .ps-dep-cards { display: flex; flex-direction: column; gap: 10px; }
+#hzb .ps-dep-card { background: #fff; border-radius: 10px; border: 1px solid var(--bd); padding: 14px; }
+#hzb .ps-dep-text { font-size: .81rem; line-height: 1.65; color: var(--tb); font-style: italic; margin-bottom: 8px; }
+#hzb .ps-dep-cname { font-size: .78rem; font-weight: 600; color: var(--th); }
+
+/* ---- PREVIEW: CTA ---- */
+#hzb .ps-cta { padding: 28px 0; }
+#hzb .ps-cta-inner { border: 1px solid var(--bd); border-radius: 14px; padding: 24px 28px; display: flex; align-items: center; gap: 20px; background: #fff; }
+#hzb .ps-cta-img { width: 72px; height: 72px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
+#hzb .ps-cta-imgph { width: 72px; height: 72px; border-radius: 50%; background: #e0e0e0; flex-shrink: 0; display: flex; align-items: center; justify-content: center; color: #aaa; font-size: 1.2rem; }
+#hzb .ps-cta-body { flex: 1; }
+#hzb .ps-cta-title { font-size: .95rem; font-weight: 600; color: var(--th); margin-bottom: 5px; }
+#hzb .ps-cta-desc { font-size: .83rem; color: var(--tb); line-height: 1.6; margin-bottom: 8px; }
+#hzb .ps-cta-link { font-size: .83rem; font-weight: 700; color: var(--g500); text-decoration: underline; cursor: pointer; }
+
+/* ---- PREVIEW: FAQ Geral ---- */
+#hzb .ps-faqg { padding: 44px 0; }
+#hzb .ps-faqg-title { font-size: 1.1rem; font-weight: 600; color: var(--th); margin-bottom: 22px; }
+#hzb .ps-faqg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; align-items: start; }
+
+/* placeholder */
+#hzb .ps-placeholder { padding: 32px 48px; display: flex; align-items: center; gap: 14px; background: var(--bgp); border-left: 3px solid var(--bd); }
 #hzb .ps-ph-ico { font-size: 1.4rem; opacity: .5; }
 #hzb .ps-ph-info .ps-ph-name { font-size: .88rem; font-weight: 600; color: var(--th); }
 #hzb .ps-ph-info .ps-ph-id { font-size: .76rem; color: var(--tm); font-family: 'Courier New', monospace; margin-top: 2px; }
 #hzb .ps-ph-info .ps-ph-note { font-size: .76rem; color: var(--tm); margin-top: 4px; font-style: italic; }
 
-/* ================================================================
-   RIGHT SIDEBAR — editor
-================================================================ */
-#hzb .sb-right {
-  width: var(--rw);
-  background: var(--bgc);
-  border-left: 1px solid var(--bd);
-  display: flex;
-  flex-direction: column;
-  flex-shrink: 0;
-  overflow: hidden;
-  transition: width .25s ease;
-}
-
-#hzb .sb-right.collapsed {
-  width: 0;
-  border-left: none;
-  overflow: hidden;
-}
-
-#hzb .ed-head {
-  height: 38px;
-  background: var(--bgp);
-  border-bottom: 1px solid var(--bd2);
-  display: flex;
-  align-items: center;
-  padding: 0 13px;
-  gap: 8px;
-  flex-shrink: 0;
-}
-
+/* RIGHT SIDEBAR */
+#hzb .sb-right { width: var(--rw); background: var(--bgc); border-left: 1px solid var(--bd); display: flex; flex-direction: column; flex-shrink: 0; overflow: hidden; transition: width .25s ease; }
+#hzb .sb-right.collapsed { width: 0; border-left: none; overflow: hidden; }
+#hzb .ed-head { height: 38px; background: var(--bgp); border-bottom: 1px solid var(--bd2); display: flex; align-items: center; padding: 0 13px; gap: 8px; flex-shrink: 0; }
 #hzb .ed-head-ico { font-size: .9rem; }
 #hzb .ed-head-title { font-size: .8rem; font-weight: 600; color: var(--th); flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
-#hzb .ed-body {
-  flex: 1;
-  overflow-y: auto;
-  padding: 14px;
-}
+#hzb .ed-body { flex: 1; overflow-y: auto; padding: 14px; }
 #hzb .ed-body::-webkit-scrollbar { width: 4px; }
 #hzb .ed-body::-webkit-scrollbar-thumb { background: var(--bd); border-radius: 2px; }
-
-#hzb .ed-nosel {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  gap: 10px;
-  color: var(--tm);
-  text-align: center;
-  padding: 20px;
-}
+#hzb .ed-nosel { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; gap: 10px; color: var(--tm); text-align: center; padding: 20px; }
 #hzb .ed-nosel .ico { font-size: 1.8rem; opacity: .35; }
 #hzb .ed-nosel p { font-size: .8rem; line-height: 1.6; }
 
-/* editor panels */
-#hzb .ep {
-  background: var(--bgc);
-  border: 1px solid var(--bd);
-  border-radius: var(--r);
-  margin-bottom: 12px;
-  overflow: hidden;
-  box-shadow: var(--ss);
-}
+/* EDITOR PANELS */
+#hzb .ep { background: var(--bgc); border: 1px solid var(--bd); border-radius: var(--r); margin-bottom: 12px; overflow: hidden; box-shadow: var(--ss); }
 #hzb .ep:last-child { margin-bottom: 0; }
-#hzb .eh {
-  background: var(--bgp);
-  border-bottom: 1px solid var(--bd2);
-  padding: 9px 13px;
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  font-size: .79rem;
-  font-weight: 600;
-  color: var(--th);
-}
+#hzb .eh { background: var(--bgp); border-bottom: 1px solid var(--bd2); padding: 9px 13px; display: flex; align-items: center; gap: 7px; font-size: .79rem; font-weight: 600; color: var(--th); }
 #hzb .eh .dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
 #hzb .eb { padding: 12px; }
 #hzb .fr { margin-bottom: 10px; }
 #hzb .fr:last-child { margin-bottom: 0; }
-
-#hzb label.lb {
-  display: block;
-  font-size: .71rem;
-  font-weight: 600;
-  color: var(--tm);
-  letter-spacing: .04em;
-  text-transform: uppercase;
-  margin-bottom: 4px;
+#hzb label.lb { display: block; font-size: .71rem; font-weight: 600; color: var(--tm); letter-spacing: .04em; text-transform: uppercase; margin-bottom: 4px; }
+#hzb input[type=text].inp, #hzb select.inp {
+  width: 100%; background: var(--bgi); border: 1px solid var(--bd); border-radius: var(--rs);
+  padding: 7px 10px; font-family: 'DM Sans', sans-serif; font-size: .85rem; color: var(--tb);
+  outline: none; transition: border-color .2s;
 }
+#hzb input[type=text].inp:focus, #hzb select.inp:focus { border-color: var(--g400); }
+#hzb select.inp { cursor: pointer; }
 
-#hzb input[type=text].inp {
-  width: 100%;
-  background: var(--bgi);
-  border: 1px solid var(--bd);
-  border-radius: var(--rs);
-  padding: 7px 10px;
-  font-family: 'DM Sans', sans-serif;
-  font-size: .85rem;
-  color: var(--tb);
-  outline: none;
-  transition: border-color .2s;
-}
-#hzb input[type=text].inp:focus { border-color: var(--g400); }
-
-/* ================================================================
-   RICH TEXT EDITOR
-================================================================ */
-#hzb .rte-wrap {
-  border: 1px solid var(--bd);
-  border-radius: var(--rs);
-  overflow: hidden;
-  background: var(--bgc);
-}
-
-#hzb .rte-toolbar {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2px;
-  padding: 5px 7px;
-  background: var(--bgp);
-  border-bottom: 1px solid var(--bd2);
-}
-
-#hzb .rte-btn {
-  background: none;
-  border: 1px solid transparent;
-  border-radius: 4px;
-  width: 26px;
-  height: 26px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  font-family: 'DM Sans', sans-serif;
-  font-size: .78rem;
-  font-weight: 700;
-  color: var(--tb);
-  transition: background .15s, border-color .15s;
-  flex-shrink: 0;
-}
+/* RICH TEXT EDITOR */
+#hzb .rte-wrap { border: 1px solid var(--bd); border-radius: var(--rs); overflow: hidden; background: var(--bgc); }
+#hzb .rte-toolbar { display: flex; flex-wrap: wrap; gap: 2px; padding: 5px 7px; background: var(--bgp); border-bottom: 1px solid var(--bd2); }
+#hzb .rte-btn { background: none; border: 1px solid transparent; border-radius: 4px; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: .78rem; font-weight: 700; color: var(--tb); transition: background .15s, border-color .15s; flex-shrink: 0; }
 #hzb .rte-btn:hover { background: var(--bd2); border-color: var(--bd); }
 #hzb .rte-btn.active { background: var(--g100); border-color: var(--g400); color: var(--g700); }
-
-#hzb .rte-sep {
-  width: 1px;
-  background: var(--bd);
-  margin: 3px 2px;
-  flex-shrink: 0;
-}
-
-#hzb .rte-area {
-  min-height: 100px;
-  padding: 10px 11px;
-  font-family: 'DM Sans', sans-serif;
-  font-size: .85rem;
-  line-height: 1.75;
-  color: var(--tb);
-  outline: none;
-  background: var(--bgi);
-  overflow-y: auto;
-}
+#hzb .rte-sep { width: 1px; background: var(--bd); margin: 3px 2px; flex-shrink: 0; }
+#hzb .rte-area { min-height: 100px; padding: 10px 11px; font-family: 'DM Sans', sans-serif; font-size: .85rem; line-height: 1.75; color: var(--tb); outline: none; background: var(--bgi); overflow-y: auto; }
 #hzb .rte-area[data-size="lg"] { min-height: 130px; }
 #hzb .rte-area p { margin: 0 0 .4em; }
 #hzb .rte-area ul { padding-left: 1.4em; margin: .3em 0; }
@@ -566,196 +210,82 @@ html, body {
 #hzb .rte-area li { margin-bottom: .15em; }
 #hzb .rte-area:empty::before { content: attr(data-placeholder); color: var(--tm); font-style: italic; pointer-events: none; }
 
-/* ================================================================
-   FAQ ITEMS in editor
-================================================================ */
+/* REPEATABLE ITEMS */
 #hzb .rl { display: flex; flex-direction: column; gap: 7px; margin-bottom: 10px; }
-
-#hzb .ri {
-  border: 1px solid var(--bd2);
-  border-radius: var(--rs);
-  overflow: hidden;
-  background: var(--bgi);
-}
-#hzb .rh {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  padding: 6px 9px;
-  background: var(--bgp);
-  border-bottom: 1px solid var(--bd2);
-}
+#hzb .ri { border: 1px solid var(--bd2); border-radius: var(--rs); overflow: hidden; background: var(--bgi); }
+#hzb .rh { display: flex; align-items: center; gap: 5px; padding: 6px 9px; background: var(--bgp); border-bottom: 1px solid var(--bd2); }
 #hzb .rdrag { cursor: grab; color: var(--tm); font-size: .8rem; opacity: .5; }
-#hzb .rdrag:active { cursor: grabbing; }
 #hzb .rnum { font-size: .68rem; font-weight: 700; color: var(--tm); background: var(--bd2); border-radius: 4px; padding: 1px 5px; }
 #hzb .rlbl { flex: 1; font-size: .78rem; font-weight: 500; color: var(--th); }
 #hzb .rdel { background: none; border: none; cursor: pointer; color: var(--tm); border-radius: 4px; padding: 3px 5px; font-size: .72rem; font-family: 'DM Sans', sans-serif; transition: background .15s, color .15s; }
 #hzb .rdel:hover { background: #ffeaea; color: #c0392b; }
 #hzb .rb { padding: 9px; display: flex; flex-direction: column; gap: 7px; }
-
-#hzb .btn-add-rep {
-  width: 100%;
-  background: none;
-  border: 2px dashed var(--bd);
-  border-radius: var(--rs);
-  padding: 7px;
-  font-family: 'DM Sans', sans-serif;
-  font-size: .79rem;
-  color: var(--g400);
-  cursor: pointer;
-  font-weight: 500;
-  transition: border-color .2s, background .15s;
-}
+#hzb .btn-add-rep { width: 100%; background: none; border: 2px dashed var(--bd); border-radius: var(--rs); padding: 7px; font-family: 'DM Sans', sans-serif; font-size: .79rem; color: var(--g400); cursor: pointer; font-weight: 500; transition: border-color .2s, background .15s; }
 #hzb .btn-add-rep:hover { border-color: var(--g400); background: var(--bgp); }
 
-/* ================================================================
-   EXPORT PANEL (overlay)
-================================================================ */
-#hzb .exp-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,.45);
-  z-index: 500;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
-}
+/* EXPORT MODAL */
+#hzb .exp-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.45); z-index: 500; display: none; align-items: center; justify-content: center; padding: 24px; }
 #hzb .exp-overlay.open { display: flex; }
-
-#hzb .exp-modal {
-  background: var(--bgc);
-  border-radius: var(--r);
-  box-shadow: var(--sl);
-  width: 100%;
-  max-width: 700px;
-  max-height: 88vh;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  animation: hzb-rise .2s ease;
-}
-@keyframes hzb-rise {
-  from { opacity: 0; transform: translateY(16px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-#hzb .exp-head {
-  background: var(--g700);
-  padding: 14px 18px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-shrink: 0;
-}
+#hzb .exp-modal { background: var(--bgc); border-radius: var(--r); box-shadow: var(--sl); width: 100%; max-width: 700px; max-height: 88vh; display: flex; flex-direction: column; overflow: hidden; animation: hzb-rise .2s ease; }
+@keyframes hzb-rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+#hzb .exp-head { background: var(--g700); padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
 #hzb .exp-head h2 { font-family: 'DM Serif Display', serif; color: #fff; font-size: 1.05rem; }
 #hzb .exp-head-r { display: flex; gap: 8px; align-items: center; }
-
-#hzb .btn-close-exp {
-  background: rgba(255,255,255,.15);
-  border: 1px solid rgba(255,255,255,.25);
-  color: #fff;
-  border-radius: 6px;
-  width: 28px; height: 28px;
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer;
-  font-size: .9rem;
-  transition: background .15s;
-}
+#hzb .btn-close-exp { background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.25); color: #fff; border-radius: 6px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: .9rem; transition: background .15s; }
 #hzb .btn-close-exp:hover { background: rgba(255,255,255,.28); }
-
-#hzb .exp-info {
-  background: var(--ap);
-  border-bottom: 1px solid #e0c97a;
-  padding: 10px 16px;
-  font-size: .81rem;
-  color: #7a5000;
-  display: flex;
-  gap: 7px;
-  align-items: flex-start;
-  line-height: 1.55;
-  flex-shrink: 0;
-}
-
+#hzb .exp-info { background: var(--ap); border-bottom: 1px solid #e0c97a; padding: 10px 16px; font-size: .81rem; color: #7a5000; display: flex; gap: 7px; align-items: flex-start; line-height: 1.55; flex-shrink: 0; }
 #hzb .exp-body { overflow-y: auto; flex: 1; }
-
-#hzb .cwrap {
-  background: #0d1117;
-  overflow: hidden;
-}
-#hzb .ctop {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 9px 16px;
-  background: #161b22;
-  border-bottom: 1px solid #30363d;
-  flex-shrink: 0;
-}
+#hzb .cwrap { background: #0d1117; overflow: hidden; }
+#hzb .ctop { display: flex; align-items: center; justify-content: space-between; padding: 9px 16px; background: #161b22; border-bottom: 1px solid #30363d; flex-shrink: 0; }
 #hzb .cdots { display: flex; gap: 5px; }
 #hzb .cdots span { width: 9px; height: 9px; border-radius: 50%; }
 #hzb .clang { font-size: .71rem; color: #6e7681; letter-spacing: .05em; }
-
-#hzb .btn-copy {
-  background: var(--g500);
-  border: none;
-  color: #fff;
-  border-radius: 6px;
-  padding: 5px 12px;
-  font-size: .75rem;
-  font-family: 'DM Sans', sans-serif;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background .2s;
-}
+#hzb .btn-copy { background: var(--g500); border: none; color: #fff; border-radius: 6px; padding: 5px 12px; font-size: .75rem; font-family: 'DM Sans', sans-serif; font-weight: 600; cursor: pointer; transition: background .2s; }
 #hzb .btn-copy:hover { background: var(--g400); }
 #hzb .btn-copy.ok { background: #27ae60; }
-
-#hzb .carea {
-  color: #e6edf3;
-  font-family: 'Courier New', monospace;
-  font-size: .72rem;
-  line-height: 1.65;
-  padding: 16px 18px;
-  overflow-x: auto;
-  white-space: pre;
-  max-height: 52vh;
-  overflow-y: auto;
-}
+#hzb .carea { color: #e6edf3; font-family: 'Courier New', monospace; font-size: .72rem; line-height: 1.65; padding: 16px 18px; overflow-x: auto; white-space: pre; max-height: 52vh; overflow-y: auto; }
 #hzb .carea::-webkit-scrollbar { width: 5px; height: 5px; }
 #hzb .carea::-webkit-scrollbar-thumb { background: #30363d; border-radius: 3px; }
 
-/* ================================================================
-   TOAST
-================================================================ */
-#hzb .toast {
-  position: fixed;
-  bottom: 22px; right: 22px;
-  background: var(--g700);
-  color: #fff;
-  padding: 10px 18px;
-  border-radius: 10px;
-  font-size: .82rem;
-  font-family: 'DM Sans', sans-serif;
-  box-shadow: var(--sl);
-  transform: translateY(60px);
-  opacity: 0;
-  transition: transform .3s, opacity .3s;
-  z-index: 999;
-}
+/* FIXED CONTENT PANEL */
+#hzb .fixed-notice { display: flex; align-items: center; gap: 10px; background: var(--bgp); border: 1px solid var(--bd2); border-radius: var(--rs); padding: 10px 12px; margin-bottom: 12px; }
+#hzb .fixed-ico { font-size: 1.4rem; flex-shrink: 0; }
+#hzb .fixed-title { font-size: .8rem; font-weight: 600; color: var(--th); }
+#hzb .fixed-sub { font-size: .73rem; color: var(--tm); margin-top: 2px; }
+#hzb .fixed-list { padding-left: 1.3em; display: flex; flex-direction: column; gap: 5px; }
+#hzb .fixed-list li { font-size: .78rem; color: var(--tb); line-height: 1.5; }
+
+/* VIDEO POPUP (builder preview) */
+#hzb .vid-ov { position: fixed; inset: 0; background: rgba(0,0,0,.88); z-index: 800; display: none; align-items: center; justify-content: center; padding: 24px; }
+#hzb .vid-ov.open { display: flex; }
+#hzb .vid-box { position: relative; width: 100%; max-width: 760px; }
+#hzb .vid-close { position: absolute; top: -38px; right: 0; background: none; border: none; color: #fff; font-size: 1.5rem; cursor: pointer; line-height: 1; padding: 4px 8px; }
+#hzb .vid-box iframe { width: 100%; aspect-ratio: 16/9; border: none; border-radius: 12px; display: block; }
+
+/* EXPORT TABS */
+#hzb .exp-tabs { display: flex; gap: 0; background: var(--bgp); border-bottom: 1px solid var(--bd2); flex-shrink: 0; padding: 0 16px; }
+#hzb .exp-tab { background: none; border: none; border-bottom: 2px solid transparent; padding: 9px 16px; font-family: 'DM Sans', sans-serif; font-size: .79rem; font-weight: 600; color: var(--tm); cursor: pointer; transition: color .15s, border-color .15s; margin-bottom: -1px; }
+#hzb .exp-tab:hover { color: var(--th); }
+#hzb .exp-tab.active { color: var(--g500); border-bottom-color: var(--g500); }
+
+/* TOAST */
+#hzb .toast { position: fixed; bottom: 22px; right: 22px; background: var(--g700); color: #fff; padding: 10px 18px; border-radius: 10px; font-size: .82rem; font-family: 'DM Sans', sans-serif; box-shadow: var(--sl); transform: translateY(60px); opacity: 0; transition: transform .3s, opacity .3s; z-index: 999; }
 #hzb .toast.on { transform: translateY(0); opacity: 1; }
 
-/* ================================================================
-   RESPONSIVE
-================================================================ */
-@media (max-width: 900px) {
-  #hzb { --lw: 220px; --rw: 260px; }
-}
+/* RESPONSIVE */
+@media (max-width: 900px) { #hzb { --lw: 220px; --rw: 260px; } }
 @media (max-width: 680px) {
   #hzb .shell { flex-direction: column; overflow: auto; }
   #hzb { height: auto; overflow: auto; }
   #hzb .sb-left { width: 100%; border-right: none; border-bottom: 1px solid var(--bd); max-height: 240px; }
   #hzb .sb-right { width: 100% !important; border-left: none; border-top: 1px solid var(--bd); }
-  #hzb .ps-descfaq { grid-template-columns: 1fr; padding: 24px 18px; gap: 20px; }
-  #hzb .ps-placeholder { padding: 22px 18px; }
+  #hzb .ps-descfaq, #hzb .ps-dif-row, #hzb .ps-dep-grid, #hzb .ps-faqg-grid { grid-template-columns: 1fr; }
+  #hzb .ps-descfaq { padding: 24px 0; gap: 20px; }
+  #hzb .ps-dif { padding: 24px 0; }
+  #hzb .ps-dep { padding: 24px 0; }
+  #hzb .ps-cta { padding: 18px 0; }
+  #hzb .ps-faqg { padding: 24px 0; }
+  #hzb .ps-placeholder { padding: 22px 0; }
   #hzb .center-body { padding: 14px; }
 }
 </style>
@@ -763,20 +293,16 @@ html, body {
 <body>
 <div id="hzb">
 
-  <!-- TOPBAR -->
   <header class="topbar">
-    <div class="brand">
-      🌿 Horizonte Builder <span class="badge">Beta</span>
-    </div>
+    <div class="brand">🌿 Horizonte Builder <span class="badge">Beta</span></div>
     <div class="topbar-r">
       <button class="btn-gold" onclick="HZB.openExport()">⬇ Exportar HTML</button>
     </div>
   </header>
 
-  <!-- SHELL -->
   <div class="shell">
 
-    <!-- ========== LEFT SIDEBAR ========== -->
+    <!-- LEFT SIDEBAR -->
     <aside class="sb-left">
       <div class="sb-top">
         <div class="sb-label">Seções</div>
@@ -789,7 +315,7 @@ html, body {
             </div>
             <div class="mi" onclick="HZB.addSec('dif')">
               <div class="mi-ico" style="background:#fff8e1">⭐</div>
-              <div><div class="mi-name">Diferenciais</div><div class="mi-desc">Cards de destaque</div></div>
+              <div><div class="mi-name">Diferenciais</div><div class="mi-desc">Imagem + lista de benefícios</div></div>
             </div>
             <div class="mi" onclick="HZB.addSec('dep')">
               <div class="mi-ico" style="background:#e8eaf6">💬</div>
@@ -801,17 +327,17 @@ html, body {
             </div>
             <div class="mi" onclick="HZB.addSec('faqg')">
               <div class="mi-ico" style="background:#e0f2f1">❓</div>
-              <div><div class="mi-name">FAQ Geral</div><div class="mi-desc">Perguntas frequentes</div></div>
+              <div><div class="mi-name">FAQ Geral</div><div class="mi-desc">Perguntas frequentes 2 colunas</div></div>
             </div>
           </div>
         </div>
       </div>
       <div class="sec-list" id="hzb-slist">
-        <div class="sb-empty" id="hzb-sempty">Nenhuma seção ainda.<br>Clique em <strong>+ Adicionar</strong>.</div>
+        <div class="sb-empty">Nenhuma seção ainda.<br>Clique em <strong>+ Adicionar</strong>.</div>
       </div>
     </aside>
 
-    <!-- ========== CENTER — PREVIEW ========== -->
+    <!-- CENTER PREVIEW -->
     <main class="center">
       <div class="center-top">
         <div class="prev-dots">
@@ -830,7 +356,7 @@ html, body {
       </div>
     </main>
 
-    <!-- ========== RIGHT SIDEBAR — EDITOR ========== -->
+    <!-- RIGHT SIDEBAR EDITOR -->
     <aside class="sb-right collapsed" id="hzb-sbright">
       <div class="ed-head">
         <span class="ed-head-ico" id="hzb-ed-ico">✏️</span>
@@ -844,20 +370,33 @@ html, body {
       </div>
     </aside>
 
-  </div><!-- .shell -->
+  </div>
 
-  <!-- ========== EXPORT MODAL ========== -->
+  <!-- VIDEO POPUP (builder) -->
+  <div class="vid-ov" id="hzb-vidov" onclick="HZB.closeVideoOnBg(event)">
+    <div class="vid-box">
+      <button class="vid-close" onclick="HZB.closeVideo()">✕</button>
+      <iframe id="hzb-vidfr" src="" allowfullscreen></iframe>
+    </div>
+  </div>
+
+  <!-- EXPORT MODAL -->
   <div class="exp-overlay" id="hzb-expoverlay" onclick="HZB.closeExportOnBg(event)">
     <div class="exp-modal">
       <div class="exp-head">
-        <h2>HTML gerado para Tray</h2>
+        <h2>Código gerado para Tray</h2>
         <div class="exp-head-r">
           <button class="btn-copy" id="hzb-cpybtn" onclick="HZB.copyCode()">📋 Copiar</button>
           <button class="btn-close-exp" onclick="HZB.closeExport()" title="Fechar">✕</button>
         </div>
       </div>
-      <div class="exp-info">
-        ℹ️ Cole este HTML no campo <strong>Descrição</strong> do produto na plataforma Tray. As seções sem conteúdo recebem um <code style="background:rgba(0,0,0,.07);padding:1px 4px;border-radius:3px">id</code> único para injeção via JS externo.
+      <div class="exp-tabs">
+        <button class="exp-tab active" id="hzb-tab-html" onclick="HZB.switchExpTab('html',this)">HTML</button>
+        <button class="exp-tab" id="hzb-tab-css" onclick="HZB.switchExpTab('css',this)">CSS</button>
+        <button class="exp-tab" id="hzb-tab-js" onclick="HZB.switchExpTab('js',this)">JS</button>
+      </div>
+      <div class="exp-info" id="hzb-expinfo">
+        ℹ️ Cole o HTML no campo <strong>Descrição</strong> do produto. O CSS e JS vão nos campos correspondentes da Tray.
       </div>
       <div class="exp-body">
         <div class="cwrap">
@@ -868,7 +407,7 @@ html, body {
                 <span style="background:#febc2e"></span>
                 <span style="background:#28c840"></span>
               </div>
-              <span class="clang">HTML / CSS inline</span>
+              <span class="clang" id="hzb-clang">HTML</span>
             </div>
           </div>
           <div class="carea" id="hzb-carea"></div>
@@ -877,19 +416,23 @@ html, body {
     </div>
   </div>
 
-  <!-- TOAST -->
   <div class="toast" id="hzb-toast"></div>
-
-</div><!-- #hzb -->
+</div>
 
 <script>
 const HZB = (() => {
-  // ======================================================
+  // =====================================================
+  // CONSTANTS
+  // =====================================================
+  const CHK_SVG = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M4.5 12.75L10.5 18.75L19.5 5.25" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+  // =====================================================
   // STATE
-  // ======================================================
+  // =====================================================
   let secs     = [];
   let activeId = null;
   let dragSrc  = null;
+  let expTab   = 'html';
 
   const META = {
     descfaq: { lbl: 'Descrição + FAQ', ico: '📄', col: '#4a9155' },
@@ -910,13 +453,64 @@ const HZB = (() => {
           { id: uid(), q: 'Como é a embalagem e conservação das sementes?', a: '<p>O ideal é conservar o produto em <strong>ambiente seco e limpo</strong>, sem umidade, protegido da luz solar, longe do ataque de carunchos e outros insetos.</p>' },
         ]
       };
+      case 'dif': return {
+        title1: 'Sementes com',
+        title2: 'Tripla Limpeza',
+        intro: '<p>Nem toda semente é igual, e quem cria aves sabe disso. Cada lote de sementes da Horizonte Pet Store passa por <strong>3 etapas de limpeza antes de chegar ao comedouro do seu animal</strong> — eliminando poeira, cascas e impurezas que afetam a saúde e o apetite das aves.</p>',
+        img1: 'https://pub-83d4132b357942b4b14cc09b0bbfd260.r2.dev/description/sementes-na-mao-granel-ap%C3%B3s-limpeza-1_1.webp',
+        img2: 'https://pub-83d4132b357942b4b14cc09b0bbfd260.r2.dev/description/semente-embalada-final-1.webp',
+        items: [
+          { id: uid(), text: 'Reduz o risco de <strong>problemas respiratórios</strong> causados por poeira e partículas finas.' },
+          { id: uid(), text: 'Minimiza a presença de fungos, bactérias e contaminantes invisíveis.' },
+          { id: uid(), text: 'Melhora o aproveitamento do alimento, sem cascas e resíduos desnecessários.' },
+          { id: uid(), text: '<strong>Evita desperdício</strong>: o pássaro consome mais e descarta menos.' },
+        ]
+      };
+      case 'dep': return {
+        title: 'O que estão falando da Horizonte',
+        featured: {
+          thumb: 'https://framerusercontent.com/images/L35O9909bp6ol7usIzvMQRJ7U3E.jpg',
+          video: 'https://www.youtube.com/watch?v=nqAiBJ3fgRc',
+          quote: 'Tu não pode economizar na semente, semente tem que ser a melhor! Se tu compra numa lojinha que não sabe a procedência, pode vir com fungo ou semente vencida. A Horizonte nos proporciona essa segurança... tu pega a semente deles e fica impressionado com a qualidade!',
+          author: 'Rildo Paulino',
+          stars: 5
+        },
+        cards: [
+          { id: uid(), text: '"Parabéns a toda a Equipe do Pet Store Horizonte. Foi minha segunda compra na loja pelo site e estou muito satisfeito. Entrega rápida. Produtos de primeira qualidade. Como eu compro sementes para curió, estou muito satisfeito com a qualidade. Este mês comprei alguns acessórios como bebedouros e areia. Sou de Jacarepaguá, Rio de Janeiro. Parabéns a todos da equipe e direção da empresa. Deus os abençoe sempre."', author: 'Ricardo Gomes', stars: 5 },
+          { id: uid(), text: '"Moro em Palmeira dos Índios, Alagoas. Fiz uma compra e desde o começo o site Horizonte me surpreendeu, pois os preços são muito diferentes da minha região (bem abaixo) e o atendimento via WhatsApp é muito bom — todos os meus questionamentos foram respondidos. Eles ainda tiveram a preocupação com a validade dos produtos. Recomendo a todos. Muito obrigado a toda a equipe Horizonte Pet!"', author: 'Rildo Paulino', stars: 5 },
+          { id: uid(), text: '"Bom dia a todos! Gostaria de deixar minha gratidão à empresa que, com todo carinho e atenção, me atenderam prontamente. Efetuei uma compra no sábado 11/01/25 e já chegou no dia 15/01/25, muito bem embalado e do jeito que estava anunciado. Recomendo 100% sem medo de errar!!! Parabéns pelo compromisso com o cliente!!!!"', author: 'Fabiano Oliveira', stars: 5 },
+          { id: uid(), text: '"Fiz a compra do mix de sementes para calopsita sem girassol — tenho a ousadia em dizer que é o MELHOR mix que já comprei para meus nenês, e olha que usei marcas grandes. Sementes extremamente selecionadas, cheiro de fresca, mix balanceado e sem cheiro artificial. Continuem com esse trabalho impecável, ganharam uma cliente fixa sem dúvida ❤️"', author: '@familiadaspsitas', stars: 5 },
+        ]
+      };
+      case 'cta': return {
+        img: '',
+        title: 'Precisando de uma mistura personalizada?',
+        desc: 'Misturamos os ingredientes que desejar de acordo com a sua fórmula*. Receba tudo embalado e pronto para uso!\nPedido mínimo: 30kg por fórmula.',
+        linkText: 'Fale conosco',
+        linkUrl: 'https://api.whatsapp.com/send?l=pt&phone=5519998594379'
+      };
+      case 'faqg': return {
+        title: 'Perguntas frequentes',
+        faqs: [
+          { id: uid(), q: 'O produto é original?', a: '<p>Sim, trabalhamos apenas com produtos originais e de fornecedores confiáveis, garantindo qualidade e segurança para o seu pet.</p>' },
+          { id: uid(), q: 'O produto está disponível para envio imediato?', a: '<p>Sim! Trabalhamos apenas com estoque próprio e atualizado em tempo real. Isso garante que seu pedido seja preparado e enviado rapidamente.</p>' },
+          { id: uid(), q: 'Qual o prazo de entrega?', a: '<p>O prazo varia de acordo com o CEP e é informado no momento da compra. Você pode simular o frete aqui mesmo na página de produtos ou ao finalizar a compra.</p>' },
+          { id: uid(), q: 'Vocês enviam para todo o Brasil?', a: '<p>Sim, enviamos para todo o território nacional.</p>' },
+          { id: uid(), q: 'E se meu pedido atrasar?', a: '<p>Nossa equipe acompanha os envios e está pronta para intervir rapidamente caso ocorra qualquer imprevisto na entrega.</p>' },
+          { id: uid(), q: 'Posso parcelar minha compra?', a: '<p>Sim, oferecemos parcelamento no cartão de crédito conforme condições disponíveis no checkout.</p>' },
+          { id: uid(), q: 'Posso trocar ou devolver o produto?', a: '<p>Sim, você pode solicitar troca ou devolução dentro do prazo legal de 7 dias após o recebimento.</p>' },
+          { id: uid(), q: 'Como vocês garantem que o produto chegará em perfeito estado?', a: '<p>Utilizamos embalagens reforçadas e cuidadosamente preparadas para proteger o produto durante todo o transporte, reduzindo riscos de avarias.</p>' },
+          { id: uid(), q: 'Vocês entendem realmente de aves ou apenas revendem produtos?', a: '<p>Temos conhecimento prático na criação de diversas espécies no Criadouro Horizonte, o que nos permite oferecer recomendações mais assertivas.</p>' },
+          { id: uid(), q: 'Estou com dificuldades para comprar pelo site, posso comprar direto pelo WhatsApp ou telefone?', a: '<p>Sim! Estamos disponíveis para ajuda-lo com seu pedido. <a href="https://api.whatsapp.com/send?l=pt&phone=5519998594379">Fale conosco</a>.</p>' },
+        ]
+      };
       default: return {};
     }
   }
 
-  // ======================================================
+  // =====================================================
   // SECTION OPS
-  // ======================================================
+  // =====================================================
   function addSec(t) {
     closeMenu();
     const s = { id: uid(), type: t, name: META[t].lbl, data: defData(t) };
@@ -929,9 +523,7 @@ const HZB = (() => {
 
   function delSec(id) {
     secs = secs.filter(s => s.id !== id);
-    if (activeId === id) {
-      activeId = secs.length ? secs[0].id : null;
-    }
+    if (activeId === id) activeId = secs.length ? secs[0].id : null;
     renderSB();
     if (activeId) { selectSec(activeId); } else { collapseEditor(); }
     renderPreview();
@@ -942,22 +534,19 @@ const HZB = (() => {
     const ni = i + d;
     if (ni < 0 || ni >= secs.length) return;
     [secs[i], secs[ni]] = [secs[ni], secs[i]];
-    renderSB();
-    renderPreview();
+    renderSB(); renderPreview();
   }
 
   function selectSec(id) {
     activeId = id;
-    renderSB();
-    renderEditor();
-    renderPreview();
+    renderSB(); renderEditor(); renderPreview();
   }
 
   function gsec(id) { return secs.find(s => s.id === id); }
 
-  // ======================================================
+  // =====================================================
   // SIDEBAR
-  // ======================================================
+  // =====================================================
   function renderSB() {
     const list = document.getElementById('hzb-slist');
     list.innerHTML = '';
@@ -965,7 +554,7 @@ const HZB = (() => {
       list.innerHTML = '<div class="sb-empty">Nenhuma seção ainda.<br>Clique em <strong>+ Adicionar</strong>.</div>';
       return;
     }
-    secs.forEach((s) => {
+    secs.forEach(s => {
       const m = META[s.type];
       const c = document.createElement('div');
       c.className = `sc t-${s.type}${activeId === s.id ? ' active' : ''}`;
@@ -986,7 +575,6 @@ const HZB = (() => {
           </div>
         </div>`;
       c.addEventListener('click', () => selectSec(s.id));
-      // drag
       c.addEventListener('dragstart', ev => { dragSrc = s.id; ev.dataTransfer.effectAllowed = 'move'; });
       c.addEventListener('dragend', () => c.classList.remove('drag-ov'));
       c.addEventListener('dragover', ev => { ev.preventDefault(); c.classList.add('drag-ov'); });
@@ -1004,9 +592,9 @@ const HZB = (() => {
     });
   }
 
-  // ======================================================
-  // EDITOR (right sidebar)
-  // ======================================================
+  // =====================================================
+  // EDITOR DISPATCH
+  // =====================================================
   function collapseEditor() {
     document.getElementById('hzb-sbright').classList.add('collapsed');
     document.getElementById('hzb-ed-body').innerHTML =
@@ -1016,34 +604,31 @@ const HZB = (() => {
   function renderEditor() {
     const s = gsec(activeId);
     if (!s) { collapseEditor(); return; }
-    const sbr = document.getElementById('hzb-sbright');
-    sbr.classList.remove('collapsed');
+    document.getElementById('hzb-sbright').classList.remove('collapsed');
     document.getElementById('hzb-ed-ico').textContent = META[s.type].ico;
     document.getElementById('hzb-ed-title').textContent = s.name;
 
     const body = document.getElementById('hzb-ed-body');
     body.innerHTML = '';
 
-    // Section name
-    const namePanel = panel('Nome da seção', s.type, `
+    // Section name panel (common to all)
+    const namePanel = mkPanel('Nome da seção', s.type, `
       <div class="fr">
         <label class="lb">Rótulo interno</label>
         <input type="text" class="inp" id="hzb-secname-${s.id}" value="${xe(s.name)}">
       </div>`);
     body.appendChild(namePanel);
-    document.getElementById(`hzb-secname-${s.id}`).addEventListener('input', function () {
+    document.getElementById(`hzb-secname-${s.id}`).addEventListener('input', function() {
       gsec(s.id).name = this.value;
       document.getElementById('hzb-ed-title').textContent = this.value;
       renderSB();
     });
 
-    if (s.type === 'descfaq') {
-      body.appendChild(buildDescFaqEditor(s));
-    }
-    // other types: no content editor
+    if (s.type === 'descfaq') body.appendChild(buildDescFaqEditor(s));
+    else body.appendChild(buildFixedPanel(s));
   }
 
-  function panel(title, type, innerHtml) {
+  function mkPanel(title, type, innerHtml) {
     const col = META[type].col;
     const d = document.createElement('div');
     d.className = 'ep';
@@ -1051,25 +636,46 @@ const HZB = (() => {
     return d;
   }
 
-  // ======================================================
+  function buildFixedPanel(s) {
+    const m = META[s.type];
+    const summaries = {
+      dif:  ['Título: Sementes com Tripla Limpeza', '2 imagens do produto', '4 diferenciais com checkmark'],
+      dep:  ['Vídeo de depoimento (Rildo Paulino)', '4 cards de avaliação', 'Todas as estrelas: ★★★★★'],
+      cta:  ['Chamada para mistura personalizada', 'Link "Fale conosco"'],
+      faqg: ['10 perguntas e respostas fixas', 'Layout em 2 colunas', 'Schema.org FAQPage'],
+    };
+    const items = (summaries[s.type] || []).map(t => `<li>${t}</li>`).join('');
+    const frag = document.createDocumentFragment();
+    const el = document.createElement('div');
+    el.className = 'ep fixed-panel';
+    el.innerHTML = `
+      <div class="eh"><div class="dot" style="background:${m.col}"></div>Conteúdo desta seção</div>
+      <div class="eb">
+        <div class="fixed-notice">
+          <div class="fixed-ico">${m.ico}</div>
+          <div>
+            <div class="fixed-title">Conteúdo padrão Horizonte Pet</div>
+            <div class="fixed-sub">Esta seção não requer edição.</div>
+          </div>
+        </div>
+        <ul class="fixed-list">${items}</ul>
+      </div>`;
+    frag.appendChild(el);
+    return frag;
+  }
+
+  // =====================================================
   // DESC + FAQ EDITOR
-  // ======================================================
+  // =====================================================
   function buildDescFaqEditor(s) {
     const frag = document.createDocumentFragment();
-
-    // Description
     const descWrap = document.createElement('div');
     descWrap.className = 'ep';
     descWrap.innerHTML = `
       <div class="eh"><div class="dot" style="background:#4a9155"></div>Descrição do produto</div>
-      <div class="eb">
-        <div class="fr">
-          ${rteHTML('hzb-desc-' + s.id, 'lg', 'Escreva a descrição...')}
-        </div>
-      </div>`;
+      <div class="eb"><div class="fr">${rteHTML('hzb-desc-' + s.id, 'lg', 'Escreva a descrição...')}</div></div>`;
     frag.appendChild(descWrap);
 
-    // FAQ
     const faqWrap = document.createElement('div');
     faqWrap.className = 'ep';
     faqWrap.innerHTML = `
@@ -1080,41 +686,350 @@ const HZB = (() => {
       </div>`;
     frag.appendChild(faqWrap);
 
-    // After DOM insertion, init RTE
     requestAnimationFrame(() => {
       initRTE(document.getElementById('hzb-desc-' + s.id), s.data.desc, html => {
-        gsec(s.id).data.desc = html;
-        renderPreview();
+        gsec(s.id).data.desc = html; renderPreview();
       });
       renderFaqList(s.id);
     });
-
     return frag;
   }
 
+  // =====================================================
+  // DIFERENCIAIS EDITOR
+  // =====================================================
+  function buildDifEditor(s) {
+    const frag = document.createDocumentFragment();
+
+    const titlesEl = document.createElement('div');
+    titlesEl.className = 'ep';
+    titlesEl.innerHTML = `
+      <div class="eh"><div class="dot" style="background:#c8920a"></div>Títulos</div>
+      <div class="eb">
+        <div class="fr">
+          <label class="lb">Linha 1 (peso normal)</label>
+          <input type="text" class="inp" id="hzb-dif-t1-${s.id}" value="${xe(s.data.title1)}">
+        </div>
+        <div class="fr">
+          <label class="lb">Linha 2 (negrito)</label>
+          <input type="text" class="inp" id="hzb-dif-t2-${s.id}" value="${xe(s.data.title2)}">
+        </div>
+      </div>`;
+    frag.appendChild(titlesEl);
+
+    const introEl = document.createElement('div');
+    introEl.className = 'ep';
+    introEl.innerHTML = `
+      <div class="eh"><div class="dot" style="background:#c8920a"></div>Texto introdutório</div>
+      <div class="eb"><div class="fr">${rteHTML('hzb-dif-intro-' + s.id, 'lg', 'Texto introdutório...')}</div></div>`;
+    frag.appendChild(introEl);
+
+    const imgsEl = document.createElement('div');
+    imgsEl.className = 'ep';
+    imgsEl.innerHTML = `
+      <div class="eh"><div class="dot" style="background:#c8920a"></div>Imagens</div>
+      <div class="eb">
+        <div class="fr">
+          <label class="lb">Imagem 1 — lado direito (linha 1)</label>
+          <input type="text" class="inp" id="hzb-dif-img1-${s.id}" value="${xe(s.data.img1)}" placeholder="URL da imagem...">
+        </div>
+        <div class="fr">
+          <label class="lb">Imagem 2 — lado esquerdo (linha 2)</label>
+          <input type="text" class="inp" id="hzb-dif-img2-${s.id}" value="${xe(s.data.img2)}" placeholder="URL da imagem...">
+        </div>
+      </div>`;
+    frag.appendChild(imgsEl);
+
+    const itemsEl = document.createElement('div');
+    itemsEl.className = 'ep';
+    itemsEl.innerHTML = `
+      <div class="eh"><div class="dot" style="background:#c8920a"></div>Itens com checkmark</div>
+      <div class="eb">
+        <div class="rl" id="hzb-difitems-${s.id}"></div>
+        <button class="btn-add-rep" onclick="HZB.addDifItem('${s.id}')">+ Adicionar item</button>
+      </div>`;
+    frag.appendChild(itemsEl);
+
+    requestAnimationFrame(() => {
+      document.getElementById(`hzb-dif-t1-${s.id}`).addEventListener('input', function() { gsec(s.id).data.title1 = this.value; renderPreview(); });
+      document.getElementById(`hzb-dif-t2-${s.id}`).addEventListener('input', function() { gsec(s.id).data.title2 = this.value; renderPreview(); });
+      initRTE(document.getElementById('hzb-dif-intro-' + s.id), s.data.intro, html => { gsec(s.id).data.intro = html; renderPreview(); });
+      document.getElementById(`hzb-dif-img1-${s.id}`).addEventListener('input', function() { gsec(s.id).data.img1 = this.value; renderPreview(); });
+      document.getElementById(`hzb-dif-img2-${s.id}`).addEventListener('input', function() { gsec(s.id).data.img2 = this.value; renderPreview(); });
+      renderDifItemsList(s.id);
+    });
+    return frag;
+  }
+
+  function renderDifItemsList(secId) {
+    const s = gsec(secId);
+    if (!s) return;
+    const list = document.getElementById('hzb-difitems-' + secId);
+    if (!list) return;
+    list.innerHTML = '';
+    s.data.items.forEach((item, i) => {
+      const el = document.createElement('div');
+      el.className = 'ri';
+      el.innerHTML = `
+        <div class="rh">
+          <span class="rnum">#${i+1}</span>
+          <span class="rlbl">Item</span>
+          <button class="rdel" onclick="HZB.remDifItem('${secId}','${item.id}')">✕</button>
+        </div>
+        <div class="rb">
+          <div><label class="lb">Texto (suporta HTML básico)</label>
+          ${rteHTML('hzb-dii-' + item.id, 'sm', 'Texto do item...')}</div>
+        </div>`;
+      list.appendChild(el);
+      requestAnimationFrame(() => {
+        const el2 = document.getElementById('hzb-dii-' + item.id);
+        if (el2) initRTE(el2, item.text, html => {
+          const itm = gsec(secId).data.items.find(x => x.id === item.id);
+          if (itm) { itm.text = html; renderPreview(); }
+        });
+      });
+    });
+  }
+
+  function addDifItem(secId) {
+    gsec(secId).data.items.push({ id: uid(), text: '' });
+    renderDifItemsList(secId); renderPreview();
+  }
+  function remDifItem(secId, iid) {
+    const s = gsec(secId);
+    s.data.items = s.data.items.filter(x => x.id !== iid);
+    renderDifItemsList(secId); renderPreview();
+  }
+
+  // =====================================================
+  // DEPOIMENTOS EDITOR
+  // =====================================================
+  function buildDepEditor(s) {
+    const frag = document.createDocumentFragment();
+
+    const titleEl = document.createElement('div');
+    titleEl.className = 'ep';
+    titleEl.innerHTML = `
+      <div class="eh"><div class="dot" style="background:#5c6bc0"></div>Título da seção</div>
+      <div class="eb">
+        <div class="fr">
+          <label class="lb">Título</label>
+          <input type="text" class="inp" id="hzb-dep-title-${s.id}" value="${xe(s.data.title)}">
+        </div>
+      </div>`;
+    frag.appendChild(titleEl);
+
+    const featEl = document.createElement('div');
+    featEl.className = 'ep';
+    featEl.innerHTML = `
+      <div class="eh"><div class="dot" style="background:#5c6bc0"></div>Depoimento em destaque</div>
+      <div class="eb">
+        <div class="fr">
+          <label class="lb">URL da thumbnail (imagem)</label>
+          <input type="text" class="inp" id="hzb-dep-fthumb-${s.id}" value="${xe(s.data.featured.thumb||'')}" placeholder="https://...">
+        </div>
+        <div class="fr">
+          <label class="lb">URL do vídeo (YouTube — abre popup)</label>
+          <input type="text" class="inp" id="hzb-dep-fvideo-${s.id}" value="${xe(s.data.featured.video||'')}" placeholder="https://youtube.com/...">
+        </div>
+        <div class="fr">
+          <label class="lb">Depoimento</label>
+          <input type="text" class="inp" id="hzb-dep-fquote-${s.id}" value="${xe(s.data.featured.quote)}" placeholder="Texto...">
+        </div>
+        <div class="fr">
+          <label class="lb">Nome do cliente</label>
+          <input type="text" class="inp" id="hzb-dep-fauthor-${s.id}" value="${xe(s.data.featured.author)}">
+        </div>
+        <div class="fr">
+          <label class="lb">Avaliação</label>
+          <select class="inp" id="hzb-dep-fstars-${s.id}">
+            ${[1,2,3,4,5].map(n => `<option value="${n}"${s.data.featured.stars===n?' selected':''}>★${'★'.repeat(n-1)} (${n})</option>`).join('')}
+          </select>
+        </div>
+      </div>`;
+    frag.appendChild(featEl);
+
+    const cardsEl = document.createElement('div');
+    cardsEl.className = 'ep';
+    cardsEl.innerHTML = `
+      <div class="eh"><div class="dot" style="background:#5c6bc0"></div>Depoimentos em card</div>
+      <div class="eb">
+        <div class="rl" id="hzb-depcards-${s.id}"></div>
+        <button class="btn-add-rep" onclick="HZB.addDepCard('${s.id}')">+ Adicionar depoimento</button>
+      </div>`;
+    frag.appendChild(cardsEl);
+
+    requestAnimationFrame(() => {
+      document.getElementById(`hzb-dep-title-${s.id}`).addEventListener('input', function() { gsec(s.id).data.title = this.value; renderPreview(); });
+      document.getElementById(`hzb-dep-fthumb-${s.id}`).addEventListener('input', function() { gsec(s.id).data.featured.thumb = this.value; renderPreview(); });
+      document.getElementById(`hzb-dep-fvideo-${s.id}`).addEventListener('input', function() { gsec(s.id).data.featured.video = this.value; renderPreview(); });
+      document.getElementById(`hzb-dep-fquote-${s.id}`).addEventListener('input', function() { gsec(s.id).data.featured.quote = this.value; renderPreview(); });
+      document.getElementById(`hzb-dep-fauthor-${s.id}`).addEventListener('input', function() { gsec(s.id).data.featured.author = this.value; renderPreview(); });
+      document.getElementById(`hzb-dep-fstars-${s.id}`).addEventListener('change', function() { gsec(s.id).data.featured.stars = parseInt(this.value); renderPreview(); });
+      renderDepCardsList(s.id);
+    });
+    return frag;
+  }
+
+  function renderDepCardsList(secId) {
+    const s = gsec(secId);
+    if (!s) return;
+    const list = document.getElementById('hzb-depcards-' + secId);
+    if (!list) return;
+    list.innerHTML = '';
+    s.data.cards.forEach((card, i) => {
+      const el = document.createElement('div');
+      el.className = 'ri';
+      el.innerHTML = `
+        <div class="rh">
+          <span class="rnum">#${i+1}</span>
+          <span class="rlbl">Depoimento</span>
+          <button class="rdel" onclick="HZB.remDepCard('${secId}','${card.id}')">✕</button>
+        </div>
+        <div class="rb">
+          <div class="fr">
+            <label class="lb">Texto</label>
+            <input type="text" class="inp" id="hzb-dct-${card.id}" value="${xe(card.text)}" placeholder="Texto do depoimento...">
+          </div>
+          <div class="fr">
+            <label class="lb">Nome</label>
+            <input type="text" class="inp" id="hzb-dca-${card.id}" value="${xe(card.author)}">
+          </div>
+          <div class="fr">
+            <label class="lb">Avaliação</label>
+            <select class="inp" id="hzb-dcs-${card.id}">
+              ${[1,2,3,4,5].map(n => `<option value="${n}"${card.stars===n?' selected':''}>★${'★'.repeat(n-1)} (${n})</option>`).join('')}
+            </select>
+          </div>
+        </div>`;
+      list.appendChild(el);
+      requestAnimationFrame(() => {
+        document.getElementById(`hzb-dct-${card.id}`).addEventListener('input', function() {
+          const c = gsec(secId).data.cards.find(x => x.id === card.id);
+          if (c) { c.text = this.value; renderPreview(); }
+        });
+        document.getElementById(`hzb-dca-${card.id}`).addEventListener('input', function() {
+          const c = gsec(secId).data.cards.find(x => x.id === card.id);
+          if (c) { c.author = this.value; renderPreview(); }
+        });
+        document.getElementById(`hzb-dcs-${card.id}`).addEventListener('change', function() {
+          const c = gsec(secId).data.cards.find(x => x.id === card.id);
+          if (c) { c.stars = parseInt(this.value); renderPreview(); }
+        });
+      });
+    });
+  }
+
+  function addDepCard(secId) {
+    gsec(secId).data.cards.push({ id: uid(), text: '', author: '', stars: 5 });
+    renderDepCardsList(secId); renderPreview();
+  }
+  function remDepCard(secId, cid) {
+    const s = gsec(secId);
+    s.data.cards = s.data.cards.filter(x => x.id !== cid);
+    renderDepCardsList(secId); renderPreview();
+  }
+
+  // =====================================================
+  // CTA EDITOR
+  // =====================================================
+  function buildCtaEditor(s) {
+    const frag = document.createDocumentFragment();
+    const el = document.createElement('div');
+    el.className = 'ep';
+    el.innerHTML = `
+      <div class="eh"><div class="dot" style="background:#e91e63"></div>Conteúdo</div>
+      <div class="eb">
+        <div class="fr">
+          <label class="lb">URL da imagem circular (opcional)</label>
+          <input type="text" class="inp" id="hzb-cta-img-${s.id}" value="${xe(s.data.img)}" placeholder="https://...">
+        </div>
+        <div class="fr">
+          <label class="lb">Título</label>
+          <input type="text" class="inp" id="hzb-cta-title-${s.id}" value="${xe(s.data.title)}">
+        </div>
+        <div class="fr">
+          <label class="lb">Descrição</label>
+          <input type="text" class="inp" id="hzb-cta-desc-${s.id}" value="${xe(s.data.desc)}">
+        </div>
+        <div class="fr">
+          <label class="lb">Texto do link</label>
+          <input type="text" class="inp" id="hzb-cta-lt-${s.id}" value="${xe(s.data.linkText)}">
+        </div>
+        <div class="fr">
+          <label class="lb">URL do link</label>
+          <input type="text" class="inp" id="hzb-cta-lu-${s.id}" value="${xe(s.data.linkUrl)}" placeholder="https://...">
+        </div>
+      </div>`;
+    frag.appendChild(el);
+    requestAnimationFrame(() => {
+      const map = { img:'img', title:'title', desc:'desc', lt:'linkText', lu:'linkUrl' };
+      Object.entries(map).forEach(([key, field]) => {
+        const inp = document.getElementById(`hzb-cta-${key}-${s.id}`);
+        if (inp) inp.addEventListener('input', function() { gsec(s.id).data[field] = this.value; renderPreview(); });
+      });
+    });
+    return frag;
+  }
+
+  // =====================================================
+  // FAQ GERAL EDITOR
+  // =====================================================
+  function buildFaqgEditor(s) {
+    const frag = document.createDocumentFragment();
+
+    const titleEl = document.createElement('div');
+    titleEl.className = 'ep';
+    titleEl.innerHTML = `
+      <div class="eh"><div class="dot" style="background:#00897b"></div>Título da seção</div>
+      <div class="eb">
+        <div class="fr">
+          <label class="lb">Título</label>
+          <input type="text" class="inp" id="hzb-faqg-title-${s.id}" value="${xe(s.data.title)}">
+        </div>
+      </div>`;
+    frag.appendChild(titleEl);
+
+    const faqWrap = document.createElement('div');
+    faqWrap.className = 'ep';
+    faqWrap.innerHTML = `
+      <div class="eh"><div class="dot" style="background:#00897b"></div>Perguntas frequentes</div>
+      <div class="eb">
+        <div class="rl" id="hzb-faqlist-${s.id}"></div>
+        <button class="btn-add-rep" onclick="HZB.addFaq('${s.id}')">+ Adicionar pergunta</button>
+      </div>`;
+    frag.appendChild(faqWrap);
+
+    requestAnimationFrame(() => {
+      document.getElementById(`hzb-faqg-title-${s.id}`).addEventListener('input', function() { gsec(s.id).data.title = this.value; renderPreview(); });
+      renderFaqList(s.id);
+    });
+    return frag;
+  }
+
+  // =====================================================
+  // FAQ LIST (shared: descfaq + faqg)
+  // =====================================================
   function renderFaqList(secId) {
     const s = gsec(secId);
     if (!s) return;
     const list = document.getElementById('hzb-faqlist-' + secId);
     if (!list) return;
     list.innerHTML = '';
-
     s.data.faqs.forEach((f, i) => {
       const item = document.createElement('div');
       item.className = 'ri';
       item.dataset.fid = f.id;
       item.innerHTML = `
         <div class="rh">
-          <span class="rdrag">⠿</span>
-          <span class="rnum">#${i + 1}</span>
+          <span class="rnum">#${i+1}</span>
           <span class="rlbl">Pergunta</span>
           <button class="rdel" onclick="HZB.remFaq('${secId}','${f.id}')">✕</button>
         </div>
         <div class="rb">
           <div>
             <label class="lb">Pergunta</label>
-            <input type="text" class="inp" id="hzb-fq-${f.id}" value="${xe(f.q)}"
-              placeholder="Pergunta...">
+            <input type="text" class="inp" id="hzb-fq-${f.id}" value="${xe(f.q)}" placeholder="Pergunta...">
           </div>
           <div>
             <label class="lb">Resposta</label>
@@ -1122,43 +1037,34 @@ const HZB = (() => {
           </div>
         </div>`;
       list.appendChild(item);
-
       requestAnimationFrame(() => {
-        const qInput = document.getElementById('hzb-fq-' + f.id);
-        if (qInput) {
-          qInput.addEventListener('input', function () {
-            const faq = gsec(secId).data.faqs.find(x => x.id === f.id);
-            if (faq) { faq.q = this.value; renderPreview(); }
-          });
-        }
+        const qEl = document.getElementById('hzb-fq-' + f.id);
+        if (qEl) qEl.addEventListener('input', function() {
+          const faq = gsec(secId).data.faqs.find(x => x.id === f.id);
+          if (faq) { faq.q = this.value; renderPreview(); }
+        });
         const aEl = document.getElementById('hzb-fa-' + f.id);
-        if (aEl) {
-          initRTE(aEl, f.a, html => {
-            const faq = gsec(secId).data.faqs.find(x => x.id === f.id);
-            if (faq) { faq.a = html; renderPreview(); }
-          });
-        }
+        if (aEl) initRTE(aEl, f.a, html => {
+          const faq = gsec(secId).data.faqs.find(x => x.id === f.id);
+          if (faq) { faq.a = html; renderPreview(); }
+        });
       });
     });
   }
 
   function addFaq(secId) {
-    const s = gsec(secId);
-    s.data.faqs.push({ id: uid(), q: '', a: '' });
-    renderFaqList(secId);
-    renderPreview();
+    gsec(secId).data.faqs.push({ id: uid(), q: '', a: '' });
+    renderFaqList(secId); renderPreview();
   }
-
   function remFaq(secId, fid) {
     const s = gsec(secId);
     s.data.faqs = s.data.faqs.filter(f => f.id !== fid);
-    renderFaqList(secId);
-    renderPreview();
+    renderFaqList(secId); renderPreview();
   }
 
-  // ======================================================
+  // =====================================================
   // RICH TEXT EDITOR
-  // ======================================================
+  // =====================================================
   function rteHTML(id, size, placeholder) {
     return `
       <div class="rte-wrap">
@@ -1166,186 +1072,495 @@ const HZB = (() => {
           <button class="rte-btn" data-cmd="bold" title="Negrito"><b>B</b></button>
           <button class="rte-btn" data-cmd="italic" title="Itálico"><i>I</i></button>
           <div class="rte-sep"></div>
-          <button class="rte-btn" data-cmd="insertUnorderedList" title="Lista com bullets">• lista</button>
-          <button class="rte-btn" data-cmd="insertOrderedList" title="Lista numerada">1. lista</button>
+          <button class="rte-btn" data-cmd="insertUnorderedList" title="Lista">• lista</button>
+          <button class="rte-btn" data-cmd="insertOrderedList" title="Numerada">1. lista</button>
           <div class="rte-sep"></div>
-          <button class="rte-btn" data-cmd="removeFormat" title="Limpar formatação">✕ fmt</button>
+          <button class="rte-btn" data-cmd="removeFormat" title="Limpar">✕ fmt</button>
         </div>
-        <div class="rte-area" id="${id}" data-size="${size}" contenteditable="true"
-          data-placeholder="${placeholder}"></div>
+        <div class="rte-area" id="${id}" data-size="${size}" contenteditable="true" data-placeholder="${placeholder}"></div>
       </div>`;
   }
 
   function initRTE(el, initialHtml, onChange) {
     if (!el) return;
     el.innerHTML = initialHtml || '';
-
     const toolbar = el.closest('.rte-wrap').querySelector('.rte-toolbar');
     toolbar.querySelectorAll('.rte-btn').forEach(btn => {
       btn.addEventListener('mousedown', e => {
         e.preventDefault();
-        const cmd = btn.dataset.cmd;
-        document.execCommand(cmd, false, null);
-        el.focus();
-        onChange(el.innerHTML);
-        updateToolbarState(toolbar, el);
+        document.execCommand(btn.dataset.cmd, false, null);
+        el.focus(); onChange(el.innerHTML);
+        updateToolbarState(toolbar);
       });
     });
-
-    el.addEventListener('input', () => {
-      onChange(el.innerHTML);
-      updateToolbarState(toolbar, el);
-    });
-    el.addEventListener('keyup', () => updateToolbarState(toolbar, el));
-    el.addEventListener('mouseup', () => updateToolbarState(toolbar, el));
-    el.addEventListener('focus', () => updateToolbarState(toolbar, el));
+    el.addEventListener('input', () => { onChange(el.innerHTML); updateToolbarState(toolbar); });
+    el.addEventListener('keyup', () => updateToolbarState(toolbar));
+    el.addEventListener('mouseup', () => updateToolbarState(toolbar));
+    el.addEventListener('focus', () => updateToolbarState(toolbar));
   }
 
-  function updateToolbarState(toolbar, el) {
+  function updateToolbarState(toolbar) {
     toolbar.querySelectorAll('.rte-btn[data-cmd]').forEach(btn => {
-      const cmd = btn.dataset.cmd;
-      try {
-        const active = document.queryCommandState(cmd);
-        btn.classList.toggle('active', active);
-      } catch (e) {}
+      try { btn.classList.toggle('active', document.queryCommandState(btn.dataset.cmd)); } catch(e) {}
     });
   }
 
-  // ======================================================
-  // PREVIEW
-  // ======================================================
+  // =====================================================
+  // PREVIEW DISPATCH
+  // =====================================================
   function renderPreview() {
     const pc = document.getElementById('hzb-preview');
-    if (!secs.length) {
-      pc.innerHTML = '<div class="pempty">Adicione seções para ver a pré-visualização.</div>';
-      return;
-    }
+    if (!secs.length) { pc.innerHTML = '<div class="pempty">Adicione seções para ver a pré-visualização.</div>'; return; }
     pc.innerHTML = secs.map((s, i) => {
-      const div = i < secs.length - 1 ? '<div class="ps-div"></div>' : '';
+      const next = secs[i + 1];
+      const showDiv = i < secs.length - 1 && (s.type === 'dif' || (next && next.type === 'dif'));
+      const div = showDiv ? '<div class="ps-div"></div>' : '';
       return renderSecPreview(s) + div;
     }).join('');
-
-    // bind FAQ toggles
     pc.querySelectorAll('.ps-ft').forEach(btn => {
-      btn.addEventListener('click', () => btn.closest('.ps-fi').classList.toggle('open'));
+      btn.addEventListener('click', () => {
+        const fi = btn.closest('.ps-fi');
+        fi.classList.toggle('open');
+        btn.setAttribute('aria-expanded', fi.classList.contains('open') ? 'true' : 'false');
+      });
     });
   }
 
   function renderSecPreview(s) {
-    if (s.type === 'descfaq') {
-      const d = s.data;
-      const ff = d.faqs.map(f => `
-        <div class="ps-fi">
-          <button class="ps-ft"><span>${xe(f.q || 'Pergunta')}</span><span class="ps-fic">+</span></button>
-          <div class="ps-fb"><div class="ps-fb-inner">${f.a || '<em>Sem resposta.</em>'}</div></div>
-        </div>`).join('');
-      return `
-        <div class="ps-descfaq">
-          <div class="ps-desc">${d.desc || '<em style="opacity:.5">Sem descrição.</em>'}</div>
-          <div class="ps-faq">${ff || '<p style="color:var(--tm);font-style:italic;font-size:.85rem">Nenhuma pergunta ainda.</p>'}</div>
-        </div>`;
-    }
+    if (s.type === 'descfaq') return renderDescFaqPreview(s);
+    if (s.type === 'dif')     return renderDifPreview(s);
+    if (s.type === 'dep')     return renderDepPreview(s);
+    if (s.type === 'cta')     return renderCtaPreview(s);
+    if (s.type === 'faqg')    return renderFaqgPreview(s);
+    return '';
+  }
 
-    // Placeholder for other sections
-    const m = META[s.type];
+  // ---- Desc+FAQ preview ----
+  function renderDescFaqPreview(s) {
+    const d = s.data;
+    const ff = d.faqs.map(f => `
+      <div class="ps-fi">
+        <button class="ps-ft" aria-expanded="false" aria-controls="psfb-${f.id}"><span>${xe(f.q || 'Pergunta')}</span><span class="ps-fic" aria-hidden="true">+</span></button>
+        <div class="ps-fb" id="psfb-${f.id}" role="region"><div class="ps-fb-inner">${f.a || '<em>Sem resposta.</em>'}</div></div>
+      </div>`).join('');
     return `
-      <div class="ps-placeholder">
-        <div class="ps-ph-ico">${m.ico}</div>
-        <div class="ps-ph-info">
-          <div class="ps-ph-name">${xe(s.name)}</div>
-          <div class="ps-ph-id">id: "${s.id}"</div>
-          <div class="ps-ph-note">Conteúdo e design serão injetados via JS externo.</div>
+      <div class="ps-descfaq">
+        <div class="ps-desc">${d.desc || '<em style="opacity:.5">Sem descrição.</em>'}</div>
+        <div class="ps-faq">${ff || '<p style="color:var(--tm);font-style:italic;font-size:.85rem">Nenhuma pergunta ainda.</p>'}</div>
+      </div>`;
+  }
+
+  // ---- Diferenciais preview ----
+  function renderDifPreview(s) {
+    const d = s.data;
+    const imgTag = (url, cls) => url
+      ? `<img class="${cls}" src="${xe(url)}" alt="">`
+      : `<div class="ps-dif-imgph">📷 sem imagem</div>`;
+    const items = (d.items || []).map(item => `
+      <div class="ps-dif-item">
+        <div class="ps-dif-chk">${CHK_SVG}</div>
+        <span>${item.text || ''}</span>
+      </div>`).join('');
+    return `
+      <div class="ps-dif">
+        <div class="ps-dif-row">
+          <div>
+            <div class="ps-dif-title">
+              <span>${xe(d.title1 || '')}</span>
+              <strong>${xe(d.title2 || '')}</strong>
+            </div>
+            <div class="ps-dif-intro">${d.intro || ''}</div>
+          </div>
+          ${imgTag(d.img1, 'ps-dif-img')}
+        </div>
+        <div class="ps-dif-row">
+          ${imgTag(d.img2, 'ps-dif-img')}
+          <div class="ps-dif-items">${items}</div>
         </div>
       </div>`;
   }
 
-  // ======================================================
-  // EXPORT
-  // ======================================================
-  function genHTML() {
+  // ---- Depoimentos preview ----
+  function renderDepPreview(s) {
+    const d = s.data;
+    function featMedia() {
+      const thumb = d.featured.thumb || '';
+      const video = d.featured.video || '';
+      if (!thumb && !video) return '<div class="ps-dep-nomed">📷 sem mídia</div>';
+      const imgSrc = thumb || (video ? (() => {
+        const id = (video.match(/(?:v=|youtu\.be\/)([^&?\s]+)/) || [])[1] || '';
+        return id ? `https://img.youtube.com/vi/${id}/hqdefault.jpg` : '';
+      })() : '');
+      if (!imgSrc) return '<div class="ps-dep-nomed">📷 sem mídia</div>';
+      const clickAttr = video ? ` style="cursor:pointer" onclick="HZB.openVideo('${xe(video)}')"` : '';
+      return `<div class="ps-dep-ytw"${clickAttr}><img src="${xe(imgSrc)}" alt="">${video ? '<div class="ps-dep-play">▶</div>' : ''}</div>`;
+    }
+    const fStars = `<span style="color:#f0b429">${'★'.repeat(d.featured.stars||5)}</span>`;
+    const cards = (d.cards || []).map(c => `
+      <div class="ps-dep-card">
+        <div class="ps-dep-text">${xe(c.text || '')}</div>
+        <div class="ps-dep-cname">${xe(c.author || '')} <span style="color:#f0b429">${'★'.repeat(c.stars||5)}</span></div>
+      </div>`).join('');
+    return `
+      <div class="ps-dep">
+        <div class="ps-dep-title">${xe(d.title || '')}</div>
+        <div class="ps-dep-grid">
+          <div class="ps-dep-featured">
+            ${featMedia()}
+            <div class="ps-dep-fquote">"${xe(d.featured.quote || '')}"</div>
+            <div class="ps-dep-author">${xe(d.featured.author || '')} ${fStars}</div>
+          </div>
+          <div class="ps-dep-cards">${cards || '<p style="color:var(--tm);font-style:italic;font-size:.82rem;padding:8px">Nenhum depoimento ainda.</p>'}</div>
+        </div>
+      </div>`;
+  }
+
+  // ---- CTA preview ----
+  function renderCtaPreview(s) {
+    const d = s.data;
+    const imgEl = d.img
+      ? `<img class="ps-cta-img" src="${xe(d.img)}" alt="">`
+      : `<div class="ps-cta-imgph">🖼</div>`;
+    const descHtml = xe(d.desc || '').replace(/\n/g, '<br>');
+    return `
+      <div class="ps-cta">
+        <div class="ps-cta-inner">
+          ${imgEl}
+          <div class="ps-cta-body">
+            <div class="ps-cta-title">${xe(d.title || '')}</div>
+            <div class="ps-cta-desc">${descHtml}</div>
+            <span class="ps-cta-link">${xe(d.linkText || 'Fale conosco')}</span>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  // ---- FAQ Geral preview ----
+  function renderFaqgPreview(s) {
+    const d = s.data;
+    const faqs = d.faqs || [];
+    const half = Math.ceil(faqs.length / 2);
+    const left  = faqs.slice(0, half);
+    const right = faqs.slice(half);
+    function renderFaqItems(list) {
+      return list.map(f => `
+        <div class="ps-fi">
+          <button class="ps-ft" aria-expanded="false" aria-controls="psfb-${f.id}"><span>${xe(f.q || 'Pergunta')}</span><span class="ps-fic" aria-hidden="true">+</span></button>
+          <div class="ps-fb" id="psfb-${f.id}" role="region"><div class="ps-fb-inner">${f.a || '<em>Sem resposta.</em>'}</div></div>
+        </div>`).join('');
+    }
+    return `
+      <div class="ps-faqg">
+        <div class="ps-faqg-title">${xe(d.title || 'Perguntas frequentes')}</div>
+        <div class="ps-faqg-grid">
+          <div class="ps-faq">${renderFaqItems(left)}</div>
+          <div class="ps-faq">${renderFaqItems(right)}</div>
+        </div>
+      </div>`;
+  }
+
+  // =====================================================
+  // EXPORT — 3 TABS
+  // =====================================================
+  // EXP_CHK_SVG not used directly (built in genJSCode)
+
+  function genHTMLCode() {
     if (!secs.length) return '<!-- Nenhuma seção adicionada. -->';
-
-    const sectionsCode = secs.map((s, i) => {
-      const div = i < secs.length - 1 ? '\n  <div class="hz-div"></div>' : '';
-      return expSec(s) + div;
+    const parts = secs.map((s, i) => {
+      const next = secs[i + 1];
+      const showDiv = i < secs.length - 1 && (s.type === 'dif' || (next && next.type === 'dif'));
+      const div = showDiv ? '\n  <div class="hz-div"></div>' : '';
+      if (s.type === 'descfaq') return expDescFaq(s) + div;
+      // non-descfaq sections: placeholder div for JS injection
+      return `  <!-- ${META[s.type].lbl}: ${xe(s.name)} -->\n  <div id="hz-${s.id}"></div>${div}`;
     }).join('\n\n');
+    return `<!-- Horizonte Builder — gerado automaticamente -->\n<div id="hz-pg">\n${parts}\n</div>`;
+  }
 
-    return `<!-- Horizonte Builder — gerado automaticamente -->
-<!-- Cole no campo Descrição do produto na plataforma Tray -->
-<style>
-#hz-pg{font-family:'Helvetica Neue',Arial,sans-serif;color:#3a3a2e}
-#hz-pg *{box-sizing:border-box}
-#hz-pg .hz-div{height:1px;background:#e0dbd0}
+  function genCSSCode() {
+    return `#hz-pg{color:#092312}
+#hz-pg *{box-sizing:border-box;margin:0;padding:0}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+#hz-pg .hz-div{height:1px;background:#e0dbd0;margin:0}
+
 /* Desc + FAQ */
-#hz-pg .hz-df{display:flex;gap:48px;padding:44px 52px;align-items:flex-start}
+#hz-pg .hz-df{display:flex;gap:48px;padding:44px 0;align-items:flex-start}
 #hz-pg .hz-desc{flex:1;font-size:.95rem;line-height:1.8}
 #hz-pg .hz-desc p+p{margin-top:.8em}
 #hz-pg .hz-desc ul{padding-left:1.4em;margin:.4em 0}
 #hz-pg .hz-desc ol{padding-left:1.6em;margin:.4em 0}
 #hz-pg .hz-desc li{margin-bottom:.2em}
-#hz-pg .hz-desc strong{font-weight:600;color:#161610}
+#hz-pg .hz-desc strong{font-weight:600;color:#092312}
 #hz-pg .hz-faq{flex:1;display:flex;flex-direction:column;gap:8px}
 #hz-pg .hz-fi{border:1px solid #d4cdb8;border-radius:8px;overflow:hidden}
-#hz-pg .hz-ft{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;cursor:pointer;font-size:.9rem;font-weight:500;color:#161610;background:#fff;border:none;width:100%;text-align:left;gap:10px;transition:background .15s}
+#hz-pg .hz-ft{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;cursor:pointer;font-size:.9rem;font-weight:500;color:#092312;background:#fff;border:none;width:100%;text-align:left;gap:10px;transition:background .15s}
 #hz-pg .hz-ft:hover{background:#f5f1e8}
 #hz-pg .hz-fic{flex-shrink:0;font-size:.85rem;color:#7a7a64;transition:transform .3s}
 #hz-pg .hz-fi.open .hz-fic{transform:rotate(45deg);color:#4a9155}
 #hz-pg .hz-fb{max-height:0;overflow:hidden;transition:max-height .35s ease}
 #hz-pg .hz-fi.open .hz-fb{max-height:800px}
-#hz-pg .hz-fb-i{padding:10px 16px 14px;font-size:.85rem;line-height:1.7;border-top:1px solid #d4cdb8}
+#hz-pg .hz-fb-i{padding:10px 16px 14px;font-size:.85rem;line-height:1.7;border-top:1px solid #d4cdb8;color:#092312}
 #hz-pg .hz-fb-i ul{padding-left:1.4em;margin:.3em 0}
 #hz-pg .hz-fb-i ol{padding-left:1.6em;margin:.3em 0}
 #hz-pg .hz-fb-i li{margin-bottom:.2em}
 #hz-pg .hz-fb-i strong{font-weight:600}
+
+/* Diferenciais */
+#hz-pg .hz-dif{padding:44px 0}
+#hz-pg .hz-dif-row{display:flex;gap:44px;align-items:center;margin-bottom:44px}
+#hz-pg .hz-dif-row:last-child{margin-bottom:0}
+#hz-pg .hz-dif-content{flex:1}
+#hz-pg .hz-dif-title{font-size:3rem;line-height:1.1;margin-bottom:16px;color:#092312}
+#hz-pg .hz-dif-title span{display:block;font-weight:400}
+#hz-pg .hz-dif-title strong{display:block;font-weight:700}
+#hz-pg .hz-dif-text{font-size:.92rem;line-height:1.8;color:#092312}
+#hz-pg .hz-dif-text strong{font-weight:700;color:#092312}
+#hz-pg .hz-dif-imgw{flex:1;border-radius:18px;overflow:hidden}
+#hz-pg .hz-dif-imgw img{width:100%;display:block;object-fit:cover}
+#hz-pg .hz-dif-items{flex:1;display:flex;flex-direction:column;gap:14px}
+#hz-pg .hz-dif-item{display:flex;align-items:flex-start;gap:12px;font-size:.9rem;line-height:1.65;color:#092312}
+#hz-pg .hz-dif-chk{width:22px;height:22px;border-radius:50%;background:#4a9155;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+
+/* Depoimentos */
+#hz-pg .hz-dep{padding:44px 0}
+#hz-pg .hz-dep-title{font-size:1.05rem;font-weight:600;margin-bottom:22px;color:#092312}
+#hz-pg .hz-dep-grid{display:flex;gap:16px;align-items:flex-start}
+#hz-pg .hz-dep-feat{flex:0 0 44%;background:#fff;border-radius:14px;border:1px solid #e0dbd0;overflow:hidden}
+#hz-pg .hz-dep-thumb{width:100%;display:block;aspect-ratio:4/3;object-fit:cover;background:#eee}
+#hz-pg .hz-dep-play-wrap{position:relative;cursor:pointer;display:block;width:100%;background:none;border:none;padding:0;text-align:left}
+#hz-pg .hz-dep-play-wrap img{width:100%;display:block;aspect-ratio:4/3;object-fit:cover}
+#hz-pg .hz-dep-play-btn{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:52px;height:52px;background:rgba(0,0,0,.65);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.2rem;pointer-events:none}
+#hz-pg .hz-dep-fq{padding:14px 16px 4px;font-size:.84rem;line-height:1.65;font-style:italic;color:#092312}
+#hz-pg .hz-dep-fa{padding:6px 16px 14px;font-size:.8rem;font-weight:600;color:#092312}
+#hz-pg .hz-dep-stars{color:#f0b429}
+#hz-pg .hz-dep-cards{flex:1;display:flex;flex-direction:column;gap:12px}
+#hz-pg .hz-dep-card{background:#fff;border-radius:12px;border:1px solid #e0dbd0;padding:16px}
+#hz-pg .hz-dep-ct{font-size:.84rem;line-height:1.65;font-style:italic;margin-bottom:10px;color:#092312;quotes:none}
+#hz-pg .hz-dep-fq{quotes:none}
+#hz-pg .hz-dep-ca{font-size:.8rem;font-weight:600;color:#092312}
+#hz-pg .hz-dep-ca::before{content:none}
+
+/* Video popup */
+#hz-vid-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:9999;align-items:center;justify-content:center;padding:24px}
+#hz-vid-ov.open{display:flex}
+#hz-vid-box{position:relative;width:100%;max-width:800px}
+#hz-vid-close{position:absolute;top:-40px;right:0;background:none;border:none;color:#fff;font-size:1.5rem;cursor:pointer;padding:4px 8px;line-height:1}
+#hz-vid-fr{width:100%;aspect-ratio:16/9;border:none;border-radius:12px;display:block}
+
+/* CTA */
+#hz-pg .hz-cta{padding:28px 0}
+#hz-pg .hz-cta-inner{border:1px solid #d4cdb8;border-radius:16px;padding:24px 28px;display:flex;align-items:center;gap:20px;background:#fff}
+#hz-pg .hz-cta-img{width:80px;height:80px;border-radius:50%;object-fit:cover;flex-shrink:0}
+#hz-pg .hz-cta-imgph{width:80px;height:80px;border-radius:50%;background:#e0e0e0;flex-shrink:0}
+#hz-pg .hz-cta-title{font-size:1rem;font-weight:600;margin-bottom:5px;color:#092312}
+#hz-pg .hz-cta-desc{font-size:.85rem;line-height:1.6;margin-bottom:10px;color:#092312}
+#hz-pg .hz-cta-link{font-size:.85rem;font-weight:700;color:#2d6e35;text-decoration:underline}
+
+/* FAQ Geral */
+#hz-pg .hz-faqg{padding:44px 0}
+#hz-pg .hz-faqg-title{font-size:1.2rem;font-weight:600;margin-bottom:22px;color:#092312}
+#hz-pg .hz-faqg-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:start}
+
 /* Responsive */
 @media(max-width:640px){
-  #hz-pg .hz-df{flex-direction:column;padding:26px 18px;gap:22px}
-}
-</style>
-
-<div id="hz-pg">
-  ${sectionsCode}
-</div>
-
-<script>
-(function(){
-  document.querySelectorAll('#hz-pg .hz-ft').forEach(function(b){
-    b.addEventListener('click',function(){b.closest('.hz-fi').classList.toggle('open')});
-  });
-})();
-<\/script>`;
+  #hz-pg .hz-df{flex-direction:column;padding:26px 0;gap:22px}
+  #hz-pg .hz-dif{padding:28px 0}
+  #hz-pg .hz-dif-row{flex-direction:column;gap:20px;margin-bottom:24px}
+  #hz-pg .hz-dif-row.hz-rev{flex-direction:column-reverse}
+  #hz-pg .hz-dep{padding:28px 0}
+  #hz-pg .hz-dep-grid{flex-direction:column}
+  #hz-pg .hz-dep-feat{flex:none;width:100%}
+  #hz-pg .hz-cta{padding:20px 0}
+  #hz-pg .hz-faqg{padding:28px 0}
+  #hz-pg .hz-faqg-grid{grid-template-columns:1fr}
+}`;
   }
 
-  function expSec(s) {
-    const c = `  <!-- ${META[s.type].lbl}: ${xe(s.name)} -->`;
-    if (s.type === 'descfaq') {
-      const d = s.data;
-      const ff = d.faqs.map(f => `
+  function genJSCode() {
+    const nonDescSecs = secs.filter(s => s.type !== 'descfaq');
+    const hasVideo = secs.some(s => s.type === 'dep');
+    const CHK_ESC = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4.5 12.75L10.5 18.75L19.5 5.25" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    let js = `(function(){\n`;
+    if (hasVideo) {
+      js += `  // Video popup\n`;
+      js += `  var vov=document.createElement('div');vov.id='hz-vid-ov';\n`;
+      js += `  vov.innerHTML='<div id="hz-vid-box"><button id="hz-vid-close" onclick="document.getElementById(\\'hz-vid-ov\\').classList.remove(\\'open\\');document.getElementById(\\'hz-vid-fr\\').src=\\'\\'" >&#x2715;</button><iframe id="hz-vid-fr" src="" allowfullscreen></iframe></div>';\n`;
+      js += `  vov.addEventListener('click',function(e){if(e.target===vov){vov.classList.remove('open');document.getElementById('hz-vid-fr').src='';} });\n`;
+      js += `  document.body.appendChild(vov);\n`;
+      js += `  window.hzPlay=function(url){var m=url.match(/(?:v=|youtu\\.be\\/)([^&?\\s]+)/);if(!m)return;document.getElementById('hz-vid-fr').src='https://www.youtube.com/embed/'+m[1]+'?autoplay=1';vov.classList.add('open');};\n\n`;
+    }
+    nonDescSecs.forEach(s => {
+      js += `  // ${META[s.type].lbl}: ${s.name}\n`;
+      js += `  (function(){var el=document.getElementById('hz-${s.id}');if(!el)return;\n`;
+      js += `  el.innerHTML=${JSON.stringify(expSecInner(s, CHK_ESC))};\n`;
+      js += `  })();\n\n`;
+    });
+    js += `  // FAQ accordion\n`;
+    js += `  document.querySelectorAll('#hz-pg .hz-ft').forEach(function(b){b.addEventListener('click',function(){var fi=b.closest('.hz-fi');fi.classList.toggle('open');b.setAttribute('aria-expanded',fi.classList.contains('open')?'true':'false');});});\n`;
+    js += `})();`;
+    return js;
+  }
+
+  // expSecInner: returns inner HTML string for JS injection (no wrapper comment)
+  function expSecInner(s, chkSvg) {
+    if (s.type === 'dif')  return expDifInner(s, chkSvg);
+    if (s.type === 'dep')  return expDepInner(s);
+    if (s.type === 'cta')  return expCtaInner(s);
+    if (s.type === 'faqg') return expFaqgInner(s);
+    return '';
+  }
+
+  function expDescFaq(s) {
+    const d = s.data;
+    const ff = d.faqs.map(f => `
     <div class="hz-fi">
-      <button class="hz-ft"><span>${xe(f.q)}</span><span class="hz-fic">+</span></button>
-      <div class="hz-fb"><div class="hz-fb-i">${f.a}</div></div>
+      <button class="hz-ft" aria-expanded="false" aria-controls="hz-fb-${f.id}">
+        <span>${xe(f.q)}</span>
+        <span class="hz-fic" aria-hidden="true">+</span>
+      </button>
+      <div class="hz-fb" id="hz-fb-${f.id}" role="region">
+        <div class="hz-fb-i">${f.a}</div>
+      </div>
     </div>`).join('');
-      return `${c}
+    return `  <!-- Descrição + FAQ: ${xe(s.name)} -->
   <div class="hz-df">
     <div class="hz-desc">${d.desc}</div>
-    <div class="hz-faq">${ff}
+    <div class="hz-faq" role="list">${ff}
     </div>
-  </div>`;
-    }
-
-    // Other types: just a div with ID
-    return `${c}
-  <div id="${s.id}">
-    <!-- Conteúdo injetado via JS externo -->
   </div>`;
   }
 
-  // ======================================================
+  function expDifInner(s, chkSvg) {
+    const d = s.data;
+    const svgRaw = chkSvg || '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4.5 12.75L10.5 18.75L19.5 5.25" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    const altBase = xe((d.title1 || '') + ' ' + (d.title2 || '')).trim();
+    const items = (d.items || []).map(item =>
+      `<div class="hz-dif-item"><div class="hz-dif-chk" aria-hidden="true">${svgRaw}</div><span>${item.text}</span></div>`).join('');
+    const img1 = d.img1 ? `<img src="${d.img1}" alt="${altBase}">` : '';
+    const img2 = d.img2 ? `<img src="${d.img2}" alt="${altBase} — embalagem">` : '';
+    return `<div class="hz-dif">
+    <div class="hz-dif-row">
+      <div class="hz-dif-content">
+        <h2 class="hz-dif-title"><span>${xe(d.title1)}</span><strong>${xe(d.title2)}</strong></h2>
+        <div class="hz-dif-text">${d.intro}</div>
+      </div>
+      <div class="hz-dif-imgw">${img1}</div>
+    </div>
+    <div class="hz-dif-row hz-rev">
+      <div class="hz-dif-imgw">${img2}</div>
+      <div class="hz-dif-items" role="list">${items}</div>
+    </div>
+  </div>`;
+  }
+
+  function expDepInner(s) {
+    const d = s.data;
+    const thumb = d.featured.thumb || '';
+    const video = d.featured.video || '';
+    const authorAlt = xe(d.featured.author || 'Depoimento em vídeo');
+    let featMediaHtml = '';
+    if (thumb || video) {
+      if (video) {
+        featMediaHtml = `<button class="hz-dep-play-wrap" onclick="hzPlay('${video}')" aria-label="Assistir vídeo de ${authorAlt}"><img src="${thumb || ''}" alt="${authorAlt}"><span class="hz-dep-play-btn" aria-hidden="true">&#9654;</span></button>`;
+      } else {
+        featMediaHtml = `<img class="hz-dep-thumb" src="${thumb}" alt="${authorAlt}">`;
+      }
+    }
+    function starsHtml(n, author) {
+      const count = n || 5;
+      return `<span class="hz-dep-stars" aria-hidden="true">${'★'.repeat(count)}</span><span class="sr-only">${count} de 5 estrelas — ${author}</span>`;
+    }
+    const fStars = starsHtml(d.featured.stars, d.featured.author || '');
+    const cards = (d.cards || []).map(c =>
+      `<article class="hz-dep-card"><blockquote class="hz-dep-ct">${xe(c.text)}</blockquote><footer class="hz-dep-ca">${xe(c.author)} ${starsHtml(c.stars, c.author || '')}</footer></article>`).join('');
+    return `<section class="hz-dep" aria-label="${xe(d.title)}">
+    <h2 class="hz-dep-title">${xe(d.title)}</h2>
+    <div class="hz-dep-grid">
+      <div class="hz-dep-feat">
+        ${featMediaHtml}
+        <blockquote class="hz-dep-fq">"${xe(d.featured.quote)}"</blockquote>
+        <footer class="hz-dep-fa">${xe(d.featured.author)} ${fStars}</footer>
+      </div>
+      <div class="hz-dep-cards">${cards}</div>
+    </div>
+  </section>`;
+  }
+
+  function expCtaInner(s) {
+    const d = s.data;
+    const imgEl = d.img
+      ? `<img class="hz-cta-img" src="${d.img}" alt="${xe(d.title)}">`
+      : `<div class="hz-cta-imgph" aria-hidden="true"></div>`;
+    const descHtml = xe(d.desc || '').replace(/\n/g, '<br>');
+    return `<section class="hz-cta" aria-label="${xe(d.title)}">
+    <div class="hz-cta-inner">
+      ${imgEl}
+      <div>
+        <h2 class="hz-cta-title">${xe(d.title)}</h2>
+        <p class="hz-cta-desc">${descHtml}</p>
+        <a class="hz-cta-link" href="${xe(d.linkUrl)}">${xe(d.linkText)}</a>
+      </div>
+    </div>
+  </section>`;
+  }
+
+  function expFaqgInner(s) {
+    const d = s.data;
+    const faqs = d.faqs || [];
+    const half = Math.ceil(faqs.length / 2);
+    const left  = faqs.slice(0, half);
+    const right = faqs.slice(half);
+    function faqItems(list) {
+      return list.map(f =>
+        `<div class="hz-fi" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question"><button class="hz-ft" aria-expanded="false" aria-controls="hz-fb-${f.id}"><span itemprop="name">${xe(f.q)}</span><span class="hz-fic" aria-hidden="true">+</span></button><div class="hz-fb" id="hz-fb-${f.id}" role="region" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer"><div class="hz-fb-i" itemprop="text">${f.a || ''}</div></div></div>`
+      ).join('');
+    }
+    return `<section class="hz-faqg" aria-label="${xe(d.title)}" itemscope itemtype="https://schema.org/FAQPage">
+    <h2 class="hz-faqg-title">${xe(d.title)}</h2>
+    <div class="hz-faqg-grid">
+      <div role="list">${faqItems(left)}</div>
+      <div role="list">${faqItems(right)}</div>
+    </div>
+  </section>`;
+  }
+
+  // =====================================================
+  // VIDEO POPUP (builder preview)
+  // =====================================================
+  function openVideo(url) {
+    const vidId = (url.match(/(?:v=|youtu\.be\/)([^&?\s]+)/) || [])[1] || '';
+    if (!vidId) return;
+    document.getElementById('hzb-vidfr').src = `https://www.youtube.com/embed/${vidId}?autoplay=1`;
+    document.getElementById('hzb-vidov').classList.add('open');
+  }
+  function closeVideo() {
+    document.getElementById('hzb-vidov').classList.remove('open');
+    document.getElementById('hzb-vidfr').src = '';
+  }
+  function closeVideoOnBg(e) {
+    if (e.target === document.getElementById('hzb-vidov')) closeVideo();
+  }
+
+  // =====================================================
   // EXPORT MODAL
-  // ======================================================
+  // =====================================================
   function openExport() {
-    document.getElementById('hzb-carea').textContent = genHTML();
+    expTab = 'html';
+    document.querySelectorAll('#hzb .exp-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('hzb-tab-html').classList.add('active');
+    document.getElementById('hzb-clang').textContent = 'HTML';
+    document.getElementById('hzb-carea').textContent = genHTMLCode();
     document.getElementById('hzb-expoverlay').classList.add('open');
+  }
+  function switchExpTab(tab, btn) {
+    expTab = tab;
+    document.querySelectorAll('#hzb .exp-tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    const labels = { html: 'HTML', css: 'CSS', js: 'JavaScript' };
+    document.getElementById('hzb-clang').textContent = labels[tab];
+    if (tab === 'html')      document.getElementById('hzb-carea').textContent = genHTMLCode();
+    else if (tab === 'css')  document.getElementById('hzb-carea').textContent = genCSSCode();
+    else if (tab === 'js')   document.getElementById('hzb-carea').textContent = genJSCode();
   }
   function closeExport() {
     document.getElementById('hzb-expoverlay').classList.remove('open');
@@ -1356,47 +1571,39 @@ const HZB = (() => {
   function copyCode() {
     navigator.clipboard.writeText(document.getElementById('hzb-carea').textContent).then(() => {
       const b = document.getElementById('hzb-cpybtn');
-      b.textContent = '✓ Copiado!';
-      b.classList.add('ok');
+      b.textContent = '✓ Copiado!'; b.classList.add('ok');
       toast('📋 Código copiado!');
       setTimeout(() => { b.textContent = '📋 Copiar'; b.classList.remove('ok'); }, 2200);
     });
   }
 
-  // ======================================================
+  // =====================================================
   // MENU
-  // ======================================================
-  function toggleMenu() {
-    document.getElementById('hzb-smenu').classList.toggle('open');
-  }
-  function closeMenu() {
-    document.getElementById('hzb-smenu').classList.remove('open');
-  }
-  document.addEventListener('click', ev => {
-    if (!ev.target.closest('.add-wrap')) closeMenu();
-  });
+  // =====================================================
+  function toggleMenu() { document.getElementById('hzb-smenu').classList.toggle('open'); }
+  function closeMenu()  { document.getElementById('hzb-smenu').classList.remove('open'); }
+  document.addEventListener('click', ev => { if (!ev.target.closest('.add-wrap')) closeMenu(); });
 
-  // ======================================================
+  // =====================================================
   // UTILS
-  // ======================================================
+  // =====================================================
   function xe(s) {
     return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   }
   function toast(msg) {
     const t = document.getElementById('hzb-toast');
-    t.textContent = msg;
-    t.classList.add('on');
+    t.textContent = msg; t.classList.add('on');
     setTimeout(() => t.classList.remove('on'), 2400);
   }
 
-  // public API
   return {
     addSec, delSec, moveSec, selectSec,
     addFaq, remFaq,
+    addDifItem, remDifItem,
+    addDepCard, remDepCard,
     toggleMenu, closeMenu,
-    openExport, closeExport, closeExportOnBg, copyCode,
-    // for inline event handlers that need secId as string
-    moveSec: (id, d) => moveSec(id, d),
+    openVideo, closeVideo, closeVideoOnBg,
+    openExport, closeExport, closeExportOnBg, switchExpTab, copyCode,
   };
 })();
 </script>
