@@ -130,19 +130,22 @@ html, body { height: 100%; margin: 0; padding: 0; font-family: 'DM Sans', sans-s
 #hzb .ps-dep { padding: 44px 0; }
 #hzb .ps-dep-title { font-size: 1rem; font-weight: 600; color: var(--th); margin-bottom: 20px; }
 #hzb .ps-dep-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; align-items: start; }
-#hzb .ps-dep-featured { background: #fff; border-radius: 12px; border: 1px solid var(--bd); overflow: hidden; }
+#hzb .ps-dep-featured { background: #fff; border-radius: 25px; border: 1px solid var(--bd); overflow: hidden; }
 #hzb .ps-dep-media { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; }
 #hzb .ps-dep-nomed { aspect-ratio: 4/3; background: var(--bgp); display: flex; align-items: center; justify-content: center; color: var(--tm); font-size: .8rem; }
-#hzb .ps-dep-ytw { position: relative; }
+#hzb .ps-dep-ytw { position: relative; border-radius: 16px; overflow: hidden; }
 #hzb .ps-dep-ytw img { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; }
-#hzb .ps-dep-play { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 52px; height: 52px; background: #f0b429; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1.1rem; }
-#hzb .ps-dep-fquote { padding: 12px 14px 4px; font-size: .82rem; line-height: 1.65; color: var(--tb); font-style: italic; }
-#hzb .ps-dep-author { padding: 6px 14px 12px; font-size: .78rem; font-weight: 600; color: var(--th); }
-#hzb .ps-dep-cards { display: flex; flex-direction: column; gap: 10px; }
-#hzb .ps-dep-card { background: #fff; border-radius: 10px; border: 1px solid var(--bd); padding: 16px; }
-#hzb .ps-dep-cmeta { display: flex; align-items: center; gap: 6px; font-size: .76rem; font-weight: 600; color: var(--th); margin-bottom: 6px; }
-#hzb .ps-dep-ctitle { font-size: .88rem; font-weight: 700; color: var(--th); margin-bottom: 6px; line-height: 1.35; }
-#hzb .ps-dep-text { font-size: .81rem; line-height: 1.65; color: var(--tb); margin-bottom: 0; }
+#hzb .ps-dep-play { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 52px; height: 52px; background: #FFC100; border-radius: 50%; display: flex; align-items: center; justify-content: center; pointer-events: none; }
+#hzb .ps-dep-feat-body { padding: 68px; display: flex; flex-direction: column; gap: 16px; }
+#hzb .ps-dep-fquote { font-size: 1rem; line-height: 1.65; color: #092312; }
+#hzb .ps-dep-author { font-size: 1rem; font-weight: 600; color: var(--th); }
+#hzb .ps-dep-cards { display: flex; flex-direction: column; gap: 16px; }
+#hzb .ps-dep-card { background: #fff; border-radius: 25px; border: 1px solid var(--bd); padding: 68px; display: flex; flex-direction: column; gap: 16px; }
+#hzb .ps-dep-cmeta { display: flex; align-items: center; gap: 8px; font-size: 1rem; font-weight: 600; color: var(--th); }
+#hzb .ps-dep-cstars { display: flex; align-items: center; gap: 2px; }
+#hzb .ps-dep-cstars svg { width: 18px; height: 18px; display: block; }
+#hzb .ps-dep-ctitle { font-size: 1.5rem; font-weight: 700; color: var(--th); line-height: 1.25; }
+#hzb .ps-dep-text { font-size: 1rem; line-height: 1.65; color: #092312; margin-bottom: 0; }
 
 /* ---- PREVIEW: CTA ---- */
 #hzb .ps-cta { padding: 28px 0; }
@@ -284,6 +287,11 @@ html, body { height: 100%; margin: 0; padding: 0; font-family: 'DM Sans', sans-s
   #hzb .ps-descfaq { padding: 24px 0; gap: 20px; }
   #hzb .ps-dif { padding: 24px 0; }
   #hzb .ps-dep { padding: 24px 0; }
+  #hzb .ps-dep-card { padding: 28px; gap: 12px; border-radius: 16px; }
+  #hzb .ps-dep-feat-body { padding: 28px; gap: 12px; }
+  #hzb .ps-dep-cmeta { font-size: .88rem; }
+  #hzb .ps-dep-ctitle { font-size: 1.1rem; }
+  #hzb .ps-dep-text { font-size: .88rem; }
   #hzb .ps-cta { padding: 18px 0; }
   #hzb .ps-cta-inner { flex-direction: column; align-items: center; text-align: center; padding: 20px; }
   #hzb .ps-cta-img, #hzb .ps-cta-imgph { width: 96px; height: 96px; }
@@ -1030,6 +1038,10 @@ const HZB = (() => {
         <div class="rh">
           <span class="rnum">#${i+1}</span>
           <span class="rlbl">Pergunta</span>
+          <div style="display:flex;gap:3px;margin-left:auto;margin-right:4px;">
+            <button class="rdel" style="background:none;border:1px solid var(--bd2);border-radius:4px;width:22px;height:22px;font-size:.75rem;cursor:pointer;color:var(--tm);display:flex;align-items:center;justify-content:center;" title="Mover para cima" onclick="HZB.moveFaqUp('${secId}','${f.id}')" ${i===0?'disabled style="opacity:.3;cursor:default;"':''}>▲</button>
+            <button class="rdel" style="background:none;border:1px solid var(--bd2);border-radius:4px;width:22px;height:22px;font-size:.75rem;cursor:pointer;color:var(--tm);display:flex;align-items:center;justify-content:center;" title="Mover para baixo" onclick="HZB.moveFaqDown('${secId}','${f.id}')" ${i===s.data.faqs.length-1?'disabled style="opacity:.3;cursor:default;"':''}>▼</button>
+          </div>
           <button class="rdel" onclick="HZB.remFaq('${secId}','${f.id}')">✕</button>
         </div>
         <div class="rb">
@@ -1065,6 +1077,20 @@ const HZB = (() => {
   function remFaq(secId, fid) {
     const s = gsec(secId);
     s.data.faqs = s.data.faqs.filter(f => f.id !== fid);
+    renderFaqList(secId); renderPreview();
+  }
+  function moveFaqUp(secId, fid) {
+    const s = gsec(secId);
+    const idx = s.data.faqs.findIndex(f => f.id === fid);
+    if (idx <= 0) return;
+    [s.data.faqs[idx - 1], s.data.faqs[idx]] = [s.data.faqs[idx], s.data.faqs[idx - 1]];
+    renderFaqList(secId); renderPreview();
+  }
+  function moveFaqDown(secId, fid) {
+    const s = gsec(secId);
+    const idx = s.data.faqs.findIndex(f => f.id === fid);
+    if (idx < 0 || idx >= s.data.faqs.length - 1) return;
+    [s.data.faqs[idx], s.data.faqs[idx + 1]] = [s.data.faqs[idx + 1], s.data.faqs[idx]];
     renderFaqList(secId); renderPreview();
   }
 
@@ -1192,12 +1218,15 @@ const HZB = (() => {
       })() : '');
       if (!imgSrc) return '<div class="ps-dep-nomed">📷 sem mídia</div>';
       const clickAttr = video ? ` style="cursor:pointer" onclick="HZB.openVideo('${xe(video)}')"` : '';
-      return `<div class="ps-dep-ytw"${clickAttr}><img src="${xe(imgSrc)}" alt="">${video ? '<div class="ps-dep-play">▶</div>' : ''}</div>`;
+      const playSvg = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.25 5.65302C5.25 4.79702 6.167 4.25502 6.917 4.66702L18.457 11.014C18.6336 11.1111 18.781 11.2538 18.8836 11.4272C18.9862 11.6007 19.0403 11.7985 19.0403 12C19.0403 12.2015 18.9862 12.3994 18.8836 12.5728C18.781 12.889 18.6336 12.889 18.457 12.986L6.917 19.333C6.74569 19.4272 6.55278 19.4751 6.35731 19.472C6.16184 19.469 5.97054 19.415 5.80227 19.3155C5.634 19.216 5.49457 19.0743 5.39773 18.9045C5.30089 18.7346 5.24997 18.5425 5.25 18.347V5.65302Z" stroke="#221B05" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+      return `<div class="ps-dep-ytw"${clickAttr}><img src="${xe(imgSrc)}" alt="">${video ? `<div class="ps-dep-play">${playSvg}</div>` : ''}</div>`;
     }
-    const fStars = `<span style="color:#f0b429">${'★'.repeat(d.featured.stars||5)}</span>`;
+    const starSvg = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M10.7875 3.21009C11.2355 2.13309 12.7635 2.13309 13.2115 3.21009L15.2935 8.21609L20.6975 8.65009C21.8615 8.74309 22.3335 10.1951 21.4465 10.9551L17.3295 14.4821L18.5865 19.7551C18.8575 20.8911 17.6225 21.7881 16.6265 21.1801L11.9995 18.3541L7.37251 21.1801C6.37651 21.7881 5.14151 20.8901 5.41251 19.7551L6.66951 14.4821L2.55251 10.9551C1.66551 10.1951 2.13751 8.74309 3.30151 8.65009L8.70551 8.21609L10.7875 3.21009Z" fill="#F26107"/></svg>`;
+    function svgStars(n) { return `<span class="ps-dep-cstars">${starSvg.repeat(n||5)}</span>`; }
+    const fStars = svgStars(d.featured.stars);
     const cards = (d.cards || []).map(c => `
       <div class="ps-dep-card">
-        <div class="ps-dep-cmeta">${xe(c.author || '')} <span style="color:#f0b429">${'★'.repeat(c.stars||5)}</span></div>
+        <div class="ps-dep-cmeta">${xe(c.author || '')} ${svgStars(c.stars)}</div>
         ${c.title ? `<div class="ps-dep-ctitle">${xe(c.title)}</div>` : ''}
         <div class="ps-dep-text">${xe(c.text || '')}</div>
       </div>`).join('');
@@ -1206,10 +1235,12 @@ const HZB = (() => {
         <div class="ps-dep-title">${xe(d.title || '')}</div>
         <div class="ps-dep-grid">
           <div class="ps-dep-featured">
-            ${featMedia()}
-            ${d.featured.title ? `<div class="ps-dep-ctitle" style="padding:10px 14px 0">${xe(d.featured.title)}</div>` : ''}
-            <div class="ps-dep-fquote">"${xe(d.featured.quote || '')}"</div>
-            <div class="ps-dep-author">${xe(d.featured.author || '')} ${fStars}</div>
+            <div class="ps-dep-feat-body">
+              ${featMedia()}
+              <div class="ps-dep-cmeta">${xe(d.featured.author || '')} ${fStars}</div>
+              ${d.featured.title ? `<div class="ps-dep-ctitle">${xe(d.featured.title)}</div>` : ''}
+              <div class="ps-dep-fquote">"${xe(d.featured.quote || '')}"</div>
+            </div>
           </div>
           <div class="ps-dep-cards">${cards || '<p style="color:var(--tm);font-style:italic;font-size:.82rem;padding:8px">Nenhum depoimento ainda.</p>'}</div>
         </div>
@@ -1338,18 +1369,20 @@ const HZB = (() => {
 #hz-pg .hz-dep-grid{display:flex;gap:16px;align-items:flex-start}
 #hz-pg .hz-dep-feat{flex:0 0 44%;background:#fff;border-radius:14px;border:1px solid #e0dbd0;overflow:hidden}
 #hz-pg .hz-dep-thumb{width:100%;display:block;aspect-ratio:4/3;object-fit:cover;background:#eee}
-#hz-pg .hz-dep-play-wrap{position:relative;cursor:pointer;display:block;width:100%;background:none;border:none;padding:0;text-align:left}
+#hz-pg .hz-dep-play-wrap{position:relative;cursor:pointer;display:block;width:100%;background:none;border:none;padding:0;text-align:left;border-radius:16px;overflow:hidden}
 #hz-pg .hz-dep-play-wrap img{width:100%;display:block;aspect-ratio:4/3;object-fit:cover}
-#hz-pg .hz-dep-play-btn{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:56px;height:56px;background:#f0b429;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.2rem;pointer-events:none}
-#hz-pg .hz-dep-fq{padding:14px 16px 4px;font-size:.84rem;line-height:1.65;font-style:italic;color:#092312}
-#hz-pg .hz-dep-fa{padding:6px 16px 14px;font-size:.8rem;font-weight:600;color:#092312}
+#hz-pg .hz-dep-play-btn{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:56px;height:56px;background:#FFC100;border-radius:50%;display:flex;align-items:center;justify-content:center;pointer-events:none}
+#hz-pg .hz-dep-feat-body{padding:68px;display:flex;flex-direction:column;gap:16px}
+#hz-pg .hz-dep-fq{font-size:1rem;line-height:1.65;color:#092312;quotes:none}
+#hz-pg .hz-dep-fa{font-size:1rem;font-weight:600;color:#092312}
 #hz-pg .hz-dep-stars{color:#f0b429}
-#hz-pg .hz-dep-cards{flex:1;display:flex;flex-direction:column;gap:12px}
-#hz-pg .hz-dep-card{background:#fff;border-radius:12px;border:1px solid #e0dbd0;padding:16px}
-#hz-pg .hz-dep-cmeta{display:flex;align-items:center;gap:6px;font-size:.78rem;font-weight:600;color:#092312;margin-bottom:6px}
-#hz-pg .hz-dep-ctitle{font-size:.92rem;font-weight:700;color:#092312;margin-bottom:6px;line-height:1.35}
-#hz-pg .hz-dep-ct{font-size:.84rem;line-height:1.65;color:#092312;quotes:none;margin-bottom:0}
-#hz-pg .hz-dep-fq{quotes:none}
+#hz-pg .hz-dep-cards{flex:1;display:flex;flex-direction:column;gap:16px}
+#hz-pg .hz-dep-card{background:#fff;border-radius:25px;border:1px solid #e0dbd0;padding:68px;display:flex;flex-direction:column;gap:16px}
+#hz-pg .hz-dep-cmeta{display:flex;align-items:center;gap:8px;font-size:1rem;font-weight:600;color:#092312}
+#hz-pg .hz-dep-stars{display:flex;align-items:center;gap:2px}
+#hz-pg .hz-dep-stars svg{width:18px;height:18px;display:block}
+#hz-pg .hz-dep-ctitle{font-size:1.5rem;font-weight:700;color:#092312;line-height:1.25}
+#hz-pg .hz-dep-ct{font-size:1rem;line-height:1.65;color:#092312;quotes:none;margin-bottom:0}
 #hz-pg .hz-dep-ca{font-size:.8rem;font-weight:600;color:#092312}
 #hz-pg .hz-dep-ca::before{content:none}
 
@@ -1383,6 +1416,11 @@ const HZB = (() => {
   #hz-pg .hz-dep{padding:28px 0}
   #hz-pg .hz-dep-grid{flex-direction:column}
   #hz-pg .hz-dep-feat{flex:none;width:100%}
+  #hz-pg .hz-dep-card{padding:28px;gap:12px;border-radius:16px}
+  #hz-pg .hz-dep-feat-body{padding:28px;gap:12px}
+  #hz-pg .hz-dep-cmeta{font-size:.88rem}
+  #hz-pg .hz-dep-ctitle{font-size:1.1rem}
+  #hz-pg .hz-dep-ct{font-size:.88rem}
   #hz-pg .hz-cta{padding:20px 0}
   #hz-pg .hz-cta-inner{flex-direction:column;align-items:center;text-align:center;padding:20px}
   #hz-pg .hz-cta-img,#hz-pg .hz-cta-imgph{width:96px;height:96px}
@@ -1479,24 +1517,27 @@ const HZB = (() => {
     let featMediaHtml = '';
     if (thumb || video) {
       if (video) {
-        featMediaHtml = `<button class="hz-dep-play-wrap" onclick="hzPlay('${video}')" aria-label="Assistir vídeo de ${authorAlt}"><img src="${thumb || ''}" alt="${authorAlt}"><span class="hz-dep-play-btn" aria-hidden="true">&#9654;</span></button>`;
+        featMediaHtml = `<button class="hz-dep-play-wrap" onclick="hzPlay('${video}')" aria-label="Assistir vídeo de ${authorAlt}"><img src="${thumb || ''}" alt="${authorAlt}"><span class="hz-dep-play-btn" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.25 5.65302C5.25 4.79702 6.167 4.25502 6.917 4.66702L18.457 11.014C18.6336 11.1111 18.781 11.2538 18.8836 11.4272C18.9862 11.6007 19.0403 11.7985 19.0403 12C19.0403 12.2015 18.9862 12.3994 18.8836 12.5728C18.781 12.889 18.6336 12.889 18.457 12.986L6.917 19.333C6.74569 19.4272 6.55278 19.4751 6.35731 19.472C6.16184 19.469 5.97054 19.415 5.80227 19.3155C5.634 19.216 5.49457 19.0743 5.39773 18.9045C5.30089 18.7346 5.24997 18.5425 5.25 18.347V5.65302Z" stroke="#221B05" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>`;
       } else {
         featMediaHtml = `<img class="hz-dep-thumb" src="${thumb}" alt="${authorAlt}">`;
       }
     }
+    const expStarSvg = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M10.7875 3.21009C11.2355 2.13309 12.7635 2.13309 13.2115 3.21009L15.2935 8.21609L20.6975 8.65009C21.8615 8.74309 22.3335 10.1951 21.4465 10.9551L17.3295 14.4821L18.5865 19.7551C18.8575 20.8911 17.6225 21.7881 16.6265 21.1801L11.9995 18.3541L7.37251 21.1801C6.37651 21.7881 5.14151 20.8901 5.41251 19.7551L6.66951 14.4821L2.55251 10.9551C1.66551 10.1951 2.13751 8.74309 3.30151 8.65009L8.70551 8.21609L10.7875 3.21009Z" fill="#F26107"/></svg>`;
     function starsHtml(n, author) {
       const count = n || 5;
-      return `<span class="hz-dep-stars" aria-hidden="true">${'★'.repeat(count)}</span><span class="sr-only">${count} de 5 estrelas — ${author}</span>`;
+      return `<span class="hz-dep-stars" aria-hidden="true">${expStarSvg.repeat(count)}</span><span class="sr-only">${count} de 5 estrelas — ${author}</span>`;
     }
     const fStars = starsHtml(d.featured.stars, d.featured.author || '');
     const cards = (d.cards || []).map(c =>
       `<article class="hz-dep-card"><header class="hz-dep-cmeta">${encA(xe(c.author))} ${starsHtml(c.stars, c.author || '')}</header>${c.title ? `<p class="hz-dep-ctitle">${encA(xe(c.title))}</p>` : ''}<blockquote class="hz-dep-ct">${encA(xe(c.text))}</blockquote></article>`).join('');
     return `<div class="hz-dep-grid">
       <div class="hz-dep-feat">
-        ${featMediaHtml}
-        ${d.featured.title ? `<p class="hz-dep-ctitle" style="padding:10px 16px 0">${encA(xe(d.featured.title))}</p>` : ''}
-        <blockquote class="hz-dep-fq">"${encA(xe(d.featured.quote))}"</blockquote>
-        <footer class="hz-dep-fa">${encA(xe(d.featured.author))} ${fStars}</footer>
+        <div class="hz-dep-feat-body">
+          ${featMediaHtml}
+          <header class="hz-dep-cmeta">${encA(xe(d.featured.author))} ${fStars}</header>
+          ${d.featured.title ? `<p class="hz-dep-ctitle">${encA(xe(d.featured.title))}</p>` : ''}
+          <blockquote class="hz-dep-fq">"${encA(xe(d.featured.quote))}"</blockquote>
+        </div>
       </div>
       <div class="hz-dep-cards">${cards}</div>
     </div>`;
@@ -1623,7 +1664,7 @@ const HZB = (() => {
 
   return {
     addSec, delSec, moveSec, selectSec,
-    addFaq, remFaq,
+    addFaq, remFaq, moveFaqUp, moveFaqDown,
     addDifItem, remDifItem,
     addDepCard, remDepCard,
     toggleMenu, closeMenu,
