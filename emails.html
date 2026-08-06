@@ -1,0 +1,1503 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Horizonte Pet Store, Todos os E-mails · Antes e Depois</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Instrument+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F3F2EF; --paper-2:#ECEBE8; --card:#FCFCFB;
+    --pine:#22392E; --moss:#3E6B4F; --moss-soft:#E3EDE4;
+    --millet:#E0A233; --millet-soft:#F5DFA6; --millet-line:#EEC96B;
+    --bark:#24201C; --ink-2:#5B564E;
+    --sky:#5F8894;
+    --danger:#b23b3b; --danger-bg:#fbeaea; --danger-line:#f0cccc;
+    --line:rgba(36,32,28,.12); --line-2:rgba(36,32,28,.06);
+    --display:'Fraunces',Georgia,serif;
+    --body:'Instrument Sans',system-ui,-apple-system,sans-serif;
+    --mono:'IBM Plex Mono',ui-monospace,monospace;
+    --email:Poppins,Arial,Helvetica,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0; background:var(--paper); color:var(--bark); font-family:var(--body); font-size:16px; line-height:1.6; -webkit-font-smoothing:antialiased}
+  h1,h2,h3,h4{font-family:var(--display); font-weight:600; line-height:1.12; margin:0}
+  p{margin:0 0 1em}
+  a{color:inherit}
+  .mono{font-family:var(--mono); font-size:.86em}
+  .tag{font-family:var(--mono); font-size:.8em; background:var(--moss-soft); color:var(--pine); padding:1px 6px; border-radius:5px; white-space:nowrap}
+  .tag.bad{background:var(--danger-bg); color:var(--danger)}
+  .seed{display:inline-block; width:.6em; height:.7em; background:var(--millet); border-radius:60% 60% 55% 55% / 75% 75% 40% 40%; transform:rotate(-12deg)}
+
+  /* ===== TOP BAR ===== */
+  .top{background:var(--card); color:var(--bark); border-bottom:1px solid var(--line); padding:16px 26px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; position:sticky; top:0; z-index:20}
+  .top .bm{display:flex; align-items:center; gap:11px; font-family:var(--display); font-weight:600; font-size:18px}
+  .top .bm .bird{width:26px;height:26px}
+  .top .k{font-family:var(--mono); font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:#9a948a}
+
+  /* ===== APP LAYOUT ===== */
+  .app{display:grid; grid-template-columns:290px 1fr; min-height:calc(100vh - 65px)}
+  .nav{border-right:1px solid var(--line); background:var(--paper-2); padding:22px 14px; position:sticky; top:65px; align-self:start; height:calc(100vh - 65px); overflow-y:auto}
+  .nav .grp{font-family:var(--mono); font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:#9a948a; padding:16px 12px 7px}
+  .nav-item{display:flex; align-items:center; gap:9px; width:100%; text-align:left; border:none; background:transparent; font-family:var(--body); font-size:14px; color:var(--ink-2); padding:9px 12px; border-radius:9px; cursor:pointer; line-height:1.3}
+  .nav-item:hover{background:rgba(255,255,255,.55); color:var(--bark)}
+  .nav-item.active{background:var(--card); color:var(--bark); font-weight:600; box-shadow:inset 3px 0 0 var(--moss)}
+  .nav-item .badge{margin-left:auto; font-size:9px; font-family:var(--mono); padding:1px 6px; border-radius:5px; letter-spacing:.03em; white-space:nowrap; background:transparent}
+  .nav-item .badge.novo{color:#a97b1e; border:1px solid #e0c896}
+  .nav-item .badge.sec{color:var(--danger); border:1px solid var(--danger-line)}
+
+  .mobile-sel{display:none; padding:14px 20px; background:var(--paper-2); border-bottom:1px solid var(--line); position:sticky; top:65px; z-index:15}
+  .mobile-sel select{width:100%; padding:12px 14px; font-family:var(--body); font-size:15px; border:1px solid var(--line); border-radius:10px; background:var(--card); color:var(--bark)}
+
+  .viewer{padding:36px clamp(20px,4vw,52px); overflow-x:hidden}
+  .panel{display:none; animation:fu .45s cubic-bezier(.2,.7,.2,1)}
+  .panel.active{display:block}
+  @keyframes fu{from{opacity:0; transform:translateY(10px)} to{opacity:1; transform:none}}
+
+  .p-head{display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:4px}
+  .p-head h2{font-size:clamp(24px,3.2vw,32px)}
+  .chip{font-family:var(--mono); font-size:10.5px; letter-spacing:.05em; text-transform:uppercase; padding:4px 10px; border-radius:999px; white-space:nowrap}
+  .chip.t,.chip.r,.chip.f,.chip.c,.chip.l{background:#e9e8e3;color:#6b665d}
+  .chip.novo{background:transparent;color:#a97b1e;border:1px solid #e0c896}
+  .chip.sec{background:transparent;color:var(--danger);border:1px solid var(--danger-line)}
+  .p-head .chip[style]{background:#e9e8e3 !important; color:#6b665d !important}
+  .p-sub{font-size:16px; color:var(--ink-2); max-width:74ch; margin:10px 0 26px}
+
+  .ba{display:grid; grid-template-columns:1fr 1fr; gap:24px; align-items:start}
+  .col-label{display:flex; align-items:center; gap:10px; margin-bottom:12px; font-family:var(--mono); font-size:11.5px; letter-spacing:.12em; text-transform:uppercase}
+  .col-label .b{padding:4px 10px; border-radius:6px}
+  .col-label.before .b{background:#e7ddcd; color:#8a6a3a}
+  .col-label.after .b{background:var(--pine); color:var(--paper)}
+  .col-label small{font-family:var(--body); text-transform:none; letter-spacing:0; color:var(--ink-2); font-size:12.5px}
+
+  .frame{background:#fff; border:1px solid var(--line); border-radius:14px; overflow:hidden; box-shadow:0 14px 34px -30px rgba(36,32,28,.45)}
+  .ba > div:last-child .frame{box-shadow:0 24px 54px -26px rgba(36,32,28,.5)}
+  .chrome{background:#f3f1ec; border-bottom:1px solid var(--line); padding:11px 15px; font-size:12px}
+  .chrome .subj{font-weight:600; color:var(--bark)}
+  .chrome .from{color:#8b857b; margin-top:2px; font-family:var(--mono); font-size:10.5px}
+  .chrome .pre{color:#a49e93; margin-top:2px; font-size:11px}
+
+  /* ---- BEFORE ---- */
+  .old{font-family:Arial,Helvetica,sans-serif; color:#3a3a3a; font-size:12px; line-height:1.55; padding:20px}
+  .old .logo{color:#9aa0a6; font-size:11px; margin-bottom:14px}
+  .old p{margin:0 0 9px}
+  .old .kv{background:#f6f6f6; border:1px solid #e9e9e9; border-radius:3px; padding:11px 13px; font-size:11px; color:#555; line-height:1.8; margin:9px 0}
+  .old .lnk{color:#3b6ea5; word-break:break-all; font-size:10.5px}
+  .old .muted{color:#8a8a8a}
+  .old .cram{font-size:11px; color:#555; line-height:1.65}
+  .old .flag{margin-top:12px; font-size:10.5px; color:var(--danger); background:var(--danger-bg); border:1px solid var(--danger-line); padding:8px 10px; border-radius:4px}
+  .old .warn{background:#fff6e6; padding:7px 9px; border-radius:4px; font-size:11px; color:#8a6a2a}
+  .none-today{padding:40px 24px; text-align:center; color:#9a948a}
+  .none-today .big{font-family:var(--display); font-size:20px; color:var(--ink-2); margin-bottom:6px}
+  .none-today .sm{font-size:13px}
+
+  /* ---- AFTER (branded) ---- */
+  .new{font-family:var(--body); color:var(--bark)}
+  .em-head{position:relative; background:transparent; padding:26px 22px 40px; text-align:center; z-index:2}
+  .em-curve{position:absolute; left:0; top:0; width:100%; height:100%; z-index:0; pointer-events:none; filter:drop-shadow(0 5px 8px rgba(0,0,0,.12))}
+  .em-logo{position:relative; z-index:1; height:44px; width:auto; display:inline-block; vertical-align:middle}
+  .em-status{padding:26px 22px 18px; text-align:center; background:#fff}
+  .em-status .ico{width:50px;height:50px;margin:0 auto 12px; border-radius:50%; display:grid; place-items:center; background:var(--moss-soft); font-size:24px}
+  .em-status .ico.blue{background:#eaf0f2} .em-status .ico.warm{background:#f6ecd6} .em-status .ico.red{background:#f6e3e3}
+  .em-status h3{font-family:var(--display); font-size:22px; font-weight:600; color:var(--pine); line-height:1.15}
+  .em-status p{font-size:13.5px; color:var(--ink-2); margin:10px auto 0; max-width:40ch}
+  .em-bar{margin:0 22px 8px; padding:11px 15px; background:var(--card); border:1px solid var(--line); border-radius:10px; display:flex; justify-content:space-between; align-items:center; font-size:12.5px; color:var(--ink-2)}
+  .em-bar b{font-family:var(--mono); color:var(--pine); font-size:13px}
+  .em-btn{display:block; text-align:center; margin:16px 22px 6px; background:#FFC100; color:#221B05; text-decoration:none; font-weight:600; padding:13px; border-radius:100px; font-size:14.5px}
+  .em-btn.ghost{background:transparent; color:var(--moss); border:1.5px solid var(--line); font-size:13px; padding:11px}
+  .em-btn.blue{background:var(--sky); color:#fff}
+  .em-btn .sub{display:block; font-family:var(--mono); font-size:11px; opacity:.85; font-weight:400; margin-top:2px}
+  .em-blk{margin:16px 22px; padding:15px 17px; border-radius:12px; background:var(--card); border:1px solid var(--line); font-size:13px; color:var(--ink-2)}
+  .em-blk b{color:var(--pine)}
+  .em-blk.seeds{background:var(--moss-soft); border-color:rgba(62,107,79,.25)}
+  .em-blk.info{background:#eef3f4; border-color:rgba(95,136,148,.25)}
+  .em-blk .addr{font-size:12.5px; line-height:1.5; margin-top:3px}
+  .em-blk .fine{font-size:11px; color:#9a948a; margin-top:6px; line-height:1.4}
+  .cpn{margin:16px 22px; border:1.5px dashed var(--millet-line); border-radius:12px; padding:14px; text-align:center; background:#fffdf7}
+  .cpn .cl{font-size:10px; color:#9a948a; text-transform:uppercase; letter-spacing:.12em}
+  .cpn .cc{font-family:var(--mono); font-size:20px; letter-spacing:.14em; color:var(--pine); font-weight:500; margin-top:3px}
+  .cpn .meta{font-size:11.5px; color:var(--ink-2); margin-top:8px}
+  .em-prod{margin:16px 22px; border:1px solid var(--line); border-radius:12px; overflow:hidden}
+  .prow{display:flex; gap:11px; align-items:center; padding:11px 13px; border-bottom:1px solid var(--line-2)}
+  .prow:last-child{border-bottom:none}
+  .thumb{width:42px;height:42px;border-radius:8px;background:var(--moss-soft);flex:none; display:grid;place-items:center; font-size:19px}
+  .prow .pn{font-size:12.5px; font-weight:600; color:var(--bark)}
+  .prow .pm{font-size:11px; color:#9a948a}
+  .prow .pp{margin-left:auto; font-size:12.5px; font-weight:600; color:var(--pine); font-family:var(--mono)}
+  .em-tot{margin:0 22px; font-size:12.5px}
+  .em-tot .tr{display:flex; justify-content:space-between; padding:4px 0; color:var(--ink-2)}
+  .em-tot .tr.big{border-top:1px solid var(--line); margin-top:5px; padding-top:10px; font-size:15px; color:var(--pine); font-weight:600; font-family:var(--display)}
+  .em-tot .tr.big span:last-child{font-family:var(--mono)}
+  .em-prazo{text-align:center; margin:14px 22px; font-size:13px; color:var(--pine)}
+  .em-prazo b{font-family:var(--display); font-size:14px}
+  .em-foot-curve{height:26px; width:120%; margin:34px 0 -1px -10%; background:#18592F; border-radius:50% 50% 0 0}
+  .em-foot{background:#18592F; color:rgba(255,255,255,.82); padding:18px 22px 26px; font-size:11.5px; line-height:1.7; text-align:center}
+  .em-foot b{color:var(--paper)}
+  .em-foot .soc{margin:7px 0; font-family:var(--mono); font-size:10.5px; color:var(--millet-line)}
+  .em-foot .fine{margin-top:8px; font-size:10px; color:rgba(246,242,233,.45)}
+
+  .pnote{margin-top:18px; display:flex; gap:10px; align-items:flex-start; font-size:13.5px; color:var(--ink-2); background:var(--card); border:1px dashed var(--line); border-radius:12px; padding:14px 16px}
+  .pnote.sec{background:var(--danger-bg); border-color:var(--danger-line); color:#6f2b2b}
+  .pnote.sec b{color:#8c2f2f}
+  .pnote .s{flex:none; margin-top:5px}
+
+  .seq3{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:20px}
+  .sc{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:18px}
+  .sc .w{font-family:var(--mono); font-size:11.5px; color:var(--millet); margin-bottom:4px}
+  .sc h4{font-size:16px; color:var(--pine); margin-bottom:8px}
+  .sc .sj{font-size:12px; background:var(--paper-2); border-radius:7px; padding:7px 9px; margin-bottom:9px; color:var(--bark)}
+  .sc p{font-size:12.5px; color:var(--ink-2); margin:0}
+
+  @media(max-width:860px){
+    .app{grid-template-columns:1fr}
+    .nav{display:none}
+    .mobile-sel{display:block}
+    .ba{grid-template-columns:1fr}
+    .seq3{grid-template-columns:1fr}
+  }
+
+  /* Poppins nos e-mails: Bold no título, Regular no corpo */
+  .new{--pine:#092312; --bark:#092312; --ink-2:#092312; color:#092312; font-family:var(--email); font-weight:400}
+  .new h3, .new h4{font-family:var(--email); font-weight:700; color:#092312}
+  .new .em-btn{font-family:var(--email); font-weight:700}
+
+  /* painel de codigo */
+  .codecol{max-width:860px}
+  .codewrap{margin-bottom:26px}
+  .clbl{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:8px}
+  .clbl h4{font-size:15px; color:var(--bark); font-family:var(--body); font-weight:600}
+  .clbl .tagline{font-size:12.5px; color:var(--ink-2); margin-left:auto; margin-right:10px}
+  .copybtn{font-family:var(--mono); font-size:11px; letter-spacing:.04em; text-transform:uppercase; background:#092312; color:#fff; border:none; padding:6px 12px; border-radius:7px; cursor:pointer; white-space:nowrap}
+  .copybtn:active{opacity:.75}
+  .codeblock{background:#0e1a13; border:1px solid rgba(0,0,0,.15); border-radius:12px; padding:16px 18px; overflow:auto}
+  .codeblock pre{margin:0; font-family:'IBM Plex Mono',ui-monospace,monospace; font-size:12px; line-height:1.65; color:#cfe0d5; white-space:pre}
+  .codenote{margin-top:18px; display:flex; gap:10px; align-items:flex-start; font-size:13.5px; color:var(--ink-2); background:var(--card); border:1px dashed var(--line); border-radius:12px; padding:14px 16px}
+
+  .code-in-panel{margin-top:42px; padding-top:28px; border-top:2px solid var(--line)}
+  .cip-head{font-family:var(--mono); font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--moss); margin-bottom:16px; display:flex; align-items:center; gap:9px}
+  .ctx{margin-top:26px; padding-top:22px; border-top:1px dashed var(--line)}
+  .ctx:first-of-type{border-top:none; padding-top:2px; margin-top:6px}
+  .ctx-title{font-family:var(--display); font-size:18px; color:var(--pine); margin-bottom:8px}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="bm">
+    <svg class="bird" viewBox="0 0 48 48" fill="none"><path d="M8 30c0-8 6-15 15-15 6 0 9 3 12 3 3 0 4-2 5-2 1 0 2 1 1 3-1 3-4 4-4 4 2 8-4 15-13 15-9 0-16-4-16-11z" fill="#E0A233"/><circle cx="30" cy="24" r="1.6" fill="#22392E"/></svg>
+    Horizonte Pet Store
+  </div>
+  <div class="k">Todos os e-mails · antes e depois</div>
+</div>
+
+<div class="mobile-sel">
+  <select id="msel"></select>
+</div>
+
+<div class="app">
+  <!-- ===== NAV ===== -->
+  <nav class="nav" id="nav">
+    <div class="grp">Pedido · transacional</div>
+    <button class="nav-item active" data-target="boasvindas">Boas-vindas / Cadastro</button>
+    <button class="nav-item" data-target="infopedido">Informações do Pedido</button>
+    <button class="nav-item" data-target="emaberto">Pedido em Aberto</button>
+    <button class="nav-item" data-target="manual">Confirmação Manual</button>
+    <button class="nav-item" data-target="pagamento">Pagamento Confirmado</button>
+    <button class="nav-item" data-target="enviado">Pedido Enviado</button>
+    <button class="nav-item" data-target="notafiscal">Nota Fiscal</button>
+    <button class="nav-item" data-target="cancelamento">Cancelamento</button>
+
+    <div class="grp">Crescimento · relacional</div>
+    <button class="nav-item" data-target="carrinho">Carrinho Abandonado</button>
+    <button class="nav-item" data-target="disponivel">Produto Disponível</button>
+    <button class="nav-item" data-target="posentrega">Pós-entrega <span class="badge novo">novo</span></button>
+    <button class="nav-item" data-target="reposicao">Reposição <span class="badge novo">novo</span></button>
+    <button class="nav-item" data-target="newsletter">Confirmação Newsletter</button>
+    <button class="nav-item" data-target="indicacao">Indicação a Amigo</button>
+
+    <div class="grp">Fidelidade · Sementes</div>
+    <button class="nav-item" data-target="resgate">Resgate de Sementes</button>
+    <button class="nav-item" data-target="cupom">Cupom de Desconto</button>
+    <button class="nav-item" data-target="cupomtroca">Cupom para Troca</button>
+    <button class="nav-item" data-target="aniversario">Aniversário</button>
+    <button class="nav-item" data-target="premiacao">Ganhadores</button>
+
+    <div class="grp">Conta · acesso</div>
+    <button class="nav-item" data-target="liberacao">Liberação de Cadastro <span class="badge sec">seg.</span></button>
+    <button class="nav-item" data-target="senha">Recuperação de Senha</button>
+
+    <div class="grp">Listas de presente</div>
+    <button class="nav-item" data-target="listacriada">Lista Criada</button>
+    <button class="nav-item" data-target="listaliberada">Pedido de Lista</button>
+    <div class="grp">Layout do e-mail</div>
+    <button class="nav-item" data-target="codigo-layout">Layout (HTML)</button>
+    </nav>
+
+  <!-- ===== VIEWER ===== -->
+  <main class="viewer">
+
+  <!-- 1 BOAS-VINDAS -->
+  <section class="panel active" id="boasvindas">
+    <div class="p-head"><h2>Boas-vindas / Cadastro</h2><span class="chip c">Conta</span></div>
+    <p class="p-sub">Mistura boas-vindas com um despejo do cadastro inteiro. A versão nova tem um trabalho só: acolher e dar o primeiro passo de compra, com o cupom que a loja já oferece.</p>
+    <div class="ba">
+      <div><div class="col-label before"><span class="b">Antes</span></div>
+        <div class="frame"><div class="chrome"><div class="subj">Bem-vindo a [nome_loja] - Cadastro feito com sucesso!</div></div>
+          <div class="old"><div class="logo">[logo_loja]</div>
+            <p>[nome_cliente], bem-vindo a [nome_loja]! Abaixo estão todos os seus dados de cadastro...</p>
+            <div class="kv">Razão Social: [razao_social] · CNPJ: [cnpj]<br>Nome: [nome_cliente] · RG: [rg_cliente] · CPF: [cpf_cliente]<br>Nascimento: [data_nascimento]<br>Endereço: [endereco_cliente], [numero_endereco]<br>Bairro/Cidade/UF/CEP · Tel: [telefone_cliente]</div>
+            <div class="flag">⚠ CPF, RG, CNPJ e endereço em texto puro no e-mail.</div>
+            <p class="muted">Atenciosamente, [nome_loja]</p>
+          </div>
+        </div>
+      </div>
+      <div><div class="col-label after"><span class="b">Depois</span></div>
+        <div class="frame"><div class="chrome"><div class="subj">Bem-vindo ao ninho, [nome_cliente] 🌱</div><div class="pre">Sua conta está pronta, e seus 5% de boas-vindas também.</div></div>
+          <div class="new"><div class="em-head"></div>
+            <div class="em-status"><div class="ico">🪺</div><h3>Que bom ter você no ninho, [nome_cliente]!</h3><p>Desde 2005 a Horizonte é referência em tudo para aves, de criador para criador. Sua conta está pronta.</p></div>
+            <div class="cpn"><div class="cl">🌱 presente de boas-vindas · 5% OFF na 1ª compra</div><div class="cc">BEMVINDO</div></div>
+            <a class="em-btn" href="[site_loja]">Começar a comprar</a>
+            <div class="em-blk seeds"><b>🌱 Toda compra vira semente.</b> A cada R$1, 1 semente na conta, vira desconto quando quiser.</div>
+            <div class="em-blk"><b>Sua Central do Cliente</b><br>Acompanhe pedidos e atualize seus dados. Seu acesso: <span class="tag">[email_cliente]</span></div>
+            <div class="em-foot-curve"></div><div class="em-foot" data-lead="Precisa de ajuda? Fale com a gente."></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="code-in-panel"><div class="cip-head"><span class="seed"></span> Código de produção (Tray)</div>
+    <p class="p-sub">Este é o conteúdo que entra no lugar de <span class="tag">[mensagem]</span>, dentro do layout. Já em tabela, com estilos inline e sem os dados sensíveis do original.</p>
+    <div class="codecol">
+
+      <div class="codewrap">
+        <div class="clbl"><h4>Código atual</h4><span class="tagline">despeja CPF, RG, CNPJ, endereço...</span><button class="copybtn" data-code="bv-atual">Copiar</button></div>
+        <div class="codeblock"><pre id="bv-atual">&lt;p&gt;&lt;b&gt;[nome_cliente]&lt;/b&gt;, bem-vindo a &lt;b&gt;[nome_loja]&lt;/b&gt;!&lt;/p&gt;
+&lt;p&gt;Abaixo est&amp;atilde;o todos os seus dados de cadastro. Com a sua senha e seu email voc&amp;ecirc; poder&amp;aacute; efetuar novas compras e acessar a Central do Cliente, onde est&amp;atilde;o dispon&amp;iacute;veis todas as principais fun&amp;ccedil;&amp;otilde;es, tais como consulta a pedidos, confirma&amp;ccedil;&amp;atilde;o de pagamento e altera&amp;ccedil;&amp;otilde;es cadastrais.&lt;/p&gt;
+&lt;p&gt;[msg_bloqueada]&lt;/p&gt;
+&lt;p&gt;Para efetuar o login em nosso site, utilize sempre:&lt;br /&gt;
+Site: [site_loja]&lt;br /&gt;
+Seu email: [email_cliente]&lt;/p&gt;
+&lt;p&gt;Abaixo todos os seus dados cadastrados. Caso algum dado estiver incorreto por favor acesse a Central do Cliente e altere.&lt;/p&gt;
+&lt;p&gt;Raz&amp;atilde;o Social: [razao_social]&lt;br /&gt;CNPJ: [cnpj]&lt;/p&gt;
+&lt;p&gt;Nome: [nome_cliente]&lt;br /&gt;RG: [rg_cliente]&lt;br /&gt;CPF: [cpf_cliente]&lt;br /&gt;Data Nascimento: [data_nascimento]&lt;/p&gt;
+&lt;p&gt;Endere&amp;ccedil;o: [endereco_cliente] [numero_endereco] - [complemento]&lt;br /&gt;Bairro: [bairro_cliente]&lt;br /&gt;Cidade: [cidade_cliente]&lt;br /&gt;Estado: [estado_cliente] ([capital]&lt;br /&gt;CEP: [cep_cliente]&lt;/p&gt;
+&lt;p&gt;Telefone [telefone_cliente] ou [telefone_cliente_2]&lt;/p&gt;
+&lt;p&gt;Data de Cadastro: [hoje]&lt;/p&gt;</pre></div>
+      </div>
+
+      <div class="codewrap">
+        <div class="clbl"><h4>Novo código (corpo)</h4><span class="tagline">acolhe + cupom + Sementes + acesso</span><button class="copybtn" data-code="bv-novo">Copiar</button></div>
+        <div class="codeblock"><pre id="bv-novo">&lt;!-- ===== CORPO: E-mail de Boas-vindas (vai no lugar de [mensagem]) ===== --&gt;
+
+&lt;!-- Preheader: texto de pre-visualizacao no inbox (fica oculto no corpo) --&gt;
+&lt;div style="display:none; max-height:0; overflow:hidden; mso-hide:all; font-size:1px; line-height:1px; color:#ffffff;"&gt;Sua conta est&amp;aacute; pronta, e seus 5% de boas-vindas tamb&amp;eacute;m.&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&lt;/div&gt;
+
+&lt;!-- Hero --&gt;
+&lt;h1 style="margin:0 0 10px; font-family:Poppins,Arial,Helvetica,sans-serif; font-weight:700; font-size:24px; line-height:1.2; color:#092312; text-align:center;"&gt;Que bom ter voc&amp;ecirc; no ninho, [nome_cliente]!&lt;/h1&gt;
+&lt;p style="margin:0 0 22px; font-family:Poppins,Arial,Helvetica,sans-serif; font-size:15px; line-height:1.6; color:#092312; text-align:center;"&gt;Desde 2005 a Horizonte &amp;eacute; refer&amp;ecirc;ncia em tudo para aves, de criador para criador. Sua conta est&amp;aacute; pronta; agora &amp;eacute; s&amp;oacute; escolher o melhor para os seus.&lt;/p&gt;
+
+&lt;!-- Aviso condicional da Tray (aparece so quando ha mensagem; caso contrario fica vazio) --&gt;
+&lt;p style="margin:0 0 18px; font-family:Poppins,Arial,Helvetica,sans-serif; font-size:13px; line-height:1.5; color:#5B564E; text-align:center;"&gt;[msg_bloqueada]&lt;/p&gt;
+
+&lt;!-- Cupom de boas-vindas --&gt;
+&lt;table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"&gt;
+  &lt;tr&gt;
+    &lt;td align="center" style="border:2px dashed #EEC96B; border-radius:12px; background:#FFFDF7; padding:18px 20px;"&gt;
+      &lt;div style="font-family:Poppins,Arial,Helvetica,sans-serif; font-size:11px; letter-spacing:1px; color:#7a5a17; text-transform:uppercase;"&gt;&amp;#127793; Presente de boas-vindas &amp;middot; 5% OFF na 1&amp;ordf; compra&lt;/div&gt;
+      &lt;div style="font-family:Poppins,Arial,Helvetica,sans-serif; font-size:22px; font-weight:700; letter-spacing:2px; color:#092312; margin-top:6px;"&gt;BEMVINDO&lt;/div&gt;
+      &lt;div style="font-family:Poppins,Arial,Helvetica,sans-serif; font-size:12px; color:#5B564E; margin-top:4px;"&gt;use o cupom no carrinho&lt;/div&gt;
+    &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+
+&lt;!-- Botao CTA --&gt;
+&lt;table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center" style="margin:22px auto 4px;"&gt;
+  &lt;tr&gt;
+    &lt;td align="center" bgcolor="#FFC100" style="border-radius:100px;"&gt;
+      &lt;a href="[site_loja]" style="display:inline-block; padding:14px 36px; font-family:Poppins,Arial,Helvetica,sans-serif; font-size:15px; font-weight:700; color:#221B05; text-decoration:none; border-radius:100px;"&gt;Come&amp;ccedil;ar a comprar&lt;/a&gt;
+    &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+
+&lt;!-- Sementes --&gt;
+&lt;table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:22px;"&gt;
+  &lt;tr&gt;
+    &lt;td style="background:#E3EDE4; border-radius:12px; padding:16px 18px; font-family:Poppins,Arial,Helvetica,sans-serif; font-size:13px; line-height:1.55; color:#092312;"&gt;&lt;b&gt;&amp;#127793; Toda compra vira semente.&lt;/b&gt; A cada R$1, voc&amp;ecirc; ganha 1 semente na sua conta, que vira desconto quando quiser.&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+
+&lt;!-- Central do Cliente (sem dados sensiveis) --&gt;
+&lt;table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:14px;"&gt;
+  &lt;tr&gt;
+    &lt;td style="border:1px solid #E6E3DA; border-radius:12px; padding:16px 18px; font-family:Poppins,Arial,Helvetica,sans-serif; font-size:13px; line-height:1.6; color:#092312;"&gt;
+      &lt;b&gt;Sua Central do Cliente&lt;/b&gt;&lt;br/&gt;
+      Acompanhe pedidos e atualize seus dados quando precisar.&lt;br/&gt;
+      &lt;span style="color:#5B564E;"&gt;Seu acesso:&lt;/span&gt; [email_cliente]&lt;br/&gt;
+      &lt;a href="[link_central]" style="color:#3E6B4F; font-weight:700; text-decoration:none;"&gt;Acessar minha conta &amp;rarr;&lt;/a&gt;
+    &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;</pre></div>
+      </div>
+
+      <div class="codenote"><span class="seed" style="margin-top:6px"></span><div><b>O que saiu:</b> CPF, RG, CNPJ, data de nascimento, endereço, telefone e o segundo bloco de "dados cadastrados" — nada disso precisa (nem deve) trafegar por e-mail. Ficou só o login (<span class="tag">[email_cliente]</span>) e o link pra Central. <b>Mantido:</b> a tag <span class="tag">[msg_bloqueada]</span> como aviso condicional (fica vazia quando não há mensagem). <b>Botão:</b> o amarelo tem o fundo na <span class="tag">td bgcolor</span> pra segurar a cor no Outlook; o arredondamento total sai em Gmail/Apple e fica quadrado no Outlook antigo (segue clicável e na cor certa).</div></div>
+
+    </div>
+    </div>
+  </section>
+
+  <!-- 2 INFO PEDIDO -->
+  <section class="panel" id="infopedido">
+    <div class="p-head"><h2>Informações do Pedido</h2><span class="chip t">Transacional</span><span class="chip" style="background:var(--millet);color:#3a2c0d">abertura ~60-70%</span></div>
+    <p class="p-sub">O e-mail mais aberto e de maior potencial de venda. Hoje é um parágrafo com tudo empilhado. A versão nova separa em blocos, com o pagamento como ação principal.</p>
+    <div class="ba">
+      <div><div class="col-label before"><span class="b">Antes</span></div>
+        <div class="frame"><div class="chrome"><div class="subj">Dados do seu pedido</div></div>
+          <div class="old"><div class="logo">[logo_loja]</div>
+            <p class="muted" style="font-size:10.5px">Atenção: você está recebendo uma cópia da página de finalização. Caso já tenha pago, desconsidere o link.</p>
+            <p class="cram">[nome_cliente], agradecemos sua compra. Data: [data_pedido] - [hora] Cód: [cod_pedido] ... Detalhes: [produtos_vendidos_com_foto] IMPOSTOS: [imposto] FRETE: [valor_envio] TOTAL [total_pedido] [forma_pagamento_escolhida_pedido] [link_efetuar_pagamento] Trocar forma: [link_troca_pagamento] Dúvidas? [telefone_loja] [email_loja]</p>
+            <p class="muted">Atenciosamente, [nome_loja]</p>
+          </div>
+        </div>
+      </div>
+      <div><div class="col-label after"><span class="b">Depois</span></div>
+        <div class="frame"><div class="chrome"><div class="subj">Recebemos seu pedido [cod_pedido] 🌱</div><div class="pre">Falta só o pagamento para ele voar até você.</div></div>
+          <div class="new"><div class="em-head"></div>
+            <div class="em-status"><div class="ico">📦</div><h3>Recebemos seu pedido, [nome_cliente]!</h3><p>Falta só confirmar o pagamento para começarmos a preparar tudo.</p></div>
+            <div class="em-bar"><span>Pedido</span><b>[cod_pedido]</b></div>
+            <div class="em-prod"><div class="prow"><div class="thumb">🥣</div><div><div class="pn">[produtos_vendidos_com_foto]</div><div class="pm">renderiza itens com foto</div></div></div></div>
+            <div class="em-tot"><div class="tr"><span>Frete · [forma_envio]</span><span>[valor_envio]</span></div><div class="tr"><span>Acréscimo / desconto</span><span>[acrescimo_desconto_forma_pgto]</span></div><div class="tr big"><span>Total</span><span>[total_pedido]</span></div></div>
+            <a class="em-btn" href="[link_efetuar_pagamento]">Pagar agora</a>
+            <a class="em-btn ghost" href="[link_troca_pagamento]">Trocar forma de pagamento</a>
+            <div class="em-blk"><b>Entrega</b><div class="addr">[endereco_entrega_pedido]</div></div>
+            <div class="em-blk seeds"><b>🌱 Este pedido vira semente.</b> Cada R$1 vira 1 semente, desconto na próxima compra.</div>
+            <div class="em-foot-curve"></div><div class="em-foot" data-lead="Guarde o código [cod_pedido] para falar com a gente."></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pnote"><span class="s seed"></span><div>O aviso "desconsidere o link se já pagou" some: quem pagou recebe o e-mail de <b>pagamento confirmado</b>. Um e-mail, uma situação. Cross-sell ("combina com o que levou") entra aqui como bloco curado, a Tray não tem tag dinâmica de recomendação.</div></div>
+  
+    <div class="code-in-panel"><div class="cip-head"><span class="seed"></span> Código de produção (Tray)</div>
+    <p class="p-sub"><b>Assunto:</b> Recebemos seu pedido [cod_pedido] 🌱<br/><b>Preheader:</b> Falta só o pagamento para ele voar até você.</p>
+    <div class="codecol"><div class="codewrap">
+      <div class="clbl"><h4>Corpo (vai no [mensagem])</h4><button class="copybtn" data-code="code-infopedido">Copiar</button></div>
+      <div class="codeblock"><pre id="code-infopedido">&lt;!-- ===== CORPO: Informa&amp;ccedil;&amp;otilde;es do Pedido (vai no lugar de [mensagem]) ===== --&gt;
+&lt;!-- Preheader --&gt;
+&lt;div style="display:none; max-height:0; overflow:hidden; mso-hide:all; font-size:1px; line-height:1px; color:#ffffff;"&gt;Falta s&amp;oacute; o pagamento para ele voar at&amp;eacute; voc&amp;ecirc;.&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&lt;/div&gt;
+&lt;div style="text-align:center; font-size:34px; line-height:1; margin:0 0 8px;"&gt;📦&lt;/div&gt;
+&lt;h1 style="margin:0 0 10px; font-weight:700; font-size:23px; line-height:1.2; color:#092312; text-align:center; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Recebemos seu pedido, [nome_cliente]!&lt;/h1&gt;
+&lt;p style="margin:0 0 20px; font-size:15px; line-height:1.6; color:#092312; text-align:center; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Falta s&amp;oacute; confirmar o pagamento para come&amp;ccedil;armos a preparar tudo.&lt;/p&gt;
+&lt;table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 8px;"&gt;&lt;tr&gt;&lt;td style="padding:11px 15px; background:#FBFBFA; border:1px solid #E6E3DA; border-radius:10px;"&gt;&lt;span style="font-size:12.5px; color:#5B564E; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Pedido:&lt;/span&gt; &lt;span style="font-size:13px; font-weight:700; color:#092312; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;[cod_pedido]&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:14px 0 0;"&gt;&lt;tr&gt;&lt;td style="background:#FBFBFA; border:1px solid #E6E3DA; border-radius:12px; padding:16px 18px; font-size:13px; line-height:1.55; color:#092312; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;[produtos_vendidos_com_foto]&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:14px 0 0;"&gt;&lt;tr&gt;&lt;td style="background:#FBFBFA; border:1px solid #E6E3DA; border-radius:12px; padding:16px 18px; font-size:13px; line-height:1.55; color:#092312; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Frete ([forma_envio]): [valor_envio]&lt;br/&gt;Acr&amp;eacute;scimo/desconto: [acrescimo_desconto_forma_pgto]&lt;br/&gt;&lt;b&gt;Total: [total_pedido]&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center" style="margin:20px auto 6px;"&gt;&lt;tr&gt;&lt;td align="center" bgcolor="#FFC100" style="border-radius:100px;"&gt;&lt;a href="[link_efetuar_pagamento]" style="display:inline-block; padding:14px 34px; font-size:15px; font-weight:700; color:#221B05; text-decoration:none; border-radius:100px; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Pagar agora&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;p style="text-align:center; margin:8px 0 0; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;&lt;a href="[link_troca_pagamento]" style="color:#3E6B4F; font-weight:700; font-size:13.5px; text-decoration:none; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Trocar forma de pagamento&lt;/a&gt;&lt;/p&gt;
+&lt;table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:14px 0 0;"&gt;&lt;tr&gt;&lt;td style="background:#FBFBFA; border:1px solid #E6E3DA; border-radius:12px; padding:16px 18px; font-size:13px; line-height:1.55; color:#092312; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;&lt;b&gt;Entrega&lt;/b&gt;&lt;br/&gt;[endereco_entrega_pedido]&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:14px 0 0;"&gt;&lt;tr&gt;&lt;td style="background:#E3EDE4; border:1px solid #CFE0D5; border-radius:12px; padding:16px 18px; font-size:13px; line-height:1.55; color:#092312; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;&lt;b&gt;🌱 Este pedido vira semente.&lt;/b&gt; A cada R$1, 1 semente na sua conta, que vira desconto na pr&amp;oacute;xima.&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</pre></div>
+    </div></div>
+    </div>
+  </section>
+
+  <!-- 3 EM ABERTO -->
+  <section class="panel" id="emaberto">
+    <div class="p-head"><h2>Pedido em Aberto</h2><span class="chip t">Transacional</span><span class="chip" style="background:var(--millet);color:#3a2c0d">recupera receita</span></div>
+    <p class="p-sub">Hoje soa como cobrança ("consta em aberto", "pendência"). É um dos e-mails que mais recupera venda perdida, funciona melhor como lembrete gentil, tranquilizando que o pedido continua reservado.</p>
+    <div class="ba">
+      <div><div class="col-label before"><span class="b">Antes</span></div>
+        <div class="frame"><div class="chrome"><div class="subj">Informações sobre o seu pedido</div></div>
+          <div class="old"><p>Olá Caro(a) [nome_cliente],</p><p>Estamos entrando em contato para lhe avisar sobre um pedido feito em nossa loja, que consta em aberto. Gostaríamos de resolver esta pendência...</p><div class="kv">Data: [data_pedido] · Cód: [cod_pedido]<br>Status: [status] · Valor: R$ [valor_pedido]</div><p>[mensagem_pagamento]</p><p class="muted">É indispensável a confirmação de pagamento pelo link acima.</p></div>
+        </div>
+      </div>
+      <div><div class="col-label after"><span class="b">Depois</span></div>
+        <div class="frame"><div class="chrome"><div class="subj">[nome_cliente], seu pedido [cod_pedido] ainda está guardado 🌱</div><div class="pre">É só finalizar o pagamento para ele seguir viagem.</div></div>
+          <div class="new"><div class="em-head"></div>
+            <div class="em-status"><div class="ico warm">⏳</div><h3>Seu pedido está te esperando</h3><p>O pagamento do pedido [cod_pedido] ainda não caiu, mas ele continua reservado para você.</p></div>
+            <div class="em-bar"><span>Pedido</span><b>[cod_pedido]</b></div>
+            <div class="em-bar"><span>Valor</span><b>R$ [valor_pedido]</b></div>
+            <div class="em-blk info">[mensagem_pagamento]</div>
+            <a class="em-btn" href="[link_pagamento]">Finalizar pagamento</a>
+            <div class="em-blk"><b>Mudou de ideia ou teve algum problema?</b> É só chamar a gente no WhatsApp, a gente resolve rapidinho.</div>
+            <div class="em-foot-curve"></div><div class="em-foot" data-lead="Estamos aqui para ajudar."></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="code-in-panel"><div class="cip-head"><span class="seed"></span> Código de produção (Tray)</div>
+    <p class="p-sub"><b>Assunto:</b> [nome_cliente], seu pedido [cod_pedido] ainda está guardado 🌱<br/><b>Preheader:</b> É só finalizar o pagamento para ele seguir viagem.</p>
+    <div class="codecol"><div class="codewrap">
+      <div class="clbl"><h4>Código atual</h4><span class="tagline">o que está na Tray hoje</span><button class="copybtn" data-code="atual-emaberto">Copiar</button></div>
+      <div class="codeblock"><pre id="atual-emaberto">&lt;p&gt;Ol&amp;aacute; Caro(a) &lt;strong&gt;[nome_cliente]&lt;/strong&gt;,&lt;/p&gt;
+&lt;p&gt;Estamos entrando em contato para lhe avisar sobre um pedido feito em nossa loja, que consta em aberto.&lt;br /&gt;
+Gostar&amp;iacute;amos de resolver esta pend&amp;ecirc;ncia para lhe enviar o produto desejado o mais r&amp;aacute;pido poss&amp;iacute;vel.&lt;/p&gt;
+&lt;p&gt;Veja os dados do pedido abaixo :&lt;/p&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&lt;hr id="null" /&gt;
+&lt;p&gt;&lt;br /&gt;
+&lt;strong&gt;Data do Pedido:&lt;/strong&gt; [data_pedido]&lt;br /&gt;
+&lt;br /&gt;
+&lt;strong&gt;C&amp;oacute;digo do Pedido:&lt;/strong&gt; [cod_pedido]&lt;br /&gt;
+&lt;br /&gt;
+&lt;strong&gt;Status:&lt;/strong&gt; [status]&lt;br /&gt;
+&lt;br /&gt;
+&lt;strong&gt;Valor do Pedido:&lt;/strong&gt; R$ [valor_pedido]&lt;br /&gt;
+&lt;br /&gt;
+&lt;strong&gt;Maiores detalhes do pedido:&lt;/strong&gt; &lt;a href="[site_loja]/pedidos/" target="_blank"&gt;[site_loja]/pedidos&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&lt;hr id="null" /&gt;
+&lt;p&gt;&lt;br /&gt;
+&lt;strong&gt;&lt;u&gt;Pagamento&lt;/u&gt;&lt;/strong&gt;&lt;br /&gt;
+&lt;br /&gt;
+[mensagem_pagamento]&lt;/p&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&lt;u&gt;Cancelamento do Pedido&lt;/u&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Para cancelar este pedido e n&amp;atilde;o receber mais estes emails, entre em contato conosco.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&lt;u&gt;&lt;font color="#810000"&gt;Aten&amp;ccedil;&amp;atilde;o&lt;/font&gt;&lt;/u&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&amp;Eacute; indispens&amp;aacute;vel a confirma&amp;ccedil;&amp;atilde;o de pagamento pelo link acima.&lt;br /&gt;
+Estaremos aguardando a confirma&amp;ccedil;&amp;atilde;o de pagamento para enviarmos o seu pedido.&lt;/p&gt;
+&lt;p&gt;Caso tenha alguma d&amp;uacute;vida ou sugest&amp;atilde;o, entre em contato conosco.&lt;/p&gt;</pre></div>
+    </div>
+    <div class="codewrap">
+      <div class="clbl"><h4>Novo código (corpo)</h4><button class="copybtn" data-code="code-emaberto">Copiar</button></div>
+      <div class="codeblock"><pre id="code-emaberto">&lt;!-- ===== CORPO: Pedido em Aberto (vai no lugar de [mensagem]) ===== --&gt;
+&lt;!-- Preheader --&gt;
+&lt;div style="display:none; max-height:0; overflow:hidden; mso-hide:all; font-size:1px; line-height:1px; color:#ffffff;"&gt;&amp;Eacute; s&amp;oacute; finalizar o pagamento para ele seguir viagem.&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&lt;/div&gt;
+&lt;div style="text-align:center; font-size:34px; line-height:1; margin:0 0 8px;"&gt;⏳&lt;/div&gt;
+&lt;h1 style="margin:0 0 10px; font-weight:700; font-size:23px; line-height:1.2; color:#092312; text-align:center; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Seu pedido est&amp;aacute; te esperando&lt;/h1&gt;
+&lt;p style="margin:0 0 20px; font-size:15px; line-height:1.6; color:#092312; text-align:center; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;O pagamento do pedido [cod_pedido] ainda n&amp;atilde;o caiu, mas ele continua reservado para voc&amp;ecirc;.&lt;/p&gt;
+&lt;table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 8px;"&gt;&lt;tr&gt;&lt;td style="padding:11px 15px; background:#FBFBFA; border:1px solid #E6E3DA; border-radius:10px;"&gt;&lt;span style="font-size:12.5px; color:#5B564E; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Pedido:&lt;/span&gt; &lt;span style="font-size:13px; font-weight:700; color:#092312; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;[cod_pedido]&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 8px;"&gt;&lt;tr&gt;&lt;td style="padding:11px 15px; background:#FBFBFA; border:1px solid #E6E3DA; border-radius:10px;"&gt;&lt;span style="font-size:12.5px; color:#5B564E; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Valor:&lt;/span&gt; &lt;span style="font-size:13px; font-weight:700; color:#092312; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;R$ [valor_pedido]&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:14px 0 0;"&gt;&lt;tr&gt;&lt;td style="background:#EEF3F4; border:1px solid #CBDDE2; border-radius:12px; padding:16px 18px; font-size:13px; line-height:1.55; color:#092312; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;[mensagem_pagamento]&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center" style="margin:20px auto 6px;"&gt;&lt;tr&gt;&lt;td align="center" bgcolor="#FFC100" style="border-radius:100px;"&gt;&lt;a href="[link_pagamento]" style="display:inline-block; padding:14px 34px; font-size:15px; font-weight:700; color:#221B05; text-decoration:none; border-radius:100px; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Finalizar pagamento&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:14px 0 0;"&gt;&lt;tr&gt;&lt;td style="background:#FBFBFA; border:1px solid #E6E3DA; border-radius:12px; padding:16px 18px; font-size:13px; line-height:1.55; color:#092312; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;&lt;b&gt;Mudou de ideia ou teve algum problema?&lt;/b&gt; &amp;Eacute; s&amp;oacute; chamar a gente no WhatsApp, a gente resolve rapidinho.&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</pre></div>
+    </div></div>
+    </div>
+  </section>
+
+  <!-- 4 MANUAL -->
+  <section class="panel" id="manual">
+    <div class="p-head"><h2>Confirmação de Pedido Manual</h2><span class="chip t">Transacional</span></div>
+    <p class="p-sub">As instruções de frete e código hoje são confusas e cheias de avisos. A versão nova transforma num passo único e claro: um botão para concluir.</p>
+    <div class="ba">
+      <div><div class="col-label before"><span class="b">Antes</span></div>
+        <div class="frame"><div class="chrome"><div class="subj">[nome_cliente], confirme sua compra</div></div>
+          <div class="old"><p>Olá [nome_cliente],</p><p>Você realizou uma compra e será necessário nos informar alguns dados para concluir. Clique no link abaixo para calcular o frete...</p><p class="lnk">[link_intermed]</p><p class="cram">Caso tenha problemas: acesse [site_loja]/pedido.php e digite o código: [cod_intermed]</p><p class="warn">Não envie email para solicitar dados de frete e pagamento.</p></div>
+        </div>
+      </div>
+      <div><div class="col-label after"><span class="b">Depois</span></div>
+        <div class="frame"><div class="chrome"><div class="subj">[nome_cliente], falta um passo para concluir seu pedido</div><div class="pre">Calcular frete e pagamento leva menos de um minuto.</div></div>
+          <div class="new"><div class="em-head"></div>
+            <div class="em-status"><div class="ico">👣</div><h3>Quase lá, [nome_cliente]!</h3><p>Para calcular o frete e escolher como pagar, é só um clique. As formas de pagamento aparecem depois que você escolher o envio.</p></div>
+            <a class="em-btn" href="[link_intermed]">Concluir meu pedido</a>
+            <div class="em-blk"><b>O botão não abriu?</b> Acesse <span class="tag">[site_loja]/pedido.php</span> e informe o código:<div class="cc" style="font-family:var(--mono);font-size:16px;color:var(--pine);margin-top:5px;letter-spacing:.1em">[cod_intermed]</div></div>
+            <div class="em-blk info"><b>Tudo pelo site.</b> Não precisa responder este e-mail pedindo frete ou pagamento, está tudo no link acima.</div>
+            <div class="em-foot-curve"></div><div class="em-foot" data-lead="Precisa de ajuda para concluir? Chame a gente."></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="code-in-panel"><div class="cip-head"><span class="seed"></span> Código de produção (Tray)</div>
+    <p class="p-sub"><b>Assunto:</b> [nome_cliente], falta um passo para concluir seu pedido<br/><b>Preheader:</b> Calcular frete e pagamento leva menos de um minuto.</p>
+    <div class="codecol"><div class="codewrap">
+      <div class="clbl"><h4>Código atual</h4><span class="tagline">o que está na Tray hoje</span><button class="copybtn" data-code="atual-manual">Copiar</button></div>
+      <div class="codeblock"><pre id="atual-manual">&lt;p&gt;Ol&amp;aacute; [nome_cliente],&lt;/p&gt;
+&lt;p&gt;Voc&amp;ecirc; realizou uma compra conosco&amp;nbsp; e ser&amp;aacute; necess&amp;aacute;rio nos informar alguns dados para concluir a compra.&lt;/p&gt;
+&lt;p&gt;Clique no link abaixo para calcular o frete e informar seus dados para envio do produto. As formas de pagamento ser&amp;atilde;o informadas assim que voc&amp;ecirc; escolher a forma de envio.&lt;/p&gt;
+&lt;p&gt;&lt;br /&gt;
+&lt;a href="[link_intermed]" target="_blank"&gt;[link_intermed]&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Caso tenha problemas com este link:&lt;br /&gt;
+&amp;nbsp; -&amp;nbsp; acesse o seguinte endere&amp;ccedil;o:&amp;nbsp; &lt;a href="[site_loja]/pedido.php" target="_blank"&gt;[site_loja]/pedido.php&lt;/a&gt;&amp;nbsp;&lt;br /&gt;
+&amp;nbsp; -&amp;nbsp; e digite o seguinte c&amp;oacute;digo: [cod_intermed]&lt;/p&gt;
+&lt;p&gt;N&amp;atilde;o envie email para solicitar dados de frete e pagamento, eles dever&amp;atilde;o ser obtidos em nosso site, atrav&amp;eacute;s do link acima.&lt;/p&gt;
+&lt;p&gt;Para cancelar esta compra, entre em contato conosco.&lt;/p&gt;</pre></div>
+    </div>
+    <div class="codewrap">
+      <div class="clbl"><h4>Novo código (corpo)</h4><button class="copybtn" data-code="code-manual">Copiar</button></div>
+      <div class="codeblock"><pre id="code-manual">&lt;!-- ===== CORPO: Confirma&amp;ccedil;&amp;atilde;o de Pedido Manual (vai no lugar de [mensagem]) ===== --&gt;
+&lt;!-- Preheader --&gt;
+&lt;div style="display:none; max-height:0; overflow:hidden; mso-hide:all; font-size:1px; line-height:1px; color:#ffffff;"&gt;Calcular frete e pagamento leva menos de um minuto.&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&lt;/div&gt;
+&lt;div style="text-align:center; font-size:34px; line-height:1; margin:0 0 8px;"&gt;👣&lt;/div&gt;
+&lt;h1 style="margin:0 0 10px; font-weight:700; font-size:23px; line-height:1.2; color:#092312; text-align:center; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Quase l&amp;aacute;, [nome_cliente]!&lt;/h1&gt;
+&lt;p style="margin:0 0 20px; font-size:15px; line-height:1.6; color:#092312; text-align:center; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Para calcular o frete e escolher como pagar, &amp;eacute; s&amp;oacute; um clique. As formas de pagamento aparecem depois que voc&amp;ecirc; escolher o envio.&lt;/p&gt;
+&lt;table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center" style="margin:20px auto 6px;"&gt;&lt;tr&gt;&lt;td align="center" bgcolor="#FFC100" style="border-radius:100px;"&gt;&lt;a href="[link_intermed]" style="display:inline-block; padding:14px 34px; font-size:15px; font-weight:700; color:#221B05; text-decoration:none; border-radius:100px; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Concluir meu pedido&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:14px 0 0;"&gt;&lt;tr&gt;&lt;td style="background:#FBFBFA; border:1px solid #E6E3DA; border-radius:12px; padding:16px 18px; font-size:13px; line-height:1.55; color:#092312; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;&lt;b&gt;O bot&amp;atilde;o n&amp;atilde;o abriu?&lt;/b&gt; Acesse [site_loja]/pedido.php e informe o c&amp;oacute;digo:&lt;br/&gt;&lt;span style="font-size:16px; font-weight:700; letter-spacing:1px; color:#092312;"&gt;[cod_intermed]&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:14px 0 0;"&gt;&lt;tr&gt;&lt;td style="background:#EEF3F4; border:1px solid #CBDDE2; border-radius:12px; padding:16px 18px; font-size:13px; line-height:1.55; color:#092312; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;&lt;b&gt;Tudo pelo site.&lt;/b&gt; N&amp;atilde;o precisa responder este e-mail pedindo frete ou pagamento, est&amp;aacute; tudo no link acima.&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</pre></div>
+    </div></div>
+    </div>
+  </section>
+
+  <!-- 5 PAGAMENTO -->
+  <section class="panel" id="pagamento">
+    <div class="p-head"><h2>Pagamento Confirmado</h2><span class="chip t">Transacional</span></div>
+    <p class="p-sub">Duas frases secas num dos e-mails mais abertos e mais felizes da jornada. Momento de aliviar, celebrar de leve e dizer o que vem agora.</p>
+    <div class="ba">
+      <div><div class="col-label before"><span class="b">Antes</span></div>
+        <div class="frame"><div class="chrome"><div class="subj">Confirmação de pagamento do pedido [cod_pedido]</div></div>
+          <div class="old"><p>Olá Caro [nome_cliente],</p><p>O pagamento de seu pedido número [cod_pedido] foi confirmado hoje ([data_hoje]) e será enviado em breve, conforme prazo informado no momento da compra.</p><p>Assim que o pedido for postado enviaremos um email avisando.</p><p class="muted">Agradecemos sua compra. Atenciosamente, [nome_loja]</p></div>
+        </div>
+      </div>
+      <div><div class="col-label after"><span class="b">Depois</span></div>
+        <div class="frame"><div class="chrome"><div class="subj">Pagamento aprovado! Já vamos preparar o [cod_pedido] 🌱</div><div class="pre">Avisamos assim que ele sair para entrega.</div></div>
+          <div class="new"><div class="em-head"></div>
+            <div class="em-status"><div class="ico">✅</div><h3>Pagamento aprovado, [nome_cliente]!</h3><p>Recebemos tudo certinho em [data_hoje]. Agora é com a gente: já vamos preparar seu pedido com todo o cuidado.</p></div>
+            <div class="em-bar"><span>Pedido</span><b>[cod_pedido]</b></div>
+            <div class="em-prazo">O próximo aviso é a <b>postagem</b>, com o código de rastreio para acompanhar.</div>
+            <div class="em-blk seeds"><b>🌱 Suas sementes já estão na conta.</b> Elas viram desconto quando você quiser.</div>
+            <div class="em-foot-curve"></div><div class="em-foot" data-lead="Alguma dúvida? A gente responde rápido."></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="code-in-panel"><div class="cip-head"><span class="seed"></span> Código de produção (Tray)</div>
+    <p class="p-sub"><b>Assunto:</b> Pagamento aprovado! Já vamos preparar o [cod_pedido] 🌱<br/><b>Preheader:</b> Avisamos assim que ele sair para entrega.</p>
+    <div class="codecol"><div class="codewrap">
+      <div class="clbl"><h4>Código atual</h4><span class="tagline">o que está na Tray hoje</span><button class="copybtn" data-code="atual-pagamento">Copiar</button></div>
+      <div class="codeblock"><pre id="atual-pagamento">&lt;title&gt;&lt;/title&gt;
+&lt;p&gt;Ol&amp;aacute; Caro &lt;strong&gt;[nome_cliente]&lt;/strong&gt;,&lt;/p&gt;
+&lt;p&gt;O pagamento de seu pedido n&amp;uacute;mero [cod_pedido] foi confirmado hoje ([data_hoje]) e ser&amp;aacute; enviado em breve, conforme prazo informado no momento da compra.&lt;/p&gt;
+&lt;p&gt;Assim que o pedido for postado enviaremos um email avisando.&lt;/p&gt;
+&lt;p&gt;Agradecemos sua compra.&lt;/p&gt;</pre></div>
+    </div>
+    <div class="codewrap">
+      <div class="clbl"><h4>Novo código (corpo)</h4><button class="copybtn" data-code="code-pagamento">Copiar</button></div>
+      <div class="codeblock"><pre id="code-pagamento">&lt;!-- ===== CORPO: Pagamento Confirmado (vai no lugar de [mensagem]) ===== --&gt;
+&lt;!-- Preheader --&gt;
+&lt;div style="display:none; max-height:0; overflow:hidden; mso-hide:all; font-size:1px; line-height:1px; color:#ffffff;"&gt;Avisamos assim que ele sair para entrega.&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&lt;/div&gt;
+&lt;div style="text-align:center; font-size:34px; line-height:1; margin:0 0 8px;"&gt;✅&lt;/div&gt;
+&lt;h1 style="margin:0 0 10px; font-weight:700; font-size:23px; line-height:1.2; color:#092312; text-align:center; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Pagamento aprovado, [nome_cliente]!&lt;/h1&gt;
+&lt;p style="margin:0 0 20px; font-size:15px; line-height:1.6; color:#092312; text-align:center; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Recebemos tudo certinho em [data_hoje]. Agora &amp;eacute; com a gente: j&amp;aacute; vamos preparar seu pedido com todo o cuidado.&lt;/p&gt;
+&lt;table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 8px;"&gt;&lt;tr&gt;&lt;td style="padding:11px 15px; background:#FBFBFA; border:1px solid #E6E3DA; border-radius:10px;"&gt;&lt;span style="font-size:12.5px; color:#5B564E; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Pedido:&lt;/span&gt; &lt;span style="font-size:13px; font-weight:700; color:#092312; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;[cod_pedido]&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;p style="text-align:center; font-size:13.5px; color:#092312; margin:14px 0 0; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;O pr&amp;oacute;ximo aviso &amp;eacute; a &lt;b&gt;postagem&lt;/b&gt;, com o c&amp;oacute;digo de rastreio para acompanhar.&lt;/p&gt;
+&lt;table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:14px 0 0;"&gt;&lt;tr&gt;&lt;td style="background:#E3EDE4; border:1px solid #CFE0D5; border-radius:12px; padding:16px 18px; font-size:13px; line-height:1.55; color:#092312; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;&lt;b&gt;🌱 Suas sementes j&amp;aacute; est&amp;atilde;o na conta.&lt;/b&gt; Elas viram desconto quando voc&amp;ecirc; quiser.&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</pre></div>
+    </div></div>
+    </div>
+  </section>
+
+  <!-- 6 ENVIADO -->
+  <section class="panel" id="enviado">
+    <div class="p-head"><h2>Pedido Enviado</h2><span class="chip t">Transacional</span><span class="chip" style="background:var(--millet);color:#3a2c0d">3 versões → 1</span></div>
+    <p class="p-sub">São três gatilhos diferentes na Tray (sem rastreio, com rastreio e demais fretes), então mantive um e-mail por contexto em vez de unificar. Todos aplicam o feedback da loja: gerar a etiqueta significa pedido pronto para coleta, não em trânsito, e o rastreio leva alguns dias úteis para atualizar. O pedido de avaliação saiu (vai para depois da entrega).</p>
+    <div class="ba">
+      <div><div class="col-label before"><span class="b">Antes</span></div>
+        <div class="frame"><div class="chrome"><div class="subj">Código para rastrear seu pedido - [cod_envio]</div></div>
+          <div class="old"><p>Olá Caro(a) [nome_cliente],</p><p>Seu pedido de número [cod_pedido] já foi enviado. Detalhes:</p><div class="kv">Data: [data_envio] · Forma: [forma_envio]<br>Código: [cod_envio]</div><p>Rastrear: <span class="lnk">[link_rastreamento]</span></p><p>Prazo: [prazo_recebimento].</p><p class="warn">Por favor, reserve um tempinho para avaliar os produtos... ← review antes de o produto chegar</p></div>
+        </div>
+      </div>
+      <div><div class="col-label after"><span class="b">Depois</span></div>
+        <div class="frame"><div class="chrome"><div class="subj">Seu pedido [cod_pedido] está pronto para envio 📦</div><div class="pre">O rastreio começa a atualizar quando a transportadora coletar.</div></div>
+          <div class="new"><div class="em-head"></div>
+            <div class="em-status"><div class="ico blue">📦</div><h3>Seu pedido está pronto, [nome_cliente]!</h3><p>Preparamos e embalamos o pedido [cod_pedido] em [data_envio]. Agora ele está aguardando a coleta da transportadora ([forma_envio]).</p></div>
+            <div class="em-blk info"><b>Sobre o rastreio:</b> o código só começa a mostrar movimentação depois que a transportadora coletar e registrar o pacote, o que pode levar alguns dias úteis. Se você rastrear e ainda não aparecer nada, é normal.</div>
+            <a class="em-btn blue" href="[link_rastreamento]">Acompanhar meu pedido<span class="sub">código [cod_envio]</span></a>
+            <div class="em-prazo">Prazo estimado de entrega: <b>[prazo_recebimento]</b> (a partir da coleta)</div>
+            <div class="em-blk"><b>Quando chegar:</b> confira se está tudo certo e guarde a embalagem até ter certeza. Qualquer coisa, é só chamar.</div>
+            <div class="em-foot-curve"></div><div class="em-foot" data-lead="Precisa de ajuda com a entrega?"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pnote"><span class="s seed"></span><div><b>Três contextos, três e-mails:</b> a Tray tem gatilhos separados, então mantive um e-mail por contexto. Abaixo, o código atual e o novo de cada um. O mockup acima representa a versão com rastreio.</div></div>
+  
+    <div class="code-in-panel"><div class="cip-head"><span class="seed"></span> Código de produção (Tray)</div>
+
+    <div class="ctx">
+      <h3 class="ctx-title">Contexto 1 · SEM código de rastreio (Correios)</h3>
+      <p class="p-sub"><b>Assunto:</b> Seu pedido [cod_pedido] está pronto para envio 📦<br/><b>Preheader:</b> Assim que o código de rastreio sair, avisamos você.</p>
+      <div class="codecol">
+        <div class="codewrap"><div class="clbl"><h4>Código atual</h4><button class="copybtn" data-code="atual-enviado1">Copiar</button></div><div class="codeblock"><pre id="atual-enviado1">&lt;title&gt;&lt;/title&gt;
+&lt;p&gt;Ol&amp;aacute; Caro(a) &lt;strong&gt;[nome_cliente]&lt;/strong&gt;,&lt;/p&gt;
+&lt;p&gt;Estamos entrando em contato para informar que seu pedido de n&amp;uacute;mero &lt;strong&gt;[cod_pedido] &lt;/strong&gt;j&amp;aacute; foi enviado.&lt;br /&gt;
+&lt;br /&gt;
+Veja abaixo detalhes do envio:&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Data de Envio:&lt;/strong&gt; [data_envio]&lt;br /&gt;
+&lt;strong&gt;Forma de Envio:&lt;/strong&gt; [forma_envio]&lt;/p&gt;
+&lt;p&gt;Ainda n&amp;atilde;o temos dispon&amp;iacute;vel o c&amp;oacute;digo de rastreamento, mas assim que tivermos entraremos em contato novamente para que seja poss&amp;iacute;vel localizar sua encomenda atrav&amp;eacute;s do site dos Correios.&lt;/p&gt;
+&lt;p&gt;O prazo para recebimento &amp;eacute; de [prazo_recebimento].&lt;/p&gt;
+&lt;p&gt;Por favor, [nome_cliente], reserve um tempinho&amp;nbsp;para&amp;nbsp;&lt;strong&gt;comentar e avaliar os produtos adquiridos&lt;/strong&gt;&amp;nbsp;em nosso site.&lt;/p&gt;
+&lt;p&gt;Com a sua ajuda poderemos melhorar cada dia mais os servi&amp;ccedil;os e os produtos oferecidos.&lt;/p&gt;
+&lt;p&gt;A Horizonte Pet Store agradece!&lt;/p&gt;</pre></div></div>
+        <div class="codewrap"><div class="clbl"><h4>Novo código (corpo)</h4><button class="copybtn" data-code="code-enviado1">Copiar</button></div><div class="codeblock"><pre id="code-enviado1">&lt;!-- ===== CORPO: Pedido Enviado - SEM rastreio (vai no lugar de [mensagem]) ===== --&gt;
+&lt;!-- Preheader --&gt;
+&lt;div style="display:none; max-height:0; overflow:hidden; mso-hide:all; font-size:1px; line-height:1px; color:#ffffff;"&gt;Assim que o codigo de rastreio sair, avisamos voce.&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&lt;/div&gt;
+&lt;div style="text-align:center; font-size:34px; line-height:1; margin:0 0 8px;"&gt;📦&lt;/div&gt;
+&lt;h1 style="margin:0 0 10px; font-weight:700; font-size:23px; line-height:1.2; color:#092312; text-align:center; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Seu pedido est&amp;aacute; pronto, [nome_cliente]!&lt;/h1&gt;
+&lt;p style="margin:0 0 20px; font-size:15px; line-height:1.6; color:#092312; text-align:center; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Preparamos e embalamos o pedido [cod_pedido] em [data_envio] via [forma_envio]. Ele j&amp;aacute; est&amp;aacute; seguindo para a transportadora.&lt;/p&gt;
+&lt;table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:14px 0 0;"&gt;&lt;tr&gt;&lt;td style="background:#EEF3F4; border:1px solid #CBDDE2; border-radius:12px; padding:16px 18px; font-size:13px; line-height:1.55; color:#092312; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;&lt;b&gt;Sobre o rastreio:&lt;/b&gt; o c&amp;oacute;digo ainda n&amp;atilde;o est&amp;aacute; dispon&amp;iacute;vel. Assim que a transportadora registrar o pacote, enviamos ele por e-mail para voc&amp;ecirc; acompanhar. Costuma levar alguns dias &amp;uacute;teis, ent&amp;atilde;o fica tranquilo.&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;p style="text-align:center; font-size:13.5px; color:#092312; margin:14px 0 0; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Prazo estimado de entrega: &lt;b&gt;[prazo_recebimento]&lt;/b&gt; (a partir da coleta).&lt;/p&gt;
+&lt;table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:14px 0 0;"&gt;&lt;tr&gt;&lt;td style="background:#FBFBFA; border:1px solid #E6E3DA; border-radius:12px; padding:16px 18px; font-size:13px; line-height:1.55; color:#092312; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;&lt;b&gt;Quando chegar:&lt;/b&gt; confira se est&amp;aacute; tudo certo e guarde a embalagem at&amp;eacute; ter certeza. Qualquer coisa, &amp;eacute; s&amp;oacute; chamar.&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</pre></div></div>
+      </div>
+    </div>
+
+    <div class="ctx">
+      <h3 class="ctx-title">Contexto 2 · COM código de rastreio (Correios)</h3>
+      <p class="p-sub"><b>Assunto:</b> Código de rastreio do pedido [cod_pedido] 📦<br/><b>Preheader:</b> O rastreio começa a atualizar quando a transportadora coletar.</p>
+      <div class="codecol">
+        <div class="codewrap"><div class="clbl"><h4>Código atual</h4><button class="copybtn" data-code="atual-enviado2">Copiar</button></div><div class="codeblock"><pre id="atual-enviado2">&lt;title&gt;&lt;/title&gt;
+&lt;p&gt;Ol&amp;aacute; Caro(a) &lt;strong&gt;[nome_cliente]&lt;/strong&gt;,&lt;/p&gt;
+&lt;p&gt;Estamos entrando em contato para informar que seu pedido de n&amp;uacute;mero &lt;strong&gt;[cod_pedido] &lt;/strong&gt;j&amp;aacute; foi enviado.&lt;br /&gt;
+&lt;br /&gt;
+Veja abaixo detalhes do envio:&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Data de Envio:&lt;/strong&gt; [data_envio]&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Forma de Envio:&lt;/strong&gt; [forma_envio]&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;C&amp;oacute;digo de Envio:&lt;/strong&gt; [cod_envio]&lt;/p&gt;
+&lt;p&gt;Para rastrear sua encomenda nos correios, acesse o seguinte link:&lt;/p&gt;
+&lt;p&gt;[link_rastreamento]&lt;/p&gt;
+&lt;p&gt;O prazo para recebimento &amp;eacute; de [prazo_recebimento].&lt;/p&gt;
+&lt;p&gt;Por favor, [nome_cliente], reserve um tempinho&amp;nbsp;para &lt;strong&gt;comentar e avaliar os produtos adquiridos&lt;/strong&gt; em nosso site.&lt;/p&gt;
+&lt;p&gt;Com a sua ajuda poderemos melhorar cada dia mais os servi&amp;ccedil;os e os produtos oferecidos.&lt;/p&gt;
+&lt;p&gt;A Horizonte Pet Store agradece!&lt;/p&gt;</pre></div></div>
+        <div class="codewrap"><div class="clbl"><h4>Novo código (corpo)</h4><button class="copybtn" data-code="code-enviado2">Copiar</button></div><div class="codeblock"><pre id="code-enviado2">&lt;!-- ===== CORPO: Pedido Enviado - COM rastreio (vai no lugar de [mensagem]) ===== --&gt;
+&lt;!-- Preheader --&gt;
+&lt;div style="display:none; max-height:0; overflow:hidden; mso-hide:all; font-size:1px; line-height:1px; color:#ffffff;"&gt;O rastreio comeca a atualizar quando a transportadora coletar.&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&lt;/div&gt;
+&lt;div style="text-align:center; font-size:34px; line-height:1; margin:0 0 8px;"&gt;📦&lt;/div&gt;
+&lt;h1 style="margin:0 0 10px; font-weight:700; font-size:23px; line-height:1.2; color:#092312; text-align:center; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Seu pedido est&amp;aacute; pronto, [nome_cliente]!&lt;/h1&gt;
+&lt;p style="margin:0 0 20px; font-size:15px; line-height:1.6; color:#092312; text-align:center; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Preparamos e embalamos o pedido [cod_pedido] em [data_envio] via [forma_envio]. Aqui est&amp;aacute; seu c&amp;oacute;digo de rastreio.&lt;/p&gt;
+&lt;table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:14px 0 0;"&gt;&lt;tr&gt;&lt;td style="background:#EEF3F4; border:1px solid #CBDDE2; border-radius:12px; padding:16px 18px; font-size:13px; line-height:1.55; color:#092312; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;&lt;b&gt;Sobre o rastreio:&lt;/b&gt; o c&amp;oacute;digo s&amp;oacute; come&amp;ccedil;a a mostrar movimenta&amp;ccedil;&amp;atilde;o depois que a transportadora coletar e registrar o pacote, o que pode levar alguns dias &amp;uacute;teis. Se voc&amp;ecirc; rastrear e ainda n&amp;atilde;o aparecer nada, &amp;eacute; normal.&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center" style="margin:16px auto 4px;"&gt;&lt;tr&gt;&lt;td align="center" bgcolor="#5F8894" style="border-radius:100px;"&gt;&lt;a href="[link_rastreamento]" style="display:inline-block; padding:14px 30px; font-size:15px; font-weight:700; color:#ffffff; text-decoration:none; border-radius:100px; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Acompanhar meu pedido&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;p style="text-align:center; font-size:12px; color:#5B564E; margin:0 0 6px; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;c&amp;oacute;digo [cod_envio]&lt;/p&gt;
+&lt;p style="text-align:center; font-size:13.5px; color:#092312; margin:14px 0 0; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Prazo estimado de entrega: &lt;b&gt;[prazo_recebimento]&lt;/b&gt; (a partir da coleta).&lt;/p&gt;
+&lt;table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:14px 0 0;"&gt;&lt;tr&gt;&lt;td style="background:#FBFBFA; border:1px solid #E6E3DA; border-radius:12px; padding:16px 18px; font-size:13px; line-height:1.55; color:#092312; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;&lt;b&gt;Quando chegar:&lt;/b&gt; confira se est&amp;aacute; tudo certo e guarde a embalagem at&amp;eacute; ter certeza. Qualquer coisa, &amp;eacute; s&amp;oacute; chamar.&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</pre></div></div>
+      </div>
+    </div>
+
+    <div class="ctx">
+      <h3 class="ctx-title">Contexto 3 · Demais fretes (exceto Correios)</h3>
+      <p class="p-sub"><b>Assunto:</b> Seu pedido [cod_pedido] está pronto para envio 📦<br/><b>Preheader:</b> Acompanhe pelo código da transportadora quando ela registrar.</p>
+      <div class="codecol">
+        <div class="codewrap"><div class="clbl"><h4>Código atual</h4><button class="copybtn" data-code="atual-enviado3">Copiar</button></div><div class="codeblock"><pre id="atual-enviado3">&lt;title&gt;&lt;/title&gt;
+&lt;p&gt;Ol&amp;aacute; Caro(a) &lt;strong&gt;[nome_cliente]&lt;/strong&gt;,&lt;/p&gt;
+&lt;p&gt;Estamos entrando em contato para informar que seu pedido de n&amp;uacute;mero &lt;strong&gt;[cod_pedido] &lt;/strong&gt;j&amp;aacute; foi enviado.&lt;br /&gt;
+&lt;br /&gt;
+Veja abaixo detalhes do envio:&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Data de Envio:&lt;/strong&gt; [data_envio]&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Forma de Envio:&lt;/strong&gt; [forma_envio]&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;C&amp;oacute;digo de Envio:&lt;/strong&gt; [cod_envio]&lt;br /&gt;
+&lt;br /&gt;
+[link_rastreamento]&lt;/p&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&lt;p&gt;O prazo para recebimento &amp;eacute; de [prazo_recebimento].&lt;/p&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&lt;p&gt;Por favor, [nome_cliente], reserve um tempinho&amp;nbsp;para&amp;nbsp;&lt;strong&gt;comentar e avaliar os produtos adquiridos&lt;/strong&gt;&amp;nbsp;em nosso site.&lt;/p&gt;
+&lt;p&gt;Com a sua ajuda poderemos melhorar cada dia mais os servi&amp;ccedil;os e os produtos oferecidos.&lt;/p&gt;
+&lt;p&gt;A Horizonte Pet Store agradece!&lt;/p&gt;</pre></div></div>
+        <div class="codewrap"><div class="clbl"><h4>Novo código (corpo)</h4><button class="copybtn" data-code="code-enviado3">Copiar</button></div><div class="codeblock"><pre id="code-enviado3">&lt;!-- ===== CORPO: Pedido Enviado - Demais Fretes (vai no lugar de [mensagem]) ===== --&gt;
+&lt;!-- Preheader --&gt;
+&lt;div style="display:none; max-height:0; overflow:hidden; mso-hide:all; font-size:1px; line-height:1px; color:#ffffff;"&gt;Acompanhe pelo codigo da transportadora quando ela registrar.&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&lt;/div&gt;
+&lt;div style="text-align:center; font-size:34px; line-height:1; margin:0 0 8px;"&gt;📦&lt;/div&gt;
+&lt;h1 style="margin:0 0 10px; font-weight:700; font-size:23px; line-height:1.2; color:#092312; text-align:center; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Seu pedido est&amp;aacute; pronto, [nome_cliente]!&lt;/h1&gt;
+&lt;p style="margin:0 0 20px; font-size:15px; line-height:1.6; color:#092312; text-align:center; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Preparamos e embalamos o pedido [cod_pedido] em [data_envio] via [forma_envio].&lt;/p&gt;
+&lt;table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:14px 0 0;"&gt;&lt;tr&gt;&lt;td style="background:#EEF3F4; border:1px solid #CBDDE2; border-radius:12px; padding:16px 18px; font-size:13px; line-height:1.55; color:#092312; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;&lt;b&gt;Sobre o rastreio:&lt;/b&gt; assim que a transportadora coletar e registrar o pacote, o c&amp;oacute;digo come&amp;ccedil;a a atualizar. Isso pode levar alguns dias &amp;uacute;teis.&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center" style="margin:16px auto 4px;"&gt;&lt;tr&gt;&lt;td align="center" bgcolor="#5F8894" style="border-radius:100px;"&gt;&lt;a href="[link_rastreamento]" style="display:inline-block; padding:14px 30px; font-size:15px; font-weight:700; color:#ffffff; text-decoration:none; border-radius:100px; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Acompanhar meu pedido&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;p style="text-align:center; font-size:12px; color:#5B564E; margin:0 0 6px; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;c&amp;oacute;digo [cod_envio]&lt;/p&gt;
+&lt;p style="text-align:center; font-size:13.5px; color:#092312; margin:14px 0 0; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Prazo estimado de entrega: &lt;b&gt;[prazo_recebimento]&lt;/b&gt; (a partir da coleta).&lt;/p&gt;
+&lt;table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:14px 0 0;"&gt;&lt;tr&gt;&lt;td style="background:#FBFBFA; border:1px solid #E6E3DA; border-radius:12px; padding:16px 18px; font-size:13px; line-height:1.55; color:#092312; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;&lt;b&gt;Quando chegar:&lt;/b&gt; confira se est&amp;aacute; tudo certo e guarde a embalagem at&amp;eacute; ter certeza. Qualquer coisa, &amp;eacute; s&amp;oacute; chamar.&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</pre></div></div>
+      </div>
+    </div>
+    </div>
+  </section>
+
+  <!-- 7 NOTA FISCAL -->
+  <section class="panel" id="notafiscal">
+    <div class="p-head"><h2>Nota Fiscal Emitida</h2><span class="chip t">Transacional</span></div>
+    <p class="p-sub">Este é bem funcional e cumpre o papel. Só ganha marca, hierarquia e um botão claro para baixar o XML, mantendo a simplicidade que um e-mail de NF pede.</p>
+    <div class="ba">
+      <div><div class="col-label before"><span class="b">Antes</span></div>
+        <div class="frame"><div class="chrome"><div class="subj">Seu pedido foi gerado nota fiscal</div></div>
+          <div class="old"><p>Olá [nome_cliente]</p><p>Seu pedido [cod_pedido] já foi faturado e está iniciando o processo de envio.</p><div class="kv">Número: [numero_nota_fiscal]<br>Chave: [chave_nota_fiscal]<br>XML: [link_download_xml_nota_fiscal]</div><p class="cram">Como consultar: acesse o portal da NF-e e clique em Serviços > Consultar... [produtos_vendidos]</p></div>
+        </div>
+      </div>
+      <div><div class="col-label after"><span class="b">Depois</span></div>
+        <div class="frame"><div class="chrome"><div class="subj">Nota fiscal do pedido [cod_pedido] emitida</div><div class="pre">Ela já está na fila de envio.</div></div>
+          <div class="new"><div class="em-head"></div>
+            <div class="em-status"><div class="ico">🧾</div><h3>Sua nota fiscal está pronta</h3><p>Faturamos o pedido [cod_pedido], ele já está entrando na fila de envio.</p></div>
+            <div class="em-bar"><span>Nº da nota</span><b>[numero_nota_fiscal]</b></div>
+            <div class="em-blk"><b>Chave de acesso</b><div class="fine" style="word-break:break-all;color:var(--ink-2)">[chave_nota_fiscal]</div></div>
+            <a class="em-btn" href="[link_download_xml_nota_fiscal]">Baixar XML da nota</a>
+            <div class="em-blk info"><b>Como consultar sua NF-e:</b> acesse o portal da Nota Fiscal Eletrônica, vá em Serviços › Consultar Resumo da NF-e e informe a chave acima.</div>
+            <div class="em-foot-curve"></div><div class="em-foot" data-lead="Dúvidas sobre a nota? Fale com a gente."></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="code-in-panel"><div class="cip-head"><span class="seed"></span> Código de produção (Tray)</div>
+    <p class="p-sub"><b>Assunto:</b> Nota fiscal do pedido [cod_pedido] emitida<br/><b>Preheader:</b> Ela já está na fila de envio.</p>
+    <div class="codecol"><div class="codewrap">
+      <div class="clbl"><h4>Corpo (vai no [mensagem])</h4><button class="copybtn" data-code="code-notafiscal">Copiar</button></div>
+      <div class="codeblock"><pre id="code-notafiscal">&lt;!-- ===== CORPO: Nota Fiscal Emitida (vai no lugar de [mensagem]) ===== --&gt;
+&lt;!-- Preheader --&gt;
+&lt;div style="display:none; max-height:0; overflow:hidden; mso-hide:all; font-size:1px; line-height:1px; color:#ffffff;"&gt;Ela j&amp;aacute; est&amp;aacute; na fila de envio.&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&lt;/div&gt;
+&lt;div style="text-align:center; font-size:34px; line-height:1; margin:0 0 8px;"&gt;🧾&lt;/div&gt;
+&lt;h1 style="margin:0 0 10px; font-weight:700; font-size:23px; line-height:1.2; color:#092312; text-align:center; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Sua nota fiscal est&amp;aacute; pronta&lt;/h1&gt;
+&lt;p style="margin:0 0 20px; font-size:15px; line-height:1.6; color:#092312; text-align:center; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Faturamos o pedido [cod_pedido], ele j&amp;aacute; est&amp;aacute; entrando na fila de envio.&lt;/p&gt;
+&lt;table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 8px;"&gt;&lt;tr&gt;&lt;td style="padding:11px 15px; background:#FBFBFA; border:1px solid #E6E3DA; border-radius:10px;"&gt;&lt;span style="font-size:12.5px; color:#5B564E; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;N&amp;ordm; da nota:&lt;/span&gt; &lt;span style="font-size:13px; font-weight:700; color:#092312; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;[numero_nota_fiscal]&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:14px 0 0;"&gt;&lt;tr&gt;&lt;td style="background:#FBFBFA; border:1px solid #E6E3DA; border-radius:12px; padding:16px 18px; font-size:13px; line-height:1.55; color:#092312; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;&lt;b&gt;Chave de acesso&lt;/b&gt;&lt;br/&gt;&lt;span style="font-size:11.5px; color:#5B564E; word-break:break-all;"&gt;[chave_nota_fiscal]&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center" style="margin:20px auto 6px;"&gt;&lt;tr&gt;&lt;td align="center" bgcolor="#FFC100" style="border-radius:100px;"&gt;&lt;a href="[link_download_xml_nota_fiscal]" style="display:inline-block; padding:14px 34px; font-size:15px; font-weight:700; color:#221B05; text-decoration:none; border-radius:100px; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Baixar XML da nota&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:14px 0 0;"&gt;&lt;tr&gt;&lt;td style="background:#EEF3F4; border:1px solid #CBDDE2; border-radius:12px; padding:16px 18px; font-size:13px; line-height:1.55; color:#092312; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;&lt;b&gt;Como consultar sua NF-e:&lt;/b&gt; acesse o portal da Nota Fiscal Eletr&amp;ocirc;nica e depois Consultar Resumo da NF-e, informando a chave acima.&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</pre></div>
+    </div></div>
+    </div>
+  </section>
+
+  <!-- 8 CANCELAMENTO -->
+  <section class="panel" id="cancelamento">
+    <div class="p-head"><h2>Cancelamento de Pedido</h2><span class="chip t">Transacional</span></div>
+    <p class="p-sub">O cancelamento é frio e "Prezado Cliente". Pode ser um momento de cuidado: confirmar sem culpa, deixar claro o caminho de voltar e manter a porta aberta.</p>
+    <div class="ba">
+      <div><div class="col-label before"><span class="b">Antes</span></div>
+        <div class="frame"><div class="chrome"><div class="subj">Cancelamento de pedido</div></div>
+          <div class="old"><p>Prezado Cliente,</p><p>informamos o cancelamento de uma compra em nossa loja [nome_loja]. Dados da venda cancelada:</p><div class="kv">Cód: [cod_pedido] · Valor: [valor_pedido]<br>Data: [data_pedido]</div><p class="muted">Qualquer dúvida entre em contato conosco.</p></div>
+        </div>
+      </div>
+      <div><div class="col-label after"><span class="b">Depois</span></div>
+        <div class="frame"><div class="chrome"><div class="subj">Seu pedido [cod_pedido] foi cancelado</div><div class="pre">Se precisar, a gente ajuda a resolver.</div></div>
+          <div class="new"><div class="em-head"></div>
+            <div class="em-status"><div class="ico warm">🍃</div><h3>Seu pedido foi cancelado</h3><p>Cancelamos o pedido [cod_pedido] como combinado. Se algo deu errado ou você mudou de ideia, a gente adoraria ajudar.</p></div>
+            <div class="em-bar"><span>Pedido</span><b>[cod_pedido]</b></div>
+            <div class="em-bar"><span>Valor</span><b>R$ [valor_pedido]</b></div>
+            <div class="em-blk">Se o pagamento já tinha sido feito, o estorno segue o prazo da forma de pagamento. Qualquer coisa, fala com a gente.</div>
+            <a class="em-btn ghost" href="[site_loja]">Voltar à loja</a>
+            <div class="em-foot-curve"></div><div class="em-foot" data-lead="Podemos ajudar com algo?"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="code-in-panel"><div class="cip-head"><span class="seed"></span> Código de produção (Tray)</div>
+    <p class="p-sub"><b>Assunto:</b> Seu pedido [cod_pedido] foi cancelado<br/><b>Preheader:</b> Se precisar, a gente ajuda a resolver.</p>
+    <div class="codecol"><div class="codewrap">
+      <div class="clbl"><h4>Corpo (vai no [mensagem])</h4><button class="copybtn" data-code="code-cancelamento">Copiar</button></div>
+      <div class="codeblock"><pre id="code-cancelamento">&lt;!-- ===== CORPO: Cancelamento de Pedido (vai no lugar de [mensagem]) ===== --&gt;
+&lt;!-- Preheader --&gt;
+&lt;div style="display:none; max-height:0; overflow:hidden; mso-hide:all; font-size:1px; line-height:1px; color:#ffffff;"&gt;Se precisar, a gente ajuda a resolver.&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&lt;/div&gt;
+&lt;div style="text-align:center; font-size:34px; line-height:1; margin:0 0 8px;"&gt;🍃&lt;/div&gt;
+&lt;h1 style="margin:0 0 10px; font-weight:700; font-size:23px; line-height:1.2; color:#092312; text-align:center; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Seu pedido foi cancelado&lt;/h1&gt;
+&lt;p style="margin:0 0 20px; font-size:15px; line-height:1.6; color:#092312; text-align:center; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Cancelamos o pedido [cod_pedido] como combinado. Se algo deu errado ou voc&amp;ecirc; mudou de ideia, a gente adoraria ajudar.&lt;/p&gt;
+&lt;table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 8px;"&gt;&lt;tr&gt;&lt;td style="padding:11px 15px; background:#FBFBFA; border:1px solid #E6E3DA; border-radius:10px;"&gt;&lt;span style="font-size:12.5px; color:#5B564E; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Pedido:&lt;/span&gt; &lt;span style="font-size:13px; font-weight:700; color:#092312; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;[cod_pedido]&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 8px;"&gt;&lt;tr&gt;&lt;td style="padding:11px 15px; background:#FBFBFA; border:1px solid #E6E3DA; border-radius:10px;"&gt;&lt;span style="font-size:12.5px; color:#5B564E; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Valor:&lt;/span&gt; &lt;span style="font-size:13px; font-weight:700; color:#092312; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;R$ [valor_pedido]&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:14px 0 0;"&gt;&lt;tr&gt;&lt;td style="background:#FBFBFA; border:1px solid #E6E3DA; border-radius:12px; padding:16px 18px; font-size:13px; line-height:1.55; color:#092312; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Se o pagamento j&amp;aacute; tinha sido feito, o estorno segue o prazo da forma de pagamento. Qualquer coisa, fala com a gente.&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;p style="text-align:center; margin:8px 0 0; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;&lt;a href="[site_loja]" style="color:#3E6B4F; font-weight:700; font-size:13.5px; text-decoration:none; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Voltar &amp;agrave; loja&lt;/a&gt;&lt;/p&gt;</pre></div>
+    </div></div>
+    </div>
+  </section>
+
+  <!-- 9 CARRINHO -->
+  <section class="panel" id="carrinho">
+    <div class="p-head"><h2>Carrinho Abandonado</h2><span class="chip r">Relacional</span><span class="chip" style="background:var(--millet);color:#3a2c0d">maior recuperação</span></div>
+    <p class="p-sub">Hoje é um único e-mail genérico. O que mais recupera venda é uma sequência de três, cada um com um papel. Abaixo, o antes/depois do 1º da série + a cadência completa.</p>
+    <div class="ba">
+      <div><div class="col-label before"><span class="b">Antes</span></div>
+        <div class="frame"><div class="chrome"><div class="subj">Seu Carrinho ainda está disponível</div></div>
+          <div class="old"><p>Prezado [nome_cliente],</p><p>Estamos entrando em contato para lhe avisar que os produtos de seu carrinho continuam disponiveis para você em nossa loja</p><p class="cram">[carrinho_abandonado]</p><p class="muted">[nome_loja] agradece. Ótimas compras.</p></div>
+        </div>
+      </div>
+      <div><div class="col-label after"><span class="b">Depois · e-mail 1</span></div>
+        <div class="frame"><div class="chrome"><div class="subj">[nome_cliente], você esqueceu algo no ninho 🌱</div><div class="pre">Seu carrinho está guardado.</div></div>
+          <div class="new"><div class="em-head"></div>
+            <div class="em-status"><div class="ico">🛒</div><h3>Você esqueceu algo, [nome_cliente]!</h3><p>Guardamos seu carrinho pra você. É só voltar de onde parou.</p></div>
+            <div class="em-prod"><div class="prow"><div class="thumb">🌾</div><div><div class="pn">[carrinho_abandonado]</div><div class="pm">itens do carrinho com foto</div></div></div></div>
+            <a class="em-btn" href="[site_loja]">Voltar ao meu carrinho</a>
+            <div class="em-foot-curve"></div><div class="em-foot" data-lead="Alguma dúvida antes de finalizar?"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="seq3">
+      <div class="sc"><div class="w">⏱ 1 hora</div><h4>Lembrete gentil</h4><div class="sj">você esqueceu algo no ninho 🌱</div><p>Só o empurrão. Sem desconto, a maioria volta com o lembrete.</p></div>
+      <div class="sc"><div class="w">⏱ 24 horas</div><h4>Derrubar objeção</h4><div class="sj">ainda dá tempo, seu carrinho está guardado</div><p>Frete grátis R$499, 5% no Pix, 4x sem juros, compra segura.</p></div>
+      <div class="sc"><div class="w">⏱ 72 horas</div><h4>Empurrão final</h4><div class="sj">últimas horas: seu carrinho vai voar</div><p>Aqui entra incentivo leve, cupom ou reforço das Sementes.</p></div>
+    </div>
+    <div class="pnote"><span class="s seed"></span><div><b>Checar na conta:</b> a tag <span class="tag">[carrinho_abandonado]</span> existe, mas disparo escalonado (1h/24h/72h) pode exigir app de automação. Se só houver disparo nativo, concentramos o melhor dos três num só.</div></div>
+  
+    <div class="code-in-panel"><div class="cip-head"><span class="seed"></span> Código de produção (Tray)</div>
+    <p class="p-sub"><b>Assunto:</b> [nome_cliente], você esqueceu algo no ninho 🌱<br/><b>Preheader:</b> Seu carrinho está guardado.</p>
+    <div class="codecol"><div class="codewrap">
+      <div class="clbl"><h4>Corpo (vai no [mensagem])</h4><button class="copybtn" data-code="code-carrinho">Copiar</button></div>
+      <div class="codeblock"><pre id="code-carrinho">&lt;!-- ===== CORPO: Carrinho Abandonado (vai no lugar de [mensagem]) ===== --&gt;
+&lt;!-- Preheader --&gt;
+&lt;div style="display:none; max-height:0; overflow:hidden; mso-hide:all; font-size:1px; line-height:1px; color:#ffffff;"&gt;Seu carrinho est&amp;aacute; guardado.&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&lt;/div&gt;
+&lt;div style="text-align:center; font-size:34px; line-height:1; margin:0 0 8px;"&gt;🛒&lt;/div&gt;
+&lt;h1 style="margin:0 0 10px; font-weight:700; font-size:23px; line-height:1.2; color:#092312; text-align:center; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Voc&amp;ecirc; esqueceu algo, [nome_cliente]!&lt;/h1&gt;
+&lt;p style="margin:0 0 20px; font-size:15px; line-height:1.6; color:#092312; text-align:center; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Guardamos seu carrinho pra voc&amp;ecirc;. &amp;Eacute; s&amp;oacute; voltar de onde parou.&lt;/p&gt;
+&lt;table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:14px 0 0;"&gt;&lt;tr&gt;&lt;td style="background:#FBFBFA; border:1px solid #E6E3DA; border-radius:12px; padding:16px 18px; font-size:13px; line-height:1.55; color:#092312; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;[carrinho_abandonado]&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center" style="margin:20px auto 6px;"&gt;&lt;tr&gt;&lt;td align="center" bgcolor="#FFC100" style="border-radius:100px;"&gt;&lt;a href="[site_loja]" style="display:inline-block; padding:14px 34px; font-size:15px; font-weight:700; color:#221B05; text-decoration:none; border-radius:100px; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Voltar ao meu carrinho&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;!-- Ideal: sequencia de 3 disparos (1h / 24h / 72h). Depende de app de automacao na conta Tray. --&gt;</pre></div>
+    </div></div>
+    </div>
+  </section>
+
+  <!-- 10 DISPONIVEL -->
+  <section class="panel" id="disponivel">
+    <div class="p-head"><h2>Produto Disponível</h2><span class="chip r">Relacional</span><span class="chip" style="background:var(--millet);color:#3a2c0d">alta intenção</span></div>
+    <p class="p-sub">Quem pediu aviso de volta ao estoque é o cliente mais quente que existe, ele já quer o produto. Hoje recebe uma linha fria. A versão nova mostra o produto, o preço e cria urgência honesta.</p>
+    <div class="ba">
+      <div><div class="col-label before"><span class="b">Antes</span></div>
+        <div class="frame"><div class="chrome"><div class="subj">Produto Disponível para Compra</div></div>
+          <div class="old"><p>Prezado Cliente,</p><p>Estamos entrando em contato para lhe avisar que o produto encontra-se disponivel em nossa loja</p><p class="cram">[produto]</p><p class="muted">[nome_loja] agradece o contato.</p></div>
+        </div>
+      </div>
+      <div><div class="col-label after"><span class="b">Depois</span></div>
+        <div class="frame"><div class="chrome"><div class="subj">Voltou! [produto] está disponível de novo 🌱</div><div class="pre">Costuma sair rápido, garanta o seu.</div></div>
+          <div class="new"><div class="em-head"></div>
+            <div class="em-status"><div class="ico">🎉</div><h3>O que você esperava chegou!</h3><p>[produto] voltou ao estoque. Você pediu para avisar, então corre, que costuma acabar rápido.</p></div>
+            <div class="em-prod"><div class="prow"><div class="thumb">🐦</div><div><div class="pn">[produto]</div><div class="pm">de volta ao estoque</div></div></div></div>
+            <a class="em-btn" href="[site_loja]">Comprar agora</a>
+            <div class="em-blk info"><b>Estoque limitado.</b> Reservamos o aviso, não o produto, garanta antes que esgote de novo.</div>
+            <div class="em-foot-curve"></div><div class="em-foot" data-lead="Quer ajuda para escolher?"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pnote"><span class="s seed"></span><div>Trocar "Prezado Cliente" por <span class="tag">[nome_cliente]</span> aqui é obrigatório, é um e-mail de alta intenção, personalização move conversão.</div></div>
+  
+    <div class="code-in-panel"><div class="cip-head"><span class="seed"></span> Código de produção (Tray)</div>
+    <p class="p-sub"><b>Assunto:</b> Voltou! [produto] está disponível de novo 🌱<br/><b>Preheader:</b> Costuma sair rápido, garanta o seu.</p>
+    <div class="codecol"><div class="codewrap">
+      <div class="clbl"><h4>Corpo (vai no [mensagem])</h4><button class="copybtn" data-code="code-disponivel">Copiar</button></div>
+      <div class="codeblock"><pre id="code-disponivel">&lt;!-- ===== CORPO: Produto Dispon&amp;iacute;vel (volta ao estoque) (vai no lugar de [mensagem]) ===== --&gt;
+&lt;!-- Preheader --&gt;
+&lt;div style="display:none; max-height:0; overflow:hidden; mso-hide:all; font-size:1px; line-height:1px; color:#ffffff;"&gt;Costuma sair r&amp;aacute;pido, garanta o seu.&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&lt;/div&gt;
+&lt;div style="text-align:center; font-size:34px; line-height:1; margin:0 0 8px;"&gt;🎉&lt;/div&gt;
+&lt;h1 style="margin:0 0 10px; font-weight:700; font-size:23px; line-height:1.2; color:#092312; text-align:center; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;O que voc&amp;ecirc; esperava chegou!&lt;/h1&gt;
+&lt;p style="margin:0 0 20px; font-size:15px; line-height:1.6; color:#092312; text-align:center; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;[produto] voltou ao estoque, [nome_cliente]. Voc&amp;ecirc; pediu para avisar, ent&amp;atilde;o corre que costuma acabar r&amp;aacute;pido.&lt;/p&gt;
+&lt;table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:14px 0 0;"&gt;&lt;tr&gt;&lt;td style="background:#FBFBFA; border:1px solid #E6E3DA; border-radius:12px; padding:16px 18px; font-size:13px; line-height:1.55; color:#092312; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;&lt;b&gt;[produto]&lt;/b&gt;&lt;br/&gt;de volta ao estoque&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center" style="margin:20px auto 6px;"&gt;&lt;tr&gt;&lt;td align="center" bgcolor="#FFC100" style="border-radius:100px;"&gt;&lt;a href="[site_loja]" style="display:inline-block; padding:14px 34px; font-size:15px; font-weight:700; color:#221B05; text-decoration:none; border-radius:100px; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Comprar agora&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:14px 0 0;"&gt;&lt;tr&gt;&lt;td style="background:#EEF3F4; border:1px solid #CBDDE2; border-radius:12px; padding:16px 18px; font-size:13px; line-height:1.55; color:#092312; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;&lt;b&gt;Estoque limitado.&lt;/b&gt; Garanta antes que esgote de novo.&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</pre></div>
+    </div></div>
+    </div>
+  </section>
+
+  <!-- 11 POS-ENTREGA (NOVO) -->
+  <section class="panel" id="posentrega">
+    <div class="p-head"><h2>Pós-entrega / Avaliação</h2><span class="chip r">Relacional</span><span class="chip novo">novo · não existe hoje</span></div>
+    <p class="p-sub">O pedido de avaliação sai hoje nos e-mails de postagem, antes de o produto chegar. O certo é um e-mail próprio, disparado alguns dias após o envio, quando o cliente já usou. É também a melhor hora para cross-sell.</p>
+    <div class="ba">
+      <div><div class="col-label before"><span class="b">Antes</span></div>
+        <div class="frame"><div class="none-today"><div class="big">Não existe hoje</div><div class="sm">A avaliação está grudada no e-mail de postagem,<br>na hora errada da jornada.</div></div></div>
+      </div>
+      <div><div class="col-label after"><span class="b">Depois · novo</span></div>
+        <div class="frame"><div class="chrome"><div class="subj">[nome_cliente], como foi com o seu pedido? 🌱</div><div class="pre">Sua opinião ajuda outros criadores.</div></div>
+          <div class="new"><div class="em-head"></div>
+            <div class="em-status"><div class="ico">💬</div><h3>Seu pedido já chegou, [nome_cliente]?</h3><p>Esperamos que sim! Se puder contar como foi, ajuda muito outros criadores, e a gente a melhorar sempre.</p></div>
+            <a class="em-btn" href="[site_loja]">Avaliar minha compra</a>
+            <div class="em-blk seeds"><b>🌱 Combina com o que você levou.</b> Uma seleção curada para o momento do seu pássaro (bloco por categoria ou manual).</div>
+            <div class="em-foot-curve"></div><div class="em-foot" data-lead="Ficou com alguma dúvida de uso?"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12 REPOSICAO (NOVO) -->
+  <section class="panel" id="reposicao">
+    <div class="p-head"><h2>Reposição / Recompra</h2><span class="chip r">Relacional</span><span class="chip novo">novo · não existe hoje</span></div>
+    <p class="p-sub">A maior alavanca do nicho de aves: ração, farinhada e semente acabam num ciclo previsível. Um lembrete no timing certo é receita recorrente que hoje fica na mesa.</p>
+    <div class="ba">
+      <div><div class="col-label before"><span class="b">Antes</span></div>
+        <div class="frame"><div class="none-today"><div class="big">Não existe hoje</div><div class="sm">Nenhum e-mail acompanha o ciclo de recompra<br>a receita mais previsível do negócio.</div></div></div>
+      </div>
+      <div><div class="col-label after"><span class="b">Depois · novo</span></div>
+        <div class="frame"><div class="chrome"><div class="subj">A ração do seu pássaro já deve estar acabando 🌱</div><div class="pre">Deixamos tudo a um clique.</div></div>
+          <div class="new"><div class="em-head"></div>
+            <div class="em-status"><div class="ico">🌾</div><h3>Hora de reabastecer, [nome_cliente]?</h3><p>Faz um tempinho que você comprou [produto]. Se estiver acabando, é só repor de onde parou.</p></div>
+            <div class="em-prod"><div class="prow"><div class="thumb">🥣</div><div><div class="pn">[produto]</div><div class="pm">seu último pedido</div></div><div class="pp">repor</div></div></div>
+            <a class="em-btn" href="[site_loja]">Repor meu pedido</a>
+            <div class="em-blk seeds"><b>🌱 E ainda ganha sementes de novo.</b> Cada recompra soma pontos para desconto.</div>
+            <div class="em-foot-curve"></div><div class="em-foot" data-lead="Quer ajuste na quantidade? Fale com a gente."></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pnote"><span class="s seed"></span><div><b>Depende de automação:</b> exige disparo por tempo desde a última compra (ex. 30/45 dias) e, no ideal, segmentação por produto. Vale mapear o que a Tray ou um app da conta permite, é o e-mail de maior retorno da lista.</div></div>
+  </section>
+
+  <!-- 13 NEWSLETTER -->
+  <section class="panel" id="newsletter">
+    <div class="p-head"><h2>Confirmação de Newsletter</h2><span class="chip r">Relacional</span></div>
+    <p class="p-sub">Hoje o e-mail fala sobre SPAM e privacidade, do ponto de vista da loja. A versão nova vende o valor: o que o cliente ganha ao confirmar.</p>
+    <div class="ba">
+      <div><div class="col-label before"><span class="b">Antes</span></div>
+        <div class="frame"><div class="chrome"><div class="subj">Confirmação de Cadastro na Newsletter [nome_loja]</div></div>
+          <div class="old"><p>Prezado [nome_cliente]</p><p>Estamos cadastrando você em nossa newsletter... Gostaríamos que confirmasse o interesse pelo link abaixo.</p><p class="lnk">[link_confirmacao_news]</p><p class="cram">Adotamos esta política em respeito... Somos totalmente contra SPAMs...</p></div>
+        </div>
+      </div>
+      <div><div class="col-label after"><span class="b">Depois</span></div>
+        <div class="frame"><div class="chrome"><div class="subj">Confirma seu cadastro na Horizonte? 🌱</div><div class="pre">Falta um clique para receber as novidades.</div></div>
+          <div class="new"><div class="em-head"></div>
+            <div class="em-status"><div class="ico">✉️</div><h3>Falta um clique, [nome_cliente]</h3><p>Confirme para receber novidades, promoções e dicas de quem entende de aves.</p></div>
+            <a class="em-btn" href="[link_confirmacao_news]">Confirmar inscrição</a>
+            <div class="em-blk"><b>O que você recebe:</b> lançamentos, ofertas para a sua espécie e conteúdo de criação. Você escolhe, e pode sair quando quiser.</div>
+            <div class="em-foot-curve"></div><div class="em-foot" data-lead="Não foi você que se cadastrou? É só ignorar."></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="code-in-panel"><div class="cip-head"><span class="seed"></span> Código de produção (Tray)</div>
+    <p class="p-sub"><b>Assunto:</b> Confirma seu cadastro na Horizonte? 🌱<br/><b>Preheader:</b> Falta um clique para receber as novidades.</p>
+    <div class="codecol"><div class="codewrap">
+      <div class="clbl"><h4>Corpo (vai no [mensagem])</h4><button class="copybtn" data-code="code-newsletter">Copiar</button></div>
+      <div class="codeblock"><pre id="code-newsletter">&lt;!-- ===== CORPO: Confirma&amp;ccedil;&amp;atilde;o de Newsletter (vai no lugar de [mensagem]) ===== --&gt;
+&lt;!-- Preheader --&gt;
+&lt;div style="display:none; max-height:0; overflow:hidden; mso-hide:all; font-size:1px; line-height:1px; color:#ffffff;"&gt;Falta um clique para receber as novidades.&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&lt;/div&gt;
+&lt;div style="text-align:center; font-size:34px; line-height:1; margin:0 0 8px;"&gt;✉️&lt;/div&gt;
+&lt;h1 style="margin:0 0 10px; font-weight:700; font-size:23px; line-height:1.2; color:#092312; text-align:center; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Falta um clique, [nome_cliente]&lt;/h1&gt;
+&lt;p style="margin:0 0 20px; font-size:15px; line-height:1.6; color:#092312; text-align:center; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Confirme para receber novidades, promo&amp;ccedil;&amp;otilde;es e dicas de quem entende de aves.&lt;/p&gt;
+&lt;table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center" style="margin:20px auto 6px;"&gt;&lt;tr&gt;&lt;td align="center" bgcolor="#FFC100" style="border-radius:100px;"&gt;&lt;a href="[link_confirmacao_news]" style="display:inline-block; padding:14px 34px; font-size:15px; font-weight:700; color:#221B05; text-decoration:none; border-radius:100px; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Confirmar inscri&amp;ccedil;&amp;atilde;o&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:14px 0 0;"&gt;&lt;tr&gt;&lt;td style="background:#FBFBFA; border:1px solid #E6E3DA; border-radius:12px; padding:16px 18px; font-size:13px; line-height:1.55; color:#092312; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;&lt;b&gt;O que voc&amp;ecirc; recebe:&lt;/b&gt; lan&amp;ccedil;amentos, ofertas para a sua esp&amp;eacute;cie e conte&amp;uacute;do de cria&amp;ccedil;&amp;atilde;o. Voc&amp;ecirc; escolhe, e pode sair quando quiser.&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</pre></div>
+    </div></div>
+    </div>
+  </section>
+
+  <!-- 14 INDICACAO -->
+  <section class="panel" id="indicacao">
+    <div class="p-head"><h2>Indicação de Produto a Amigo</h2><span class="chip r">Relacional</span></div>
+    <p class="p-sub">É um canal de aquisição, um cliente trazendo outro. Hoje chega frio e sem imagem do produto. A versão nova mostra o produto e dá credibilidade à recomendação.</p>
+    <div class="ba">
+      <div><div class="col-label before"><span class="b">Antes</span></div>
+        <div class="frame"><div class="chrome"><div class="subj">[nome_amigo], Seu amigo [seu_nome_indique] lhe recomenda um produto</div></div>
+          <div class="old"><p>Olá [nome_amigo], como vai?</p><p>O(a) [nome_cliente] ([email_cliente]) lhe recomenda o seguinte produto:</p><p class="cram">[descricao_produto]</p><p>Veja: <span class="lnk">[url_produto]</span></p><p class="cram">Comentário: [comentario]</p></div>
+        </div>
+      </div>
+      <div><div class="col-label after"><span class="b">Depois</span></div>
+        <div class="frame"><div class="chrome"><div class="subj">[nome_amigo], [seu_nome_indique] recomendou algo pra você 🌱</div><div class="pre">De quem entende de pássaros.</div></div>
+          <div class="new"><div class="em-head"></div>
+            <div class="em-status"><div class="ico">🤝</div><h3>Uma indicação pra você, [nome_amigo]</h3><p>[nome_cliente] achou que você ia gostar deste produto da Horizonte.</p></div>
+            <div class="em-prod"><div class="prow"><div class="thumb">🐤</div><div><div class="pn">[descricao_produto]</div></div></div></div>
+            <div class="em-blk">"[comentario]"<div class="fine">[nome_cliente]</div></div>
+            <a class="em-btn" href="[url_produto]">Ver produto</a>
+            <div class="em-foot-curve"></div><div class="em-foot" data-lead="Bem-vindo à Horizonte!"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="code-in-panel"><div class="cip-head"><span class="seed"></span> Código de produção (Tray)</div>
+    <p class="p-sub"><b>Assunto:</b> [nome_amigo], [seu_nome_indique] recomendou algo pra você 🌱<br/><b>Preheader:</b> De quem entende de pássaros.</p>
+    <div class="codecol"><div class="codewrap">
+      <div class="clbl"><h4>Corpo (vai no [mensagem])</h4><button class="copybtn" data-code="code-indicacao">Copiar</button></div>
+      <div class="codeblock"><pre id="code-indicacao">&lt;!-- ===== CORPO: Indica&amp;ccedil;&amp;atilde;o de Produto a Amigo (vai no lugar de [mensagem]) ===== --&gt;
+&lt;!-- Preheader --&gt;
+&lt;div style="display:none; max-height:0; overflow:hidden; mso-hide:all; font-size:1px; line-height:1px; color:#ffffff;"&gt;De quem entende de p&amp;aacute;ssaros.&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&lt;/div&gt;
+&lt;div style="text-align:center; font-size:34px; line-height:1; margin:0 0 8px;"&gt;🤝&lt;/div&gt;
+&lt;h1 style="margin:0 0 10px; font-weight:700; font-size:23px; line-height:1.2; color:#092312; text-align:center; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Uma indica&amp;ccedil;&amp;atilde;o pra voc&amp;ecirc;, [nome_amigo]&lt;/h1&gt;
+&lt;p style="margin:0 0 20px; font-size:15px; line-height:1.6; color:#092312; text-align:center; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;[nome_cliente] achou que voc&amp;ecirc; ia gostar deste produto da Horizonte.&lt;/p&gt;
+&lt;table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:14px 0 0;"&gt;&lt;tr&gt;&lt;td style="background:#FBFBFA; border:1px solid #E6E3DA; border-radius:12px; padding:16px 18px; font-size:13px; line-height:1.55; color:#092312; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;&lt;b&gt;[descricao_produto]&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:14px 0 0;"&gt;&lt;tr&gt;&lt;td style="background:#FBFBFA; border:1px solid #E6E3DA; border-radius:12px; padding:16px 18px; font-size:13px; line-height:1.55; color:#092312; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;"[comentario]"&lt;br/&gt;&lt;span style="color:#5B564E;"&gt;[nome_cliente]&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center" style="margin:20px auto 6px;"&gt;&lt;tr&gt;&lt;td align="center" bgcolor="#FFC100" style="border-radius:100px;"&gt;&lt;a href="[url_produto]" style="display:inline-block; padding:14px 34px; font-size:15px; font-weight:700; color:#221B05; text-decoration:none; border-radius:100px; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Ver produto&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</pre></div>
+    </div></div>
+    </div>
+  </section>
+
+  <!-- 15 RESGATE -->
+  <section class="panel" id="resgate">
+    <div class="p-head"><h2>Resgate de Sementes (Bônus)</h2><span class="chip f">Fidelidade</span></div>
+    <p class="p-sub">O e-mail fala em "bônus" genérico. A marca do programa é Sementes 🌱, alinhar a linguagem reforça a fidelidade em toda a jornada.</p>
+    <div class="ba">
+      <div><div class="col-label before"><span class="b">Antes</span></div>
+        <div class="frame"><div class="chrome"><div class="subj">Bônus da loja [nome_loja]</div></div>
+          <div class="old"><p>Olá [nome_cliente],</p><p>Você possui bônus para utilizar em nossa loja. Após logar-se, utilize o cupom [codigo_cupom] para ter acesso ao seu bônus no valor de [valor_desconto]</p><p class="muted">Atenciosamente, [nome_loja]</p></div>
+        </div>
+      </div>
+      <div><div class="col-label after"><span class="b">Depois</span></div>
+        <div class="frame"><div class="chrome"><div class="subj">Você tem Sementes para trocar 🌱</div><div class="pre">Elas viraram desconto na sua conta.</div></div>
+          <div class="new"><div class="em-head"></div>
+            <div class="em-status"><div class="ico">🌱</div><h3>Suas Sementes viraram desconto!</h3><p>Você juntou Sementes suficientes, [nome_cliente]. Use o código abaixo e transforme em desconto.</p></div>
+            <div class="cpn"><div class="cl">seu desconto · [valor_desconto]</div><div class="cc">[codigo_cupom]</div><div class="meta">inserir no carrinho após entrar na conta</div></div>
+            <a class="em-btn" href="[site_loja]">Usar meu desconto</a>
+            <div class="em-foot-curve"></div><div class="em-foot" data-lead="Quer saber quantas Sementes tem?"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="code-in-panel"><div class="cip-head"><span class="seed"></span> Código de produção (Tray)</div>
+    <p class="p-sub"><b>Assunto:</b> Você tem Sementes para trocar 🌱<br/><b>Preheader:</b> Elas viraram desconto na sua conta.</p>
+    <div class="codecol"><div class="codewrap">
+      <div class="clbl"><h4>Corpo (vai no [mensagem])</h4><button class="copybtn" data-code="code-resgate">Copiar</button></div>
+      <div class="codeblock"><pre id="code-resgate">&lt;!-- ===== CORPO: Resgate de Sementes (b&amp;ocirc;nus) (vai no lugar de [mensagem]) ===== --&gt;
+&lt;!-- Preheader --&gt;
+&lt;div style="display:none; max-height:0; overflow:hidden; mso-hide:all; font-size:1px; line-height:1px; color:#ffffff;"&gt;Elas viraram desconto na sua conta.&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&lt;/div&gt;
+&lt;div style="text-align:center; font-size:34px; line-height:1; margin:0 0 8px;"&gt;🌱&lt;/div&gt;
+&lt;h1 style="margin:0 0 10px; font-weight:700; font-size:23px; line-height:1.2; color:#092312; text-align:center; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Suas Sementes viraram desconto!&lt;/h1&gt;
+&lt;p style="margin:0 0 20px; font-size:15px; line-height:1.6; color:#092312; text-align:center; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Voc&amp;ecirc; juntou Sementes suficientes, [nome_cliente]. Use o c&amp;oacute;digo abaixo e transforme em desconto.&lt;/p&gt;
+&lt;table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:14px 0 0;"&gt;&lt;tr&gt;&lt;td align="center" style="border:2px dashed #EEC96B; border-radius:12px; background:#FFFDF7; padding:18px 20px;"&gt;&lt;div style="font-size:11px; letter-spacing:1px; color:#7a5a17; text-transform:uppercase; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;seu desconto &amp;middot; [valor_desconto]&lt;/div&gt;&lt;div style="font-size:22px; font-weight:700; letter-spacing:2px; color:#092312; margin-top:6px; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;[codigo_cupom]&lt;/div&gt;&lt;div style="font-size:11.5px; color:#5B564E; margin-top:8px; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;inserir no carrinho ap&amp;oacute;s entrar na conta&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center" style="margin:20px auto 6px;"&gt;&lt;tr&gt;&lt;td align="center" bgcolor="#FFC100" style="border-radius:100px;"&gt;&lt;a href="[site_loja]" style="display:inline-block; padding:14px 34px; font-size:15px; font-weight:700; color:#221B05; text-decoration:none; border-radius:100px; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Usar meu desconto&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</pre></div>
+    </div></div>
+    </div>
+  </section>
+
+  <!-- 16 CUPOM -->
+  <section class="panel" id="cupom">
+    <div class="p-head"><h2>Cupom de Desconto</h2><span class="chip f">Fidelidade</span></div>
+    <p class="p-sub">O código está perdido no meio do texto. A versão nova coloca cupom, valor e validade em destaque, com um botão direto para a loja.</p>
+    <div class="ba">
+      <div><div class="col-label before"><span class="b">Antes</span></div>
+        <div class="frame"><div class="chrome"><div class="subj">Aviso inclusão de cupom de desconto</div></div>
+          <div class="old"><p>Olá [nome_cliente],</p><p>Segue abaixo o código do cupom de desconto gerado para você comprar novos produtos.</p><p class="cram">Código: [codigo_cupom] · Acesse: [url_cupom]</p><div class="kv">Valor: [valor_cupom]<br>Desconto no frete: [desconto_frete]<br>Validade: [validade_cupom]</div></div>
+        </div>
+      </div>
+      <div><div class="col-label after"><span class="b">Depois</span></div>
+        <div class="frame"><div class="chrome"><div class="subj">Um cupom pra você usar na Horizonte 🌱</div><div class="pre">Válido até [validade_cupom].</div></div>
+          <div class="new"><div class="em-head"></div>
+            <div class="em-status"><div class="ico">🎟️</div><h3>Seu cupom chegou, [nome_cliente]!</h3><p>Use no carrinho e aproveite antes que expire.</p></div>
+            <div class="cpn"><div class="cl">desconto · [valor_cupom]</div><div class="cc">[codigo_cupom]</div><div class="meta">frete: [desconto_frete] · válido até [validade_cupom]</div></div>
+            <a class="em-btn" href="[url_cupom]">Comprar com desconto</a>
+            <div class="em-foot-curve"></div><div class="em-foot" data-lead="Boas compras!"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="code-in-panel"><div class="cip-head"><span class="seed"></span> Código de produção (Tray)</div>
+    <p class="p-sub"><b>Assunto:</b> Um cupom pra você usar na Horizonte 🌱<br/><b>Preheader:</b> Válido até [validade_cupom].</p>
+    <div class="codecol"><div class="codewrap">
+      <div class="clbl"><h4>Corpo (vai no [mensagem])</h4><button class="copybtn" data-code="code-cupom">Copiar</button></div>
+      <div class="codeblock"><pre id="code-cupom">&lt;!-- ===== CORPO: Cupom de Desconto (vai no lugar de [mensagem]) ===== --&gt;
+&lt;!-- Preheader --&gt;
+&lt;div style="display:none; max-height:0; overflow:hidden; mso-hide:all; font-size:1px; line-height:1px; color:#ffffff;"&gt;V&amp;aacute;lido at&amp;eacute; [validade_cupom].&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&lt;/div&gt;
+&lt;div style="text-align:center; font-size:34px; line-height:1; margin:0 0 8px;"&gt;🎟️&lt;/div&gt;
+&lt;h1 style="margin:0 0 10px; font-weight:700; font-size:23px; line-height:1.2; color:#092312; text-align:center; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Seu cupom chegou, [nome_cliente]!&lt;/h1&gt;
+&lt;p style="margin:0 0 20px; font-size:15px; line-height:1.6; color:#092312; text-align:center; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Use no carrinho e aproveite antes que expire.&lt;/p&gt;
+&lt;table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:14px 0 0;"&gt;&lt;tr&gt;&lt;td align="center" style="border:2px dashed #EEC96B; border-radius:12px; background:#FFFDF7; padding:18px 20px;"&gt;&lt;div style="font-size:11px; letter-spacing:1px; color:#7a5a17; text-transform:uppercase; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;desconto &amp;middot; [valor_cupom]&lt;/div&gt;&lt;div style="font-size:22px; font-weight:700; letter-spacing:2px; color:#092312; margin-top:6px; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;[codigo_cupom]&lt;/div&gt;&lt;div style="font-size:11.5px; color:#5B564E; margin-top:8px; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;frete: [desconto_frete] &amp;middot; v&amp;aacute;lido at&amp;eacute; [validade_cupom]&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center" style="margin:20px auto 6px;"&gt;&lt;tr&gt;&lt;td align="center" bgcolor="#FFC100" style="border-radius:100px;"&gt;&lt;a href="[url_cupom]" style="display:inline-block; padding:14px 34px; font-size:15px; font-weight:700; color:#221B05; text-decoration:none; border-radius:100px; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Comprar com desconto&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</pre></div>
+    </div></div>
+    </div>
+  </section>
+
+  <!-- 17 CUPOM TROCA -->
+  <section class="panel" id="cupomtroca">
+    <div class="p-head"><h2>Cupom para Troca</h2><span class="chip f">Fidelidade</span></div>
+    <p class="p-sub">Mesma base do cupom comum, pode ser o mesmo template, só com a regra de troca deixada clara: uso único e sem acúmulo do restante.</p>
+    <div class="ba">
+      <div><div class="col-label before"><span class="b">Antes</span></div>
+        <div class="frame"><div class="chrome"><div class="subj">Aviso inclusão de cupom de desconto de troca</div></div>
+          <div class="old"><p>Olá [nome_cliente],</p><p>Segue o código do cupom de troca.</p><p class="cram">Código: [codigo_cupom] · Valor: [valor_cupom] · Validade: [validade_cupom]</p><p class="warn">* cupom único e exclusivo para troca ** valor restante não fica acumulado.</p></div>
+        </div>
+      </div>
+      <div><div class="col-label after"><span class="b">Depois</span></div>
+        <div class="frame"><div class="chrome"><div class="subj">Seu cupom de troca está pronto 🌱</div><div class="pre">Escolha um novo produto na loja.</div></div>
+          <div class="new"><div class="em-head"></div>
+            <div class="em-status"><div class="ico warm">🔄</div><h3>Seu crédito de troca, [nome_cliente]</h3><p>Use na sua próxima escolha aqui na Horizonte.</p></div>
+            <div class="cpn"><div class="cl">crédito de troca · [valor_cupom]</div><div class="cc">[codigo_cupom]</div><div class="meta">válido até [validade_cupom]</div></div>
+            <a class="em-btn" href="[url_cupom]">Escolher meu produto</a>
+            <div class="em-blk"><span class="fine" style="color:var(--ink-2)">Cupom de uso único e exclusivo para troca. Se a nova compra for menor que o crédito, o valor restante não fica acumulado.</span></div>
+            <div class="em-foot-curve"></div><div class="em-foot" data-lead="Dúvidas sobre a troca?"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="code-in-panel"><div class="cip-head"><span class="seed"></span> Código de produção (Tray)</div>
+    <p class="p-sub"><b>Assunto:</b> Seu cupom de troca está pronto 🌱<br/><b>Preheader:</b> Escolha um novo produto na loja.</p>
+    <div class="codecol"><div class="codewrap">
+      <div class="clbl"><h4>Corpo (vai no [mensagem])</h4><button class="copybtn" data-code="code-cupomtroca">Copiar</button></div>
+      <div class="codeblock"><pre id="code-cupomtroca">&lt;!-- ===== CORPO: Cupom para Troca (vai no lugar de [mensagem]) ===== --&gt;
+&lt;!-- Preheader --&gt;
+&lt;div style="display:none; max-height:0; overflow:hidden; mso-hide:all; font-size:1px; line-height:1px; color:#ffffff;"&gt;Escolha um novo produto na loja.&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&lt;/div&gt;
+&lt;div style="text-align:center; font-size:34px; line-height:1; margin:0 0 8px;"&gt;🔄&lt;/div&gt;
+&lt;h1 style="margin:0 0 10px; font-weight:700; font-size:23px; line-height:1.2; color:#092312; text-align:center; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Seu cr&amp;eacute;dito de troca, [nome_cliente]&lt;/h1&gt;
+&lt;p style="margin:0 0 20px; font-size:15px; line-height:1.6; color:#092312; text-align:center; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Use na sua pr&amp;oacute;xima escolha aqui na Horizonte.&lt;/p&gt;
+&lt;table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:14px 0 0;"&gt;&lt;tr&gt;&lt;td align="center" style="border:2px dashed #EEC96B; border-radius:12px; background:#FFFDF7; padding:18px 20px;"&gt;&lt;div style="font-size:11px; letter-spacing:1px; color:#7a5a17; text-transform:uppercase; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;cr&amp;eacute;dito de troca &amp;middot; [valor_cupom]&lt;/div&gt;&lt;div style="font-size:22px; font-weight:700; letter-spacing:2px; color:#092312; margin-top:6px; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;[codigo_cupom]&lt;/div&gt;&lt;div style="font-size:11.5px; color:#5B564E; margin-top:8px; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;v&amp;aacute;lido at&amp;eacute; [validade_cupom]&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center" style="margin:20px auto 6px;"&gt;&lt;tr&gt;&lt;td align="center" bgcolor="#FFC100" style="border-radius:100px;"&gt;&lt;a href="[url_cupom]" style="display:inline-block; padding:14px 34px; font-size:15px; font-weight:700; color:#221B05; text-decoration:none; border-radius:100px; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Escolher meu produto&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:14px 0 0;"&gt;&lt;tr&gt;&lt;td style="background:#FBFBFA; border:1px solid #E6E3DA; border-radius:12px; padding:16px 18px; font-size:13px; line-height:1.55; color:#092312; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;&lt;span style="font-size:11.5px; color:#5B564E;"&gt;Cupom de uso &amp;uacute;nico e exclusivo para troca. Se a nova compra for menor que o cr&amp;eacute;dito, o valor restante n&amp;atilde;o fica acumulado.&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</pre></div>
+    </div></div>
+    </div>
+  </section>
+
+  <!-- 18 ANIVERSARIO -->
+  <section class="panel" id="aniversario">
+    <div class="p-head"><h2>Aniversário</h2><span class="chip f">Fidelidade</span></div>
+    <p class="p-sub">O e-mail atual tem <span class="mono">rn</span> vazando no texto (quebra de linha bugada) e fala em "pontos". Limpar o bug e virar um carinho de marca em nome das Sementes.</p>
+    <div class="ba">
+      <div><div class="col-label before"><span class="b">Antes</span></div>
+        <div class="frame"><div class="chrome"><div class="subj">Parabéns pelo seu Aniversário</div></div>
+          <div class="old"><p class="cram">rnParabéns [nome_cliente],<br>rn<br>rnVocê acaba de ganhar [ponto_newsletter] pontos. E acumulando pontos você concorre a prêmios. rnUm sincero abraço, são os votos da [nome_loja]</p><div class="flag">⚠ "rn" solto = quebra de linha vazando no conteúdo.</div></div>
+        </div>
+      </div>
+      <div><div class="col-label after"><span class="b">Depois</span></div>
+        <div class="frame"><div class="chrome"><div class="subj">Feliz aniversário, [nome_cliente]! 🎂🌱</div><div class="pre">Tem um mimo esperando na sua conta.</div></div>
+          <div class="new"><div class="em-head"></div>
+            <div class="em-status"><div class="ico">🎂</div><h3>Feliz aniversário, [nome_cliente]!</h3><p>Neste seu dia, um presente da Horizonte para você e para os seus pássaros.</p></div>
+            <div class="em-blk seeds" style="text-align:center"><b style="font-size:16px">🌱 [ponto_newsletter] Sementes</b><br><span class="fine" style="color:#5a7a63">já estão na sua conta, prontas para virar desconto</span></div>
+            <a class="em-btn" href="[site_loja]">Ver minhas Sementes</a>
+            <div class="em-foot-curve"></div><div class="em-foot" data-lead="Um abraço de toda a equipe Horizonte 🐦"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="code-in-panel"><div class="cip-head"><span class="seed"></span> Código de produção (Tray)</div>
+    <p class="p-sub"><b>Assunto:</b> Feliz aniversário, [nome_cliente]! 🎂🌱<br/><b>Preheader:</b> Tem um mimo esperando na sua conta.</p>
+    <div class="codecol"><div class="codewrap">
+      <div class="clbl"><h4>Corpo (vai no [mensagem])</h4><button class="copybtn" data-code="code-aniversario">Copiar</button></div>
+      <div class="codeblock"><pre id="code-aniversario">&lt;!-- ===== CORPO: Anivers&amp;aacute;rio (vai no lugar de [mensagem]) ===== --&gt;
+&lt;!-- Preheader --&gt;
+&lt;div style="display:none; max-height:0; overflow:hidden; mso-hide:all; font-size:1px; line-height:1px; color:#ffffff;"&gt;Tem um mimo esperando na sua conta.&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&lt;/div&gt;
+&lt;div style="text-align:center; font-size:34px; line-height:1; margin:0 0 8px;"&gt;🎂&lt;/div&gt;
+&lt;h1 style="margin:0 0 10px; font-weight:700; font-size:23px; line-height:1.2; color:#092312; text-align:center; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Feliz anivers&amp;aacute;rio, [nome_cliente]!&lt;/h1&gt;
+&lt;p style="margin:0 0 20px; font-size:15px; line-height:1.6; color:#092312; text-align:center; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Neste seu dia, um presente da Horizonte para voc&amp;ecirc; e para os seus p&amp;aacute;ssaros.&lt;/p&gt;
+&lt;table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:14px 0 0;"&gt;&lt;tr&gt;&lt;td style="background:#E3EDE4; border:1px solid #CFE0D5; border-radius:12px; padding:16px 18px; font-size:13px; line-height:1.55; color:#092312; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;&lt;div style="text-align:center;"&gt;&lt;b style="font-size:16px;"&gt;🌱 [ponto_newsletter] Sementes&lt;/b&gt;&lt;br/&gt;&lt;span style="color:#3E6B4F;"&gt;j&amp;aacute; est&amp;atilde;o na sua conta, prontas para virar desconto&lt;/span&gt;&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center" style="margin:20px auto 6px;"&gt;&lt;tr&gt;&lt;td align="center" bgcolor="#FFC100" style="border-radius:100px;"&gt;&lt;a href="[site_loja]" style="display:inline-block; padding:14px 34px; font-size:15px; font-weight:700; color:#221B05; text-decoration:none; border-radius:100px; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Ver minhas Sementes&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</pre></div>
+    </div></div>
+    </div>
+  </section>
+
+  <!-- 19 PREMIACAO -->
+  <section class="panel" id="premiacao">
+    <div class="p-head"><h2>Ganhadores de Premiação</h2><span class="chip f">Fidelidade</span></div>
+    <p class="p-sub">Momento de festa que hoje é morno. Só precisa de marca e destaque para o prêmio e o cupom.</p>
+    <div class="ba">
+      <div><div class="col-label before"><span class="b">Antes</span></div>
+        <div class="frame"><div class="chrome"><div class="subj">Parabens, você ganhou um prêmio</div></div>
+          <div class="old"><p>Parabéns [nome_cliente],</p><p>Seu total de pontos foram [total_pontos_cliente]. Isso torna você o ganhador de posição [posicao_cliente_ganhador]ª e seu premio é [premio_cliente_ganhador].</p><p class="cram">Acesse: [link_premio] · Cupom: [cupom_premiacao]</p></div>
+        </div>
+      </div>
+      <div><div class="col-label after"><span class="b">Depois</span></div>
+        <div class="frame"><div class="chrome"><div class="subj">Parabéns, [nome_cliente], você ganhou! 🏆</div><div class="pre">Seu prêmio está esperando.</div></div>
+          <div class="new"><div class="em-head"></div>
+            <div class="em-status"><div class="ico">🏆</div><h3>Você é um dos ganhadores!</h3><p>Com [total_pontos_cliente] Sementes, você ficou em [posicao_cliente_ganhador]º lugar, [nome_cliente]. Parabéns!</p></div>
+            <div class="em-blk seeds" style="text-align:center"><b style="font-size:16px">🎁 [premio_cliente_ganhador]</b></div>
+            <div class="cpn"><div class="cl">seu cupom de prêmio</div><div class="cc">[cupom_premiacao]</div></div>
+            <a class="em-btn" href="[link_premio]">Ver meu prêmio</a>
+            <div class="em-foot-curve"></div><div class="em-foot" data-lead="Obrigado por fazer parte da Horizonte!"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="code-in-panel"><div class="cip-head"><span class="seed"></span> Código de produção (Tray)</div>
+    <p class="p-sub"><b>Assunto:</b> Parabéns, [nome_cliente], você ganhou! 🏆<br/><b>Preheader:</b> Seu prêmio está esperando.</p>
+    <div class="codecol"><div class="codewrap">
+      <div class="clbl"><h4>Corpo (vai no [mensagem])</h4><button class="copybtn" data-code="code-premiacao">Copiar</button></div>
+      <div class="codeblock"><pre id="code-premiacao">&lt;!-- ===== CORPO: Ganhadores de Premia&amp;ccedil;&amp;atilde;o (vai no lugar de [mensagem]) ===== --&gt;
+&lt;!-- Preheader --&gt;
+&lt;div style="display:none; max-height:0; overflow:hidden; mso-hide:all; font-size:1px; line-height:1px; color:#ffffff;"&gt;Seu pr&amp;ecirc;mio est&amp;aacute; esperando.&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&lt;/div&gt;
+&lt;div style="text-align:center; font-size:34px; line-height:1; margin:0 0 8px;"&gt;🏆&lt;/div&gt;
+&lt;h1 style="margin:0 0 10px; font-weight:700; font-size:23px; line-height:1.2; color:#092312; text-align:center; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Voc&amp;ecirc; &amp;eacute; um dos ganhadores!&lt;/h1&gt;
+&lt;p style="margin:0 0 20px; font-size:15px; line-height:1.6; color:#092312; text-align:center; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Com [total_pontos_cliente] Sementes, voc&amp;ecirc; ficou em [posicao_cliente_ganhador]&amp;ordm; lugar, [nome_cliente]. Parab&amp;eacute;ns!&lt;/p&gt;
+&lt;table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:14px 0 0;"&gt;&lt;tr&gt;&lt;td style="background:#E3EDE4; border:1px solid #CFE0D5; border-radius:12px; padding:16px 18px; font-size:13px; line-height:1.55; color:#092312; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;&lt;div style="text-align:center;"&gt;&lt;b style="font-size:16px;"&gt;🎁 [premio_cliente_ganhador]&lt;/b&gt;&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:14px 0 0;"&gt;&lt;tr&gt;&lt;td align="center" style="border:2px dashed #EEC96B; border-radius:12px; background:#FFFDF7; padding:18px 20px;"&gt;&lt;div style="font-size:11px; letter-spacing:1px; color:#7a5a17; text-transform:uppercase; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;seu cupom de pr&amp;ecirc;mio&lt;/div&gt;&lt;div style="font-size:22px; font-weight:700; letter-spacing:2px; color:#092312; margin-top:6px; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;[cupom_premiacao]&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center" style="margin:20px auto 6px;"&gt;&lt;tr&gt;&lt;td align="center" bgcolor="#FFC100" style="border-radius:100px;"&gt;&lt;a href="[link_premio]" style="display:inline-block; padding:14px 34px; font-size:15px; font-weight:700; color:#221B05; text-decoration:none; border-radius:100px; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Ver meu pr&amp;ecirc;mio&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</pre></div>
+    </div></div>
+    </div>
+  </section>
+
+  <!-- 20 LIBERACAO (SECURITY) -->
+  <section class="panel" id="liberacao">
+    <div class="p-head"><h2>Liberação de Cadastro</h2><span class="chip c">Conta</span><span class="chip sec">correção de segurança</span></div>
+    <p class="p-sub">Este é o mais grave da biblioteca: envia a <b>senha do cliente em texto puro</b>, mais CPF e RG. Senha nunca deve trafegar por e-mail. A correção é obrigatória, não estética.</p>
+    <div class="ba">
+      <div><div class="col-label before"><span class="b">Antes</span></div>
+        <div class="frame"><div class="chrome"><div class="subj">Liberação de Clientes para Realizar Pedido</div></div>
+          <div class="old"><p>[nome_cliente], seu cadastro acaba de ser liberado. Para efetuar o login:</p><div class="kv" style="border-color:var(--danger-line);background:#fdf1f1">Site: [site_loja]<br>Seu email: [email_cliente]<br><b style="color:var(--danger)">Sua senha: [senha_cliente]</b></div><div class="kv">Nome: [nome_cliente] · RG: [rg_cliente]<br>CPF: [cpf_cliente] · Nascimento: [data_nascimento]<br>Endereço: [endereco_cliente]</div><div class="flag">⚠ Senha em texto puro + CPF/RG. Se a caixa vaza, a conta vaza junto.</div></div>
+        </div>
+      </div>
+      <div><div class="col-label after"><span class="b">Depois</span></div>
+        <div class="frame"><div class="chrome"><div class="subj">Seu cadastro na Horizonte foi liberado 🌱</div><div class="pre">Já pode entrar e comprar.</div></div>
+          <div class="new"><div class="em-head"></div>
+            <div class="em-status"><div class="ico">✅</div><h3>Tudo certo, [nome_cliente]!</h3><p>Seu cadastro foi aprovado. É só entrar com o seu e-mail e a senha que você criou.</p></div>
+            <div class="em-bar"><span>Seu acesso</span><b>[email_cliente]</b></div>
+            <a class="em-btn" href="[link_central]">Acessar minha conta</a>
+            <div class="em-blk"><b>Esqueceu ou não definiu a senha?</b> Use "Esqueci minha senha" na tela de login para criar uma nova com segurança.</div>
+            <div class="em-foot-curve"></div><div class="em-foot" data-lead="Bem-vindo! Precisa de ajuda?"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pnote sec"><span class="s">🔒</span><div><b>Correção obrigatória:</b> remover <span class="tag bad">[senha_cliente]</span>, <span class="tag bad">[cpf_cliente]</span> e <span class="tag bad">[rg_cliente]</span> do corpo. O cliente já definiu a própria senha no cadastro, a loja não precisa (e não deve) reenviá-la.</div></div>
+  
+    <div class="code-in-panel"><div class="cip-head"><span class="seed"></span> Código de produção (Tray)</div>
+    <p class="p-sub"><b>Assunto:</b> Seu cadastro na Horizonte foi liberado 🌱<br/><b>Preheader:</b> Já pode entrar e comprar.</p>
+    <div class="codecol"><div class="codewrap">
+      <div class="clbl"><h4>Corpo (vai no [mensagem])</h4><button class="copybtn" data-code="code-liberacao">Copiar</button></div>
+      <div class="codeblock"><pre id="code-liberacao">&lt;!-- ===== CORPO: Libera&amp;ccedil;&amp;atilde;o de Cadastro (vai no lugar de [mensagem]) ===== --&gt;
+&lt;!-- Preheader --&gt;
+&lt;div style="display:none; max-height:0; overflow:hidden; mso-hide:all; font-size:1px; line-height:1px; color:#ffffff;"&gt;J&amp;aacute; pode entrar e comprar.&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&lt;/div&gt;
+&lt;div style="text-align:center; font-size:34px; line-height:1; margin:0 0 8px;"&gt;✅&lt;/div&gt;
+&lt;h1 style="margin:0 0 10px; font-weight:700; font-size:23px; line-height:1.2; color:#092312; text-align:center; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Tudo certo, [nome_cliente]!&lt;/h1&gt;
+&lt;p style="margin:0 0 20px; font-size:15px; line-height:1.6; color:#092312; text-align:center; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Seu cadastro foi aprovado. &amp;Eacute; s&amp;oacute; entrar com o seu e-mail e a senha que voc&amp;ecirc; criou.&lt;/p&gt;
+&lt;table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 8px;"&gt;&lt;tr&gt;&lt;td style="padding:11px 15px; background:#FBFBFA; border:1px solid #E6E3DA; border-radius:10px;"&gt;&lt;span style="font-size:12.5px; color:#5B564E; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Seu acesso:&lt;/span&gt; &lt;span style="font-size:13px; font-weight:700; color:#092312; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;[email_cliente]&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center" style="margin:20px auto 6px;"&gt;&lt;tr&gt;&lt;td align="center" bgcolor="#FFC100" style="border-radius:100px;"&gt;&lt;a href="[link_central]" style="display:inline-block; padding:14px 34px; font-size:15px; font-weight:700; color:#221B05; text-decoration:none; border-radius:100px; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Acessar minha conta&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:14px 0 0;"&gt;&lt;tr&gt;&lt;td style="background:#FBFBFA; border:1px solid #E6E3DA; border-radius:12px; padding:16px 18px; font-size:13px; line-height:1.55; color:#092312; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;&lt;b&gt;Esqueceu ou n&amp;atilde;o definiu a senha?&lt;/b&gt; Use "Esqueci minha senha" na tela de login para criar uma nova com seguran&amp;ccedil;a.&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;!-- SEGURANCA: nunca reintroduzir [senha_cliente], [cpf_cliente], [rg_cliente] neste e-mail. --&gt;</pre></div>
+    </div></div>
+    </div>
+  </section>
+
+  <!-- 21 SENHA -->
+  <section class="panel" id="senha">
+    <div class="p-head"><h2>Recuperação de Senha</h2><span class="chip c">Conta</span></div>
+    <p class="p-sub">A parte de segurança já está certa (manda link, não a senha). Só falta marca, um botão claro e o reforço de segurança padrão ("não foi você? ignore").</p>
+    <div class="ba">
+      <div><div class="col-label before"><span class="b">Antes</span></div>
+        <div class="frame"><div class="chrome"><div class="subj">Recuperação de Senha para Acesso à Área do Cliente</div></div>
+          <div class="old"><p>esqueci ou não tenho senha</p><p>Recebemos a solicitação de senha do cliente [nome_cliente] da loja [nome_loja].</p><p class="lnk">[link_nova_senha]</p><p class="cram">Caso tenha problema, copie e cole o link acima no navegador.</p></div>
+        </div>
+      </div>
+      <div><div class="col-label after"><span class="b">Depois</span></div>
+        <div class="frame"><div class="chrome"><div class="subj">Redefinir a senha da sua conta Horizonte</div><div class="pre">O link expira em breve por segurança.</div></div>
+          <div class="new"><div class="em-head"></div>
+            <div class="em-status"><div class="ico">🔑</div><h3>Vamos criar uma nova senha</h3><p>Recebemos um pedido para redefinir a senha da sua conta, [nome_cliente]. É só clicar abaixo.</p></div>
+            <a class="em-btn" href="[link_nova_senha]">Criar nova senha</a>
+            <div class="em-blk"><b>O botão não abriu?</b> Copie e cole no navegador:<div class="fine" style="word-break:break-all;color:var(--ink-2)">[link_nova_senha]</div></div>
+            <div class="em-blk info"><b>Não foi você?</b> Pode ignorar este e-mail com tranquilidade, sua senha atual continua a mesma.</div>
+            <div class="em-foot-curve"></div><div class="em-foot" data-lead="Precisa de ajuda com o acesso?"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="code-in-panel"><div class="cip-head"><span class="seed"></span> Código de produção (Tray)</div>
+    <p class="p-sub"><b>Assunto:</b> Redefinir a senha da sua conta Horizonte<br/><b>Preheader:</b> O link expira em breve por segurança.</p>
+    <div class="codecol"><div class="codewrap">
+      <div class="clbl"><h4>Corpo (vai no [mensagem])</h4><button class="copybtn" data-code="code-senha">Copiar</button></div>
+      <div class="codeblock"><pre id="code-senha">&lt;!-- ===== CORPO: Recupera&amp;ccedil;&amp;atilde;o de Senha (vai no lugar de [mensagem]) ===== --&gt;
+&lt;!-- Preheader --&gt;
+&lt;div style="display:none; max-height:0; overflow:hidden; mso-hide:all; font-size:1px; line-height:1px; color:#ffffff;"&gt;O link expira em breve por seguran&amp;ccedil;a.&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&lt;/div&gt;
+&lt;div style="text-align:center; font-size:34px; line-height:1; margin:0 0 8px;"&gt;🔑&lt;/div&gt;
+&lt;h1 style="margin:0 0 10px; font-weight:700; font-size:23px; line-height:1.2; color:#092312; text-align:center; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Vamos criar uma nova senha&lt;/h1&gt;
+&lt;p style="margin:0 0 20px; font-size:15px; line-height:1.6; color:#092312; text-align:center; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Recebemos um pedido para redefinir a senha da sua conta, [nome_cliente]. &amp;Eacute; s&amp;oacute; clicar abaixo.&lt;/p&gt;
+&lt;table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center" style="margin:20px auto 6px;"&gt;&lt;tr&gt;&lt;td align="center" bgcolor="#FFC100" style="border-radius:100px;"&gt;&lt;a href="[link_nova_senha]" style="display:inline-block; padding:14px 34px; font-size:15px; font-weight:700; color:#221B05; text-decoration:none; border-radius:100px; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Criar nova senha&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:14px 0 0;"&gt;&lt;tr&gt;&lt;td style="background:#FBFBFA; border:1px solid #E6E3DA; border-radius:12px; padding:16px 18px; font-size:13px; line-height:1.55; color:#092312; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;&lt;b&gt;O bot&amp;atilde;o n&amp;atilde;o abriu?&lt;/b&gt; Copie e cole no navegador:&lt;br/&gt;&lt;span style="font-size:11.5px; color:#5B564E; word-break:break-all;"&gt;[link_nova_senha]&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:14px 0 0;"&gt;&lt;tr&gt;&lt;td style="background:#EEF3F4; border:1px solid #CBDDE2; border-radius:12px; padding:16px 18px; font-size:13px; line-height:1.55; color:#092312; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;&lt;b&gt;N&amp;atilde;o foi voc&amp;ecirc;?&lt;/b&gt; Pode ignorar este e-mail, sua senha atual continua a mesma.&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</pre></div>
+    </div></div>
+    </div>
+  </section>
+
+  <!-- 22 LISTA CRIADA -->
+  <section class="panel" id="listacriada">
+    <div class="p-head"><h2>Lista de Presente Criada</h2><span class="chip l">Listas</span></div>
+    <p class="p-sub">Tudo num parágrafo só. A versão nova vira passos claros: adicionar produtos, compartilhar e acompanhar.</p>
+    <div class="ba">
+      <div><div class="col-label before"><span class="b">Antes</span></div>
+        <div class="frame"><div class="chrome"><div class="subj">Criação de Lista</div></div>
+          <div class="old"><p class="cram">[banner_lista] Parabéns [nome_cliente], sua lista foi criada! Agora você poderá adicionar produtos na lista [nome_lista]. Para compartilhar use a url: [url_lista]. Para consultar acesse a [link_central].</p></div>
+        </div>
+      </div>
+      <div><div class="col-label after"><span class="b">Depois</span></div>
+        <div class="frame"><div class="chrome"><div class="subj">Sua lista [nome_lista] está pronta 🌱</div><div class="pre">Adicione produtos e compartilhe.</div></div>
+          <div class="new"><div class="em-head"></div>
+            <div class="em-status"><div class="ico">📝</div><h3>Lista criada, [nome_cliente]!</h3><p>A sua lista <b>[nome_lista]</b> está pronta para receber os produtos que você quiser.</p></div>
+            <div class="em-blk"><b>1 · Adicione</b> os produtos que desejar à lista.<br><b>2 · Compartilhe</b> com amigos e família.<br><b>3 · Acompanhe</b> os pedidos recebidos na Central.</div>
+            <a class="em-btn" href="[url_lista]">Compartilhar minha lista</a>
+            <a class="em-btn ghost" href="[link_central]">Ver minha lista na Central</a>
+            <div class="em-foot-curve"></div><div class="em-foot" data-lead="Seus amigos terão todo o suporte da loja."></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="code-in-panel"><div class="cip-head"><span class="seed"></span> Código de produção (Tray)</div>
+    <p class="p-sub"><b>Assunto:</b> Sua lista [nome_lista] está pronta 🌱<br/><b>Preheader:</b> Adicione produtos e compartilhe.</p>
+    <div class="codecol"><div class="codewrap">
+      <div class="clbl"><h4>Corpo (vai no [mensagem])</h4><button class="copybtn" data-code="code-listacriada">Copiar</button></div>
+      <div class="codeblock"><pre id="code-listacriada">&lt;!-- ===== CORPO: Lista de Presente Criada (vai no lugar de [mensagem]) ===== --&gt;
+&lt;!-- Preheader --&gt;
+&lt;div style="display:none; max-height:0; overflow:hidden; mso-hide:all; font-size:1px; line-height:1px; color:#ffffff;"&gt;Adicione produtos e compartilhe.&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&lt;/div&gt;
+&lt;div style="text-align:center; font-size:34px; line-height:1; margin:0 0 8px;"&gt;📝&lt;/div&gt;
+&lt;h1 style="margin:0 0 10px; font-weight:700; font-size:23px; line-height:1.2; color:#092312; text-align:center; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Lista criada, [nome_cliente]!&lt;/h1&gt;
+&lt;p style="margin:0 0 20px; font-size:15px; line-height:1.6; color:#092312; text-align:center; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;A sua lista [nome_lista] est&amp;aacute; pronta para receber os produtos que voc&amp;ecirc; quiser.&lt;/p&gt;
+&lt;table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:14px 0 0;"&gt;&lt;tr&gt;&lt;td style="background:#FBFBFA; border:1px solid #E6E3DA; border-radius:12px; padding:16px 18px; font-size:13px; line-height:1.55; color:#092312; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;&lt;b&gt;1 &amp;middot; Adicione&lt;/b&gt; os produtos que desejar &amp;agrave; lista.&lt;br/&gt;&lt;b&gt;2 &amp;middot; Compartilhe&lt;/b&gt; com amigos e fam&amp;iacute;lia.&lt;br/&gt;&lt;b&gt;3 &amp;middot; Acompanhe&lt;/b&gt; os pedidos recebidos na Central.&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center" style="margin:20px auto 6px;"&gt;&lt;tr&gt;&lt;td align="center" bgcolor="#FFC100" style="border-radius:100px;"&gt;&lt;a href="[url_lista]" style="display:inline-block; padding:14px 34px; font-size:15px; font-weight:700; color:#221B05; text-decoration:none; border-radius:100px; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Compartilhar minha lista&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;p style="text-align:center; margin:8px 0 0; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;&lt;a href="[link_central]" style="color:#3E6B4F; font-weight:700; font-size:13.5px; text-decoration:none; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Ver minha lista na Central&lt;/a&gt;&lt;/p&gt;</pre></div>
+    </div></div>
+    </div>
+  </section>
+
+  <!-- 23 LISTA LIBERADA -->
+  <section class="panel" id="listaliberada">
+    <div class="p-head"><h2>Pedido de Lista Liberado</h2><span class="chip l">Listas</span></div>
+    <p class="p-sub">Hoje a ação necessária fica confusa. A versão nova celebra o presente recebido e deixa o próximo passo óbvio.</p>
+    <div class="ba">
+      <div><div class="col-label before"><span class="b">Antes</span></div>
+        <div class="frame"><div class="chrome"><div class="subj">Liberação de Pedido de Lista</div></div>
+          <div class="old"><p>Olá [nome_cliente],</p><p class="cram">Foi realizado junto a [nome_loja] a compra de um item de sua lista por [nome_cliente_pedido]. Por favor, acesse a central do cliente e realize a liberação de seu pedido. [link_central]</p></div>
+        </div>
+      </div>
+      <div><div class="col-label after"><span class="b">Depois</span></div>
+        <div class="frame"><div class="chrome"><div class="subj">Alguém comprou um item da sua lista 🎁</div><div class="pre">Falta um passo para liberar.</div></div>
+          <div class="new"><div class="em-head"></div>
+            <div class="em-status"><div class="ico">🎁</div><h3>Você recebeu um presente, [nome_cliente]!</h3><p>[nome_cliente_pedido] comprou um item da sua lista. Que legal!</p></div>
+            <div class="em-blk info"><b>Próximo passo:</b> acesse a Central do Cliente e libere seu pedido para que a gente possa preparar o envio.</div>
+            <a class="em-btn" href="[link_central]">Liberar meu pedido</a>
+            <div class="em-foot-curve"></div><div class="em-foot" data-lead="Dúvidas sobre a lista? Fale com a gente."></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="code-in-panel"><div class="cip-head"><span class="seed"></span> Código de produção (Tray)</div>
+    <p class="p-sub"><b>Assunto:</b> Alguém comprou um item da sua lista 🎁<br/><b>Preheader:</b> Falta um passo para liberar.</p>
+    <div class="codecol"><div class="codewrap">
+      <div class="clbl"><h4>Corpo (vai no [mensagem])</h4><button class="copybtn" data-code="code-listaliberada">Copiar</button></div>
+      <div class="codeblock"><pre id="code-listaliberada">&lt;!-- ===== CORPO: Pedido de Lista Liberado (vai no lugar de [mensagem]) ===== --&gt;
+&lt;!-- Preheader --&gt;
+&lt;div style="display:none; max-height:0; overflow:hidden; mso-hide:all; font-size:1px; line-height:1px; color:#ffffff;"&gt;Falta um passo para liberar.&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&lt;/div&gt;
+&lt;div style="text-align:center; font-size:34px; line-height:1; margin:0 0 8px;"&gt;🎁&lt;/div&gt;
+&lt;h1 style="margin:0 0 10px; font-weight:700; font-size:23px; line-height:1.2; color:#092312; text-align:center; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Voc&amp;ecirc; recebeu um presente, [nome_cliente]!&lt;/h1&gt;
+&lt;p style="margin:0 0 20px; font-size:15px; line-height:1.6; color:#092312; text-align:center; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;[nome_cliente_pedido] comprou um item da sua lista. Que legal!&lt;/p&gt;
+&lt;table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:14px 0 0;"&gt;&lt;tr&gt;&lt;td style="background:#EEF3F4; border:1px solid #CBDDE2; border-radius:12px; padding:16px 18px; font-size:13px; line-height:1.55; color:#092312; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;&lt;b&gt;Pr&amp;oacute;ximo passo:&lt;/b&gt; acesse a Central do Cliente e libere seu pedido para que a gente possa preparar o envio.&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center" style="margin:20px auto 6px;"&gt;&lt;tr&gt;&lt;td align="center" bgcolor="#FFC100" style="border-radius:100px;"&gt;&lt;a href="[link_central]" style="display:inline-block; padding:14px 34px; font-size:15px; font-weight:700; color:#221B05; text-decoration:none; border-radius:100px; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Liberar meu pedido&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</pre></div>
+    </div></div>
+    </div>
+  </section>
+
+  <section class="panel" id="codigo-layout">
+    <div class="p-head"><h2>Layout do e-mail — código</h2><span class="chip c">Produção · Tray</span></div>
+    <p class="p-sub">O layout é a moldura que envolve todo e-mail na Tray; <span class="tag">[mensagem]</span> é onde entra o corpo de cada um. Abaixo, o código atual e o novo, já em tabela e com estilos inline para funcionar nos clientes de e-mail.</p>
+    <div class="codecol">
+
+      <div class="codewrap">
+        <div class="clbl"><h4>Código atual</h4><span class="tagline">o que está na Tray hoje</span><button class="copybtn" data-code="code-atual">Copiar</button></div>
+        <div class="codeblock"><pre id="code-atual">&lt;meta http-equiv='content-type' content='text/html; charset=utf-8'/&gt;
+&lt;div align="center" style="width:500px; margin:auto; font-family: arial, sans-serif; text-align: left;" width="560px"&gt;
+&lt;div style="margin-top:10px; padding:10px;"&gt;[logo_loja]&lt;/div&gt;
+&lt;div style="overflow: hidden; clear:both;"&gt;&amp;nbsp;&lt;/div&gt;
+&lt;div style="margin-top:10px; border: 1px solid #ccc; background: #f5f5f5; padding:15px; font-size:14px;"&gt;[mensagem]
+&lt;div style="margin-top:40px;"&gt;
+&lt;div style="float:left;"&gt;Atenciosamente,&lt;br /&gt;
+[nome_loja]&lt;/div&gt;
+&lt;/div&gt;
+&lt;div style="overflow: hidden; clear:both;"&gt;&amp;nbsp;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div style="overflow: hidden; clear:both;"&gt;&amp;nbsp;&lt;/div&gt;
+&lt;/div&gt;</pre></div>
+      </div>
+
+      <div class="codewrap">
+        <div class="clbl"><h4>Novo código (layout)</h4><span class="tagline">header creme + corpo branco + rodapé verde</span><button class="copybtn" data-code="code-novo">Copiar</button></div>
+        <div class="codeblock"><pre id="code-novo">&lt;meta http-equiv="content-type" content="text/html; charset=utf-8"/&gt;
+&lt;meta name="color-scheme" content="light dark"/&gt;
+&lt;meta name="supported-color-schemes" content="light dark"/&gt;
+
+&lt;!-- Poppins: honrada por Apple Mail e afins; nos demais cai no fallback Arial --&gt;
+&lt;link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&amp;display=swap" rel="stylesheet"/&gt;
+
+&lt;table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:0; padding:0; background:#EDEBE4;"&gt;
+  &lt;tr&gt;
+    &lt;td align="center" style="padding:24px 12px;"&gt;
+
+      &lt;!-- container 600px --&gt;
+      &lt;table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="width:600px; max-width:600px; font-family:Poppins, Arial, Helvetica, sans-serif; color:#092312;"&gt;
+
+        &lt;!-- ===== HEADER: creme + logo ===== --&gt;
+        &lt;tr&gt;
+          &lt;td align="center" style="background:#F4F2EC; padding:28px 24px 30px;"&gt;
+            &lt;!-- Logo hospedada. Ajuste o width (px) para mudar o tamanho da logo. --&gt;
+            &lt;!-- (Sem hospedar, mas sem controle de tamanho: usar a tag [logo_loja] pura.) --&gt;
+            &lt;img src="https://assets.ks-static.com.br/horizontepet/logo_horizonte-pet-store.png" alt="Horizonte Pet Store" width="150" style="display:block; margin:0 auto; width:150px; height:auto; border:0;"/&gt;
+          &lt;/td&gt;
+        &lt;/tr&gt;
+
+        &lt;!-- Curva do header (OPCIONAL): exporte a curva como PNG e hospede.
+             Remova esta &lt;tr&gt; inteira para deixar o header reto (funciona em todo cliente). --&gt;
+        &lt;tr&gt;
+          &lt;td style="font-size:0; line-height:0; background:#ffffff;"&gt;
+            &lt;img src="URL_CURVA_HEADER.png" alt="" width="600" style="display:block; width:100%; height:auto; border:0;"/&gt;
+          &lt;/td&gt;
+        &lt;/tr&gt;
+
+        &lt;!-- ===== CORPO: branco (aqui entra o conteudo de cada e-mail) ===== --&gt;
+        &lt;tr&gt;
+          &lt;td style="background:#ffffff; padding:26px 26px 30px; font-size:15px; line-height:1.6; color:#092312;"&gt;
+            [mensagem]
+          &lt;/td&gt;
+        &lt;/tr&gt;
+
+        &lt;!-- Curva do rodape (OPCIONAL, mesmo esquema da do header) --&gt;
+        &lt;tr&gt;
+          &lt;td style="font-size:0; line-height:0; background:#ffffff;"&gt;
+            &lt;img src="URL_CURVA_RODAPE.png" alt="" width="600" style="display:block; width:100%; height:auto; border:0;"/&gt;
+          &lt;/td&gt;
+        &lt;/tr&gt;
+
+        &lt;!-- ===== RODAPE: verde ===== --&gt;
+        &lt;tr&gt;
+          &lt;td align="center" style="background:#18592F; padding:22px 26px 26px; color:#ffffff; font-size:12px; line-height:1.7;"&gt;
+            &lt;strong style="color:#ffffff; font-size:13px;"&gt;Precisa de ajuda? Fale com a gente.&lt;/strong&gt;&lt;br/&gt;
+            &lt;a href="https://wa.me/5519998594379" style="color:#FFC100; text-decoration:none;"&gt;WhatsApp (19) 99859-4379&lt;/a&gt; &amp;nbsp;&amp;middot;&amp;nbsp; &lt;a href="tel:+551935771474" style="color:#FFC100; text-decoration:none;"&gt;(19) 3577-1474&lt;/a&gt;&lt;br/&gt;
+            &lt;a href="mailto:[email_loja]" style="color:#ffffff; text-decoration:none;"&gt;[email_loja]&lt;/a&gt; &amp;nbsp;&amp;middot;&amp;nbsp; Seg a sex, 8h &amp;agrave;s 18h&lt;br/&gt;
+            &lt;span style="color:#9fb6a6; font-size:10px;"&gt;Horizonte Pet Store &amp;middot; Corumbata&amp;iacute;, SP &amp;middot; Cancelar inscri&amp;ccedil;&amp;atilde;o&lt;/span&gt;
+          &lt;/td&gt;
+        &lt;/tr&gt;
+
+      &lt;/table&gt;
+
+    &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;</pre></div>
+      </div>
+
+      <div class="codewrap">
+        <div class="clbl"><h4>Bônus · botão CTA</h4><span class="tagline">colar dentro do [mensagem]</span><button class="copybtn" data-code="code-botao">Copiar</button></div>
+        <div class="codeblock"><pre id="code-botao">&lt;!-- Botao CTA: usar DENTRO do corpo de cada e-mail ([mensagem]) --&gt;
+&lt;a href="[site_loja]" style="display:inline-block; background:#FFC100; color:#221B05; font-family:Poppins, Arial, Helvetica, sans-serif; font-weight:700; font-size:15px; text-decoration:none; padding:14px 34px; border-radius:100px;"&gt;Comecar a comprar&lt;/a&gt;</pre></div>
+      </div>
+
+      <div class="codenote"><span class="seed" style="margin-top:6px"></span><div><b>Sobre as curvas:</b> Gmail e Outlook não renderizam SVG nem <span class="tag">border-radius</span>. Para as curvas do header e do rodapé saírem iguais em todo cliente, elas precisam ser exportadas como imagem PNG e hospedadas (troque <span class="tag">URL_CURVA_HEADER.png</span> e <span class="tag">URL_CURVA_RODAPE.png</span>). Se preferir simplificar, é só remover as duas linhas de curva: o header fica creme reto e o rodapé verde reto — limpo e 100% compatível. <b>Fonte:</b> só Apple Mail e alguns carregam a Poppins; nos demais o texto usa Arial (já previsto no fallback).</div></div>
+
+    </div>
+  </section>
+
+  </main>
+</div>
+
+<script>
+  var BRAND = '<svg class="em-curve" viewBox="0 0 1682 175" preserveAspectRatio="none"><path d="M0 0 H1682 V175 Q841 100 0 175 Z" fill="#F4F2EC" stroke="rgba(0,0,0,0.08)" stroke-width="1"></path></svg><img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDQyIiBoZWlnaHQ9IjE5NyIgdmlld0JveD0iMCAwIDQ0MiAxOTciIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik0yMDAuOTU4IDM0LjI3OTNDMTk5LjgwNyA2MC42MTM4IDE5MS44ODMgNjguNzkyNSAxODguMDQzIDczLjUyNDlDMTg0LjIwOSA3OC4yNTIyIDE3NC4xNzUgODEuMTQwOSAxNzQuMjM1IDg5Ljg4NzJDMTc0LjMgOTguNjI4NiAxODQuNDY2IDEwMS45MDQgMTgyLjkyOCAxMDcuMTQ0QzE4MS4zOTUgMTEyLjM4NCAxNzMuMDM0IDExOC45ODUgMTczLjAzNCAxMTguOTg1QzE3OC40ODEgMTI1LjAzOCAxODIuNzU3IDEzOC40MzIgMTgyLjkyMyAxMzguOTU5QzE4Mi42MzcgMTM4LjQwMiAxNzMuNDkxIDEyMC41NjcgMTY2LjgxOCAxMjAuNDM3QzE2MC4xNSAxMjAuMzExIDEyOS45MyAxMzkuMTQgMTI4Ljk5IDEzOS43MjhDMTI5Ljc0NCAxMzguOTk5IDE1NC4zODEgMTE1LjU4OSAxNjguNDgxIDExNi4wOTFDMTY4Ljg2MyAxMTYuMTM2IDE2OS4yNSAxMTYuMjM3IDE2OS42MjcgMTE2LjM4OEMxNzIuNjg3IDExNC4wNDYgMTc4LjkzMyAxMDguOTc4IDE3OS4yMjUgMTA2LjM3NUMxNzkuNjA3IDEwMi45MjQgMTY5LjYzMiA5Ny4zMDIzIDE2OS4zNzYgOTAuNTI1M0MxNjkuMTIgODMuNzQ4MiAxODUuMTA0IDY5LjgxNzMgMTkxLjYyNiA2Mi45MTQ3QzE5OC4xNDkgNTYuMDEyMSAyMDAuOTU4IDM0LjI3OTMgMjAwLjk1OCAzNC4yNzkzWiIgZmlsbD0iIzBEMEQwRCIvPgo8cGF0aCBkPSJNMTI5LjQ4MyA3NS44MjU3QzEyOS40ODMgNzUuODI1NyAxMTAuMDQ2IDgzLjc1MzIgMTEwLjA0NiA4OS42MzFDMTEwLjA0NiA5NS41MDg4IDExOC44NyA5Ni4yNzc0IDExOC42MTQgOTkuMzQ2OUMxMTguMzU4IDEwMi40MTYgMTA5LjY2NSAxMTQuOTQxIDg3LjQxNDEgMTM2LjU0OEM5OS4wNTE5IDEyNy4yMTQgMTE2LjY5NCAxMTMuMDI3IDEyMS45MzUgOTguOTY1MUMxMjMuMDg2IDk2LjY2NDIgMTE0Ljc3NSA5MS4yOTM4IDExNC42NDkgODguNzM2N0MxMTQuNTI0IDg2LjE3OTcgMTI5LjQ4MyA3NS44MjU3IDEyOS40ODMgNzUuODI1N1oiIGZpbGw9IiMwRDBEMEQiLz4KPHBhdGggZD0iTTE2NC4yNjEgNjguNjY3QzE2NC4yNjEgNjguNjY3IDE1OS45MTQgNTEuNDEwNCAxNjcuMzMxIDQ4LjM0MDhDMTc0Ljc0OCA0NS4yNzEzIDE3OC4zMjYgNTUuNzU1OSAxNzguMzI2IDU1Ljc1NTlDMTc4LjMyNiA1NS43NTU5IDIwMi42MjEgMTQuNDY1NyAyMjMuNDYgMTQuODQ3NUMyMTkuMTEzIDEwLjUwMTkgMjAzLjM4NSA1LjA5NjM1IDE5MC41OTcgMjkuODAzMkMxODguMDM5IDI3LjI0NjEgMTg4LjQyMSAzLjU5OTI3IDIwNC45MTggMC41Mjk3NTZDMjA0LjkxOCAwLjUyOTc1NiAxOTEuNjIyIC00LjE5NzYgMTgxLjc3MyAxNC41OTEyQzE4Mi41NDIgOS4yMjA4NSAxNzkuOTg0IDcuODE0MiAxODMuODE4IDMuMDg2ODVDMTc4LjgzMyA3LjMwNjggMTcxLjkyOSAxNC41OTEyIDE3MS43OTggMjAuNzMwM0MxNzAuMTM1IDIyLjAwNjMgMTY0Ljc2MyAxMi45MzM0IDE2Ny45NjQgMi45NjEyNUMxNjcuOTY0IDIuOTYxMjUgMTYxLjMxNiA1LjUxODM1IDE2Mi4zMzYgMjMuNjY5MkMxNTkuMTQgMTcuNDA0NiAxNTMuMjU2IDguMjAxMDMgMTQ5LjgwNCA1LjEzMTUyQzE1My43NjkgMTQuODQ3NSAxNTguNDk3IDI3LjEyMDUgMTU3Ljg1OSAzMS43MjIzQzE1Ny4yMjEgMzYuMzI0IDE0MC4zNDIgMTcuNDA0NiAxNDIuMzg3IDEyLjAzNDJDMTQwLjcyNCAxNS42MTExIDEzOC44MDkgMTcuOTE3IDE0MC4yMTEgMjMuMTU2OEMxNDAuMjExIDIzLjE1NjggMTMyLjQxMyAxNi41MTAzIDEyOC4zMjIgMTcuMTQ4M0MxMzEuNjQ5IDE5LjA2NzQgMTM3Ljc4NCAyNy41MDIzIDEzOS44MjkgNDAuNDEzNEMxMzQuNzE0IDQwLjQxMzQgMTI2LjkxNSA0MC42Njk2IDEyMC41MjQgMzEuMDc5MkMxMjAuNTI0IDMxLjA3OTIgMTIyLjMxMiA0MS40MzMyIDEyOS42MDQgNDUuMTQwN0MxMjUuNjM5IDQ0LjYyODMgMTE4LjczNSA0NC44ODQ1IDExMi44NTUgMzkuOTAwOUMxMTYuOTQ2IDQ0Ljg4NDUgMTI0Ljg3NSA1My45NjI0IDEzMS4yNjcgNTYuMDA3MUMxMzcuNjU5IDU4LjA1MTggMTE2LjY4OSA2My4yOTE1IDEwNS45NTEgNjIuMTQxMUMxMDguNzY1IDY1Ljg0ODYgMTEzLjIzNyA3Mi40OTUxIDEyNS43NyA3My41MTk5QzEzOC4zMDIgNzQuNTQ0OCAxNDEuMTExIDY4LjE0OTUgMTQyLjM5MiA2NC45NTQ0QzE0My42NjggNjEuNzU5MyAxNTIuMjM2IDQ4LjcxNzYgMTY0LjI1NiA2OC42NjE5TDE2NC4yNjEgNjguNjY3WiIgZmlsbD0iI0ZDQ0IwNiIvPgo8cGF0aCBkPSJNMTc2LjQxIDg4LjYxMTJDMTc2LjQxIDg4LjYxMTIgMTgzLjU3MSA3Ni4yMTI2IDE5MC4wOTMgNzUuODI1N0MxOTYuNjE2IDc1LjQ0MzkgMjA1LjgyMSA4NC43NzMxIDE5My42NzEgMTAwLjI0MUMxOTMuNjcxIDEwMC4yNDEgMTk0LjI1OSA5MC42MjA3IDE3OC45NjggOTEuODY2NkMxNzUuODM3IDkyLjEyMjggMTc2LjQxIDg4LjYwNjIgMTc2LjQxIDg4LjYwNjJWODguNjExMloiIGZpbGw9IiMwRDBEMEQiLz4KPHBhdGggZD0iTTE3Ny4yNzUgOTMuNTI5M0MxNzcuMjc1IDkzLjUyOTMgMTc4LjUzMiAxMDAuOTU0IDE4My41NzIgMTAxLjA3QzE4OC44MTMgMTAxLjE5MSAxODguNDQ2IDk1LjYzOTMgMTg4LjQ0NiA5NS42MzkzQzE4OC40NDYgOTUuNjM5MyAxODIuMjk1IDk3LjM2MjQgMTc3LjI4IDkzLjUyOTNIMTc3LjI3NVoiIGZpbGw9IiMwRDBEMEQiLz4KPHBhdGggZD0iTTE2MS40ODIgODkuMzU0OUMxNjQuOTk1IDg5LjM1NDkgMTY3Ljg0MyA4Ni41MDc0IDE2Ny44NDMgODIuOTk0OEMxNjcuODQzIDc5LjQ4MjMgMTY0Ljk5NSA3Ni42MzQ4IDE2MS40ODIgNzYuNjM0OEMxNTcuOTY4IDc2LjYzNDggMTU1LjEyIDc5LjQ4MjMgMTU1LjEyIDgyLjk5NDhDMTU1LjEyIDg2LjUwNzQgMTU3Ljk2OCA4OS4zNTQ5IDE2MS40ODIgODkuMzU0OVoiIGZpbGw9IiMwRDBEMEQiLz4KPHBhdGggZD0iTTE1OC4zNzEgODIuMjc2M0MxNTkuNTE0IDgyLjI3NjMgMTYwLjQ0MSA4MS4zNDk2IDE2MC40NDEgODAuMjA2NUMxNjAuNDQxIDc5LjA2MzQgMTU5LjUxNCA3OC4xMzY3IDE1OC4zNzEgNzguMTM2N0MxNTcuMjI4IDc4LjEzNjcgMTU2LjMwMSA3OS4wNjM0IDE1Ni4zMDEgODAuMjA2NUMxNTYuMzAxIDgxLjM0OTYgMTU3LjIyOCA4Mi4yNzYzIDE1OC4zNzEgODIuMjc2M1oiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGQ9Ik04Mi4yNzMzIDEzNS45NkM4MS42NDUyIDEzNS41NjggNjEuNDg1MSAxMjMuMDA0IDU3LjAzMyAxMjMuMDg5QzUyLjU4NTkgMTIzLjE3NSA0Ni40ODA2IDEzNS4wNzYgNDYuMjg5NyAxMzUuNDQ4QzQ2LjQwMDIgMTM1LjA5NiA0OS4yNDkzIDEyNi4xNjQgNTIuODg3NCAxMjIuMTI1QzUyLjg4NzQgMTIyLjEyNSA0Ny4zMDk3IDExNy43MTkgNDYuMjg0NiAxMTQuMjIyQzQ1LjI2NDYgMTEwLjcyNiA1Mi4wNDMyIDEwOC41NCA1Mi4wODg0IDEwMi43MDhDNTIuMTI4NiA5Ni44NzUzIDQ1LjQzMDQgOTQuOTQ2MiA0Mi44NzI3IDkxLjc5MTJDNDAuMzE1IDg4LjYzMTMgMzUuMDIzNyA4My4xNzU1IDM0LjI1NDkgNjUuNjA3NEMzNC4yNTQ5IDY1LjYwNzQgMzYuMTM0MiA4MC4xMDYgNDAuNDg1OCA4NC43MDc3QzQ0LjgzNzQgODkuMzE0NSA1NS41MDA0IDk4LjYxMzUgNTUuMzI5NSAxMDMuMTM1QzU1LjE1ODcgMTA3LjY1MSA0OC41MDU3IDExMS40MDQgNDguNzYxOSAxMTMuNzFDNDguOTUyOSAxMTUuNDQzIDUzLjEyMzYgMTE4LjgyOSA1NS4xNjM3IDEyMC4zOTFDNTUuNDE1IDEyMC4yODYgNTUuNjcxMiAxMjAuMjIxIDU1LjkyNzUgMTIwLjE5MUM2NS4zMDkxIDExOS44NTQgODEuNjk1NSAxMzUuNDA3IDgyLjI3MzMgMTM1Ljk2WiIgZmlsbD0iIzBEMEQwRCIvPgo8cGF0aCBkPSJNOTcuMjk3NyAxMjIuODczQzk3LjU1OSAxMjIuNjQ3IDk3Ljg0MDQgMTIyLjQzNiA5OC4xNjIgMTIyLjI0NUM5OC4yOTc2IDEyMi4xNjUgOTguNDUzNCAxMjIuMTE5IDk4LjU5NDEgMTIyLjA1NEM5Mi4wODE4IDExNC43OTUgODkuMzEzIDExMC40MjQgODkuMTk3NCAxMDkuMDE3Qzg5LjAyNjYgMTA2Ljk3MyA5NC45MTA4IDEwNi40NiA5NC45MTA4IDEwMi41MzdDOTQuOTEwOCA5OC42MTMzIDgxLjk0MTQgOTMuMzIzMiA4MS45NDE0IDkzLjMyMzJDODEuOTQxNCA5My4zMjMyIDkxLjkyMSAxMDAuMjMxIDkxLjgzNTUgMTAxLjkzOUM5MS43NTAxIDEwMy42NDcgODYuMjA3NiAxMDcuMjI5IDg2Ljk3MTQgMTA4Ljc2MUM4OC43NzUzIDExMy41OTQgOTIuNzc1MiAxMTguNDQ3IDk3LjI5MjYgMTIyLjg3M0g5Ny4yOTc3WiIgZmlsbD0iIzBEMEQwRCIvPgo8cGF0aCBkPSJNNTguNzQxMyA4OC41NTA4QzU4Ljc0MTMgODguNTUwOCA2MS42NDA3IDc3LjAzNjQgNTYuNjk2MSA3NC45OTE3QzUxLjc0NjUgNzIuOTQ3IDQ5LjM1OTcgNzkuOTQwMSA0OS4zNTk3IDc5Ljk0MDFDNDkuMzU5NyA3OS45NDAxIDMzLjE0OTIgNTIuMzg5OCAxOS4yNDUxIDUyLjY0NkMyMi4xNDQ1IDQ5Ljc0NzMgMzIuNjM2NiA0Ni4xNDAzIDQxLjE2OSA2Mi42MjMyQzQyLjg3NzUgNjAuOTE1MSA0Mi42MjEyIDQ1LjE0MDUgMzEuNjE2NiA0My4wOTA4QzMxLjYxNjYgNDMuMDkwOCA0MC40OTA2IDM5LjkzNTkgNDcuMDU4MiA1Mi40NzUyQzQ2LjU0NTcgNDguODkzMyA0OC4yNTQyIDQ3Ljk1MzggNDUuNjkxNSA0NC43OTg5QzQ5LjAxOCA0Ny42MTIyIDUzLjYyNTkgNTIuNDc1MiA1My43MTEzIDU2LjU2OTZDNTQuODIxOCA1Ny40MjM2IDU4LjQwNDYgNTEuMzY1IDU2LjI2OSA0NC43MTM1QzU2LjI2OSA0NC43MTM1IDYwLjcwNiA0Ni40MjE2IDYwLjAyMjYgNTguNTI4OUM2Mi4xNTMyIDU0LjM0OTEgNjYuMDc3NyA0OC4yMTAxIDY4LjM4NDEgNDYuMTYwNEM2NS43NDEgNTIuNjQxIDYyLjU4NTMgNjAuODI5NyA2My4wMDc0IDYzLjg5OTJDNjMuNDM0NiA2Ni45Njg4IDc0LjY5NTUgNTQuMzQ5MSA3My4zMjg3IDUwLjc2MjFDNzQuNDM5MiA1My4xNDg0IDc1LjcxNTYgNTQuNjg1NyA3NC43ODA5IDU4LjE4MjJDNzQuNzgwOSA1OC4xODIyIDc5Ljk4NjggNTMuNzQ2MiA4Mi43MTUzIDU0LjE3MzNDODAuNDk5MyA1NS40NTQzIDc2LjQwNCA2MS4wODA5IDc1LjAzNzIgNjkuNjk2N0M3OC40NDkxIDY5LjY5NjcgODMuNjU1IDY5Ljg2NzUgODcuOTIxMiA2My40NzIyQzg3LjkyMTIgNjMuNDcyMiA4Ni43MjUyIDcwLjM3OTkgODEuODY2MSA3Mi44NTY2Qzg0LjUwOTIgNzIuNTE1IDg5LjExNzEgNzIuNjg1OCA5My4wNDE2IDY5LjM2MDFDOTAuMzEzIDcyLjY4NTggODUuMDIxOCA3OC43NDQ0IDgwLjc1NTYgODAuMTA1OUM3Ni40ODk0IDgxLjQ3MjMgOTAuNDc4OSA4NC45Njg5IDk3LjY0OTUgODQuMjAwMkM5NS43NzAxIDg2LjY3MTkgOTIuNzg1MyA5MS4xMDc5IDg0LjQyODggOTEuNzkxMUM3Ni4wNjczIDkyLjQ3NDQgNzQuMTkzIDg4LjIwOTIgNzMuMzM4NyA4Ni4wNzkxQzcyLjQ4NDUgODMuOTQ5MSA2Ni43NzExIDc1LjI0NzkgNTguNzUxMyA4OC41NTA4SDU4Ljc0MTNaIiBmaWxsPSIjRkNDQjA2Ii8+CjxwYXRoIGQ9Ik01MC42MzYgMTAxLjg1NEM1MC42MzYgMTAxLjg1NCA0NS44NTczIDkzLjU3OTcgNDEuNTA1NiA5My4zMjM1QzM3LjE1NCA5My4wNjczIDMxLjAxMzUgOTkuMjkxOCAzOS4xMTg4IDEwOS42MTZDMzkuMTE4OCAxMDkuNjE2IDM4LjcyNjggMTAzLjE5NSA0OC45Mjc1IDEwNC4wMjlDNTEuMDE3OSAxMDQuMiA1MC42MzYgMTAxLjg1NCA1MC42MzYgMTAxLjg1NFoiIGZpbGw9IiMwRDBEMEQiLz4KPHBhdGggZD0iTTUwLjA1ODMgMTA1LjEzOUM1MC4wNTgzIDEwNS4xMzkgNDkuMjE5MSAxMTAuMDkzIDQ1Ljg1NzQgMTEwLjE3M0M0Mi4zNjAxIDExMC4yNTMgNDIuNjA2MyAxMDYuNTQ2IDQyLjYwNjMgMTA2LjU0NkM0Mi42MDYzIDEwNi41NDYgNDYuNzExNyAxMDcuNjk2IDUwLjA1ODMgMTA1LjEzOVoiIGZpbGw9IiMwRDBEMEQiLz4KPHBhdGggZD0iTTYwLjU5NTcgMTAyLjM1NkM2Mi45NDA3IDEwMi4zNTYgNjQuODQxOCAxMDAuNDU1IDY0Ljg0MTggOTguMTEwOEM2NC44NDE4IDk1Ljc2NjMgNjIuOTQwNyA5My44NjU3IDYwLjU5NTcgOTMuODY1N0M1OC4yNTA2IDkzLjg2NTcgNTYuMzQ5NiA5NS43NjYzIDU2LjM0OTYgOTguMTEwOEM1Ni4zNDk2IDEwMC40NTUgNTguMjUwNiAxMDIuMzU2IDYwLjU5NTcgMTAyLjM1NloiIGZpbGw9IiMwRDBEMEQiLz4KPHBhdGggZD0iTTYyLjY3MDkgOTcuNjI4OEM2My40MzQxIDk3LjYyODggNjQuMDUyOCA5Ny4wMTAzIDY0LjA1MjggOTYuMjQ3M0M2NC4wNTI4IDk1LjQ4NDMgNjMuNDM0MSA5NC44NjU3IDYyLjY3MDkgOTQuODY1N0M2MS45MDc3IDk0Ljg2NTcgNjEuMjg5MSA5NS40ODQzIDYxLjI4OTEgOTYuMjQ3M0M2MS4yODkxIDk3LjAxMDMgNjEuOTA3NyA5Ny42Mjg4IDYyLjY3MDkgOTcuNjI4OFoiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGQ9Ik0yNDcuMDQyIDExNC43MTVIMjM1LjE2M1YxMzguODc5SDI0MC40MDlWMTMwLjgwMUgyNDcuMDQyQzI1Mi4yMTggMTMwLjgwMSAyNTUuNjA1IDEyOC40OSAyNTUuNjA1IDEyMy42OTJWMTIyLjAzNEMyNTUuNjA1IDExNy4wNjYgMjUyLjIxOCAxMTQuNzE1IDI0Ny4wNDIgMTE0LjcxNVpNMjUwLjA3NyAxMjMuMzgxQzI1MC4wNzcgMTI1LjEzOSAyNDkuMTc4IDEyNi4yMDkgMjQ3LjA3MiAxMjYuMjA5SDI0MC40MDlWMTE5LjM0MkgyNDcuMDcyQzI0OS4xNzggMTE5LjM0MiAyNTAuMDc3IDEyMC4zNzcgMjUwLjA3NyAxMjIuMTRWMTIzLjM4MVoiIGZpbGw9IiMwRDBEMEQiLz4KPHBhdGggZD0iTTI2NC41NDkgMTM0LjI1MlYxMjguODAxSDI3Ny4wNDZWMTI0LjQ4NkgyNjQuNTQ5VjExOS4zNDJIMjc3LjgwNVYxMTQuNzE1SDI1OS4yOThWMTM4Ljg3OUgyNzcuOTc2VjEzNC4yNTJIMjY0LjU0OVoiIGZpbGw9IiMwRDBEMEQiLz4KPHBhdGggZD0iTTI3OS4yOTIgMTE0LjcxNVYxMTkuMzQySDI4Ny4yMzZWMTM4Ljg3OUgyOTIuNDgyVjExOS4zNDJIMzAwLjM1N1YxMTQuNzE1SDI3OS4yOTJaIiBmaWxsPSIjMEQwRDBEIi8+CjxwYXRoIGQ9Ik0zMjMuMzg3IDEyNC42OTJMMzE3Ljk2NSAxMjMuODk4QzMxNS44OTQgMTIzLjU1MSAzMTUuMDM1IDEyMi45NjkgMzE1LjAzNSAxMjEuNDgyVjEyMS4xMzVDMzE1LjAzNSAxMTkuNTgzIDMxNi4zMTIgMTE4LjYxOCAzMTkuNzI5IDExOC42MThDMzIyLjkwNCAxMTguNjE4IDMyNC4zMjEgMTE5LjY4OCAzMjQuNDU3IDEyMS42NTJMMzI0LjQ5MiAxMjIuMjRIMzI5LjU2N0MzMjkuMzk3IDExNi43OSAzMjYuMjU2IDExNC4yNjggMzE5LjcyOSAxMTQuMjY4QzMxMy4yMDEgMTE0LjI2OCAzMDkuODU0IDExNi44MiAzMDkuODU0IDEyMS4xMzVWMTIxLjk5OUMzMDkuODU0IDEyNS4zOCAzMTIuMDMgMTI3LjkzNyAzMTYuMjQxIDEyOC41NkwzMjEuNjYzIDEyOS4zNTRDMzI0LjE4MSAxMjkuNzY2IDMyNS4wMSAxMzAuNDU5IDMyNS4wMSAxMzEuOTQxVjEzMi4yODhDMzI1LjAxIDEzNC4wMTEgMzIzLjQ5MiAxMzQuOTEgMzIwLjE0MSAxMzQuOTFDMzE2LjU4OCAxMzQuOTEgMzE0LjcyNCAxMzMuOTQxIDMxNC41ODMgMTMxLjQ1OUwzMTQuNTQ4IDEzMC44NzFIMzA5LjM3MkMzMDkuNTQzIDEzNi44NDQgMzEzLjAzIDEzOS4zMjYgMzIwLjE0MSAxMzkuMzI2QzMyNi43MDMgMTM5LjMyNiAzMzAuMjYxIDEzNi42MDMgMzMwLjI2MSAxMzIuMjg4VjEzMS4yNTNDMzMwLjI2MSAxMjcuNzMxIDMyOC4xODYgMTI1LjM4IDMyMy4zODcgMTI0LjY5MloiIGZpbGw9IiMwRDBEMEQiLz4KPHBhdGggZD0iTTMzMS4wNTUgMTE0LjcxNVYxMTkuMzQySDMzOC45OTlWMTM4Ljg3OUgzNDQuMjQ1VjExOS4zNDJIMzUyLjExOVYxMTQuNzE1SDMzMS4wNTVaIiBmaWxsPSIjMEQwRDBEIi8+CjxwYXRoIGQ9Ik0zNjQuNTE2IDExNC4yNjhDMzU4LjM3IDExNC4yNjggMzUyLjk0OCAxMTcuNzg5IDM1Mi45NDggMTI2LjA3M1YxMjcuNTI1QzM1Mi45NDggMTM1LjgwOSAzNTguMzcgMTM5LjMyNiAzNjQuNTE2IDEzOS4zMjZDMzcwLjY2MSAxMzkuMzI2IDM3Ni4wODMgMTM1LjgwOSAzNzYuMDgzIDEyNy41MjVWMTI2LjA3M0MzNzYuMDgzIDExNy43ODkgMzcwLjY2MSAxMTQuMjY4IDM2NC41MTYgMTE0LjI2OFpNMzcwLjU1NiAxMjguMzE0QzM3MC41NTYgMTMyLjYyOSAzNjguNjYxIDEzNC42NjkgMzY0LjUxNiAxMzQuNjY5QzM2MC4zNyAxMzQuNjY5IDM1OC40NzYgMTMyLjYyOSAzNTguNDc2IDEyOC4zMTRWMTI1LjI4QzM1OC40NzYgMTIwLjk2NCAzNjAuMzQgMTE4LjkyNSAzNjQuNTE2IDExOC45MjVDMzY4LjY5MSAxMTguOTI1IDM3MC41NTYgMTIwLjk2NCAzNzAuNTU2IDEyNS4yOFYxMjguMzE0WiIgZmlsbD0iIzBEMEQwRCIvPgo8cGF0aCBkPSJNNDAwLjkxMSAxMjIuNjIyVjEyMS4wMzVDNDAwLjkxMSAxMTYuMjM3IDM5Ny4wNzcgMTE0LjcxNSAzOTIuNjk1IDExNC43MTVIMzgwLjAyMlYxMzguODc5SDM4NS4yNjlWMTMwLjMxOUgzOTIuNTJDMzk0LjU1NSAxMzAuMzE5IDM5NS4yNDggMTMxLjAwNyAzOTUuMjQ4IDEzMy4wNDdWMTM0LjQ5M0MzOTUuMjQ4IDEzNS42MzQgMzk1LjI0OCAxMzcuMTUxIDM5NS41OTUgMTM4Ljg3OUg0MDAuODQxQzQwMC40OTQgMTM3LjE1MSA0MDAuNDk0IDEzNS40MjggNDAwLjQ5NCAxMzQuMDgxVjEzMi4wMTJDNDAwLjQ5NCAxMjkuMTQzIDM5OS4wMTIgMTI4LjA3MyAzOTYuNTk1IDEyNy43OTdWMTI3LjUyNUMzOTkuNDI0IDEyNy4xNzkgNDAwLjkxMSAxMjUuNDUxIDQwMC45MTEgMTIyLjYyMlpNMzk1LjM4NCAxMjMuMjFDMzk1LjM4NCAxMjQuNzI3IDM5NC41NTUgMTI1LjcyNyAzOTIuNTkgMTI1LjcyN0gzODUuMjY5VjExOS4zNDJIMzkyLjU5QzM5NC41NTUgMTE5LjM0MiAzOTUuMzg0IDEyMC4zMDYgMzk1LjM4NCAxMjEuODI4VjEyMy4yMVoiIGZpbGw9IiMwRDBEMEQiLz4KPHBhdGggZD0iTTQxMC40NzkgMTM0LjI1MlYxMjguODAxSDQyMi45NzZWMTI0LjQ4Nkg0MTAuNDc5VjExOS4zNDJINDIzLjczNFYxMTQuNzE1SDQwNS4yMjhWMTM4Ljg3OUg0MjMuOTA1VjEzNC4yNTJINDEwLjQ3OVoiIGZpbGw9IiMwRDBEMEQiLz4KPHBhdGggZD0iTTYzLjM1OTMgMTQ3LjE2OEg1Mi4wMDhDNTEuMTIzNiAxNDcuMTY4IDUwLjQgMTQ3Ljg5MSA1MC40IDE0OC43ODFWMTYxLjkyOEM1MC40IDE2Mi44MTcgNDkuNjcxNCAxNjMuNTQgNDguNzg3IDE2My41NEgzNS40MDU1QzM0LjUyMTEgMTYzLjU0IDMzLjc5MjUgMTYyLjgxNyAzMy43OTI1IDE2MS45MjhWMTQ4Ljc4MUMzMy43OTI1IDE0Ny44OTEgMzMuMDczOSAxNDcuMTY4IDMyLjE4NDUgMTQ3LjE2OEgyMC44NDgyQzE5Ljk1ODggMTQ3LjE2OCAxOS4yNDAyIDE0Ny44OTEgMTkuMjQwMiAxNDguNzgxVjE4Ny4wMzFDMTkuMjQwMiAxODcuMzY4IDE5LjQ5NjUgMTg3LjY0NCAxOS44NDgzIDE4Ny42NDRIMjUuODYzMUMyOC4yMDQ4IDE4Ny40NTggMzAuODUyOSAxODcuMjUzIDMzLjc5MjUgMTg3LjAzNlYxNzUuMjQxQzMzLjc5MjUgMTc0LjM1MiAzNC41MjExIDE3My42MjggMzUuNDA1NSAxNzMuNjI4SDQ4Ljc4N0M0OS42NzE0IDE3My42MjggNTAuNCAxNzQuMzUyIDUwLjQgMTc1LjI0MVYxODUuODY2QzU0Ljg5NzMgMTg1LjU3IDU5Ljc1NjQgMTg1LjI2MyA2NC45NjczIDE4NC45NTJWMTQ4Ljc4MUM2NC45NjczIDE0Ny44OTEgNjQuMjQzNyAxNDcuMTY4IDYzLjM1OTMgMTQ3LjE2OFoiIGZpbGw9IiMxODZDMzciLz4KPHBhdGggZD0iTTk0Ljg5MDggMTQ2LjA5OEM3OC4xOTI4IDE0Ni4wOTggNjkuNjE1MiAxNTMuMzQyIDY5LjYxNTIgMTY3LjQwOUM2OS42MTUyIDE3NS4wNzUgNzIuMTYyOSAxODAuNzA3IDc3LjE3MjggMTg0LjI0OUM4OC40Nzg5IDE4My42MzEgMTAxLjA2NiAxODMuMDE4IDExNC43NTkgMTgyLjQ2NUMxMTguMzU3IDE3OC45MjggMTIwLjE3NiAxNzMuODk1IDEyMC4xNzYgMTY3LjQwOUMxMjAuMTc2IDE1My4zNDIgMTExLjU5OSAxNDYuMDk4IDk0Ljg5MDggMTQ2LjA5OFpNOTQuODkwOCAxNzguMjlDODguNjA0NSAxNzguMjkgODUuMjczIDE3NC41MzMgODUuMjczIDE2Ny40MDlDODUuMjczIDE2MC4yODUgODguNjA0NSAxNTYuNDc3IDk0Ljg5MDggMTU2LjQ3N0MxMDEuMTc3IDE1Ni40NzcgMTA0LjUxOSAxNjAuMjg1IDEwNC41MTkgMTY3LjQwOUMxMDQuNTE5IDE3NC41MzMgMTAxLjE4NyAxNzguMjkgOTQuODkwOCAxNzguMjlaIiBmaWxsPSIjMTg2QzM3Ii8+CjxwYXRoIGQ9Ik0xNjguNzMzIDE3Ny40NTFDMTY4LjczMyAxNzcuMjIgMTY4LjY3MiAxNzcuMDU0IDE2OC42NzIgMTc2Ljg4M0MxNjguNTIyIDE3NC4wODUgMTY4LjE1NSAxNzIuMTE2IDE2Ny40ODEgMTcxLjA2MUMxNjcuMTY1IDE3MC41NjQgMTY2Ljc0OCAxNzAuMDkxIDE2Ni4yMjUgMTY5LjY1NEMxNjUuNDA2IDE2OC45NzYgMTY1LjM5MSAxNjcuNjcgMTY2LjIzIDE2Ny4wMTJDMTY3LjEzNSAxNjYuMzAzIDE2Ny45MDkgMTY1LjQxOSAxNjguNTY3IDE2NC4zNzlDMTY5LjY2NyAxNjIuNTMxIDE3MC4xOSAxNjAuNDA2IDE3MC4xOSAxNTguMDU0QzE3MC4xOSAxNTQuMDYxIDE2OC43MzMgMTUxLjAzNiAxNjUuODU4IDE0OS4yNDhDMTY0Ljc3MyAxNDguNTE0IDE2My4yNjEgMTQ4LjAxMiAxNjEuMjkxIDE0Ny42NzVDMTU5LjM2MSAxNDcuMzM5IDE1Ni43NjMgMTQ3LjE2OCAxNTMuNDMyIDE0Ny4xNjhIMTI2LjQyM0MxMjUuNTMzIDE0Ny4xNjggMTI0LjgxIDE0Ny44OTEgMTI0LjgxIDE0OC43ODFWMTgyLjA3M0MxMjkuNjE4IDE4MS44OTcgMTM0LjU0OCAxODEuNzI2IDEzOS41OTMgMTgxLjU2NlYxNzUuMzExSDE0OC4yNzZDMTUwLjA5NSAxNzUuMzExIDE1MS4zNTEgMTc1LjU5NyAxNTIuMTMgMTc2LjIxQzE1Mi45MDkgMTc2LjgyMyAxNTMuMzg2IDE3Ny44MzMgMTUzLjUzNyAxNzkuM0MxNTMuNTY3IDE3OS44MjIgMTUzLjYxOCAxODAuNDI1IDE1My42NjggMTgxLjE1OUMxNTguNjQ4IDE4MS4wMjggMTYzLjcyMyAxODAuOTA4IDE2OC44ODggMTgwLjgwMkMxNjguODE4IDE4MC4wMDMgMTY4Ljc2OCAxNzkuMTI0IDE2OC43MzMgMTc4LjE3VjE3Ny40NTFaTTE1Mi43NTggMTYzLjc3MUMxNTEuODY5IDE2NC4zNzkgMTUwLjMxMSAxNjQuNjU2IDE0OC4wOCAxNjQuNjU2SDEzOS41OTNWMTU3LjQyNkgxNDcuNzEzQzE1MC4yNjYgMTU3LjQyNiAxNTEuOTc5IDE1Ny43MTggMTUyLjgwNCAxNTguMjJDMTUzLjY5MyAxNTguNzczIDE1NC4xMDUgMTU5LjY3MiAxNTQuMTA1IDE2MC45NThDMTU0LjEwNSAxNjIuMjQ0IDE1My42NDMgMTYzLjIwNCAxNTIuNzU4IDE2My43NzFaIiBmaWxsPSIjMTg2QzM3Ii8+CjxwYXRoIGQ9Ik0xODguMjU0IDE0Ny4xNjhIMTc2LjkwM0MxNzYuMDE5IDE0Ny4xNjggMTc1LjI5NSAxNDcuODkxIDE3NS4yOTUgMTQ4Ljc4MVYxODAuNjc2QzE4MC4wNzkgMTgwLjU4NiAxODQuOTMzIDE4MC41MTEgMTg5Ljg2MiAxODAuNDQ1VjE0OC43ODFDMTg5Ljg2MiAxNDcuODkxIDE4OS4xMzkgMTQ3LjE2OCAxODguMjU0IDE0Ny4xNjhaIiBmaWxsPSIjMTg2QzM3Ii8+CjxwYXRoIGQ9Ik0yMzQuMjQzIDE0Ny4xNjhIMTk2Ljk3OEMxOTYuMDkzIDE0Ny4xNjggMTk1LjM3IDE0Ny44OTEgMTk1LjM3IDE0OC43ODFWMTU1LjcwOEMxOTUuMzcgMTU2LjU5MyAxOTYuMDkzIDE1Ny4zMjEgMTk2Ljk3OCAxNTcuMzIxSDIxNC41N0MyMTUuMTIzIDE1Ny4zMjEgMjE1LjM5OSAxNTcuOTg5IDIxNC45OTcgMTU4LjM3MUwxOTQuMjU0IDE3OC41MDZDMTk0LjE0NCAxNzguNjEyIDE5NC4wNjggMTc4Ljc3NyAxOTQuMDY4IDE3OC45MzNWMTgwLjM5NUMyMDcuMjk0IDE4MC4yNDQgMjIxLjAwNyAxODAuMTc5IDIzNS4xMjIgMTgwLjIzNFYxNzguNjAyQzIzNS4xMjIgMTc3LjcxNyAyMzQuMzk0IDE3Ni45ODkgMjMzLjUwOSAxNzYuOTg5SDIxNS40OUMyMTQuOTM3IDE3Ni45ODkgMjE0LjY2NiAxNzYuMzE2IDIxNS4wNzggMTc1LjkzNEwyMzUuNjU1IDE1Ni41NTJDMjM1Ljc3NSAxNTYuNDMyIDIzNS44NTYgMTU2LjI2NiAyMzUuODU2IDE1Ni4wOTVWMTQ4Ljc4MUMyMzUuODU2IDE0Ny44OTEgMjM1LjEyNyAxNDcuMTY4IDIzNC4yNDMgMTQ3LjE2OFoiIGZpbGw9IiMxODZDMzciLz4KPHBhdGggZD0iTTI2Mi44MSAxNDYuMDk4QzI0Ni4xMTIgMTQ2LjA5OCAyMzcuNTIgMTUzLjM0MiAyMzcuNTIgMTY3LjQwOUMyMzcuNTIgMTcyLjY1NCAyMzguNzE1IDE3Ni45NDQgMjQxLjA3MiAxODAuMjY1QzI1NS4wNTcgMTgwLjM1IDI2OS40MTMgMTgwLjU1MSAyODQuMDcxIDE4MC44OTNDMjg2Ljc0OSAxNzcuNDkyIDI4OC4wOTYgMTcyLjk4NSAyODguMDk2IDE2Ny40MDlDMjg4LjA5NiAxNTMuMzQyIDI3OS41MDMgMTQ2LjA5OCAyNjIuODEgMTQ2LjA5OFpNMjYyLjgxIDE3OC4yOUMyNTYuNTA5IDE3OC4yOSAyNTMuMTc3IDE3NC41MzMgMjUzLjE3NyAxNjcuNDA5QzI1My4xNzcgMTYwLjI4NSAyNTYuNTA5IDE1Ni40NzcgMjYyLjgxIDE1Ni40NzdDMjY5LjExMSAxNTYuNDc3IDI3Mi40MjggMTYwLjI4NSAyNzIuNDI4IDE2Ny40MDlDMjcyLjQyOCAxNzQuNTMzIDI2OS4xMDYgMTc4LjI5IDI2Mi44MSAxNzguMjlaIiBmaWxsPSIjMTg2QzM3Ii8+CjxwYXRoIGQ9Ik0zMzYuOTUzIDE0Ny4xNjhIMzI2LjA3OUMzMjUuMTk1IDE0Ny4xNjggMzI0LjQ3MSAxNDcuODkxIDMyNC40NzEgMTQ4Ljc4MVYxNjguMzUzQzMyNC40NzEgMTY4Ljk2NiAzMjMuNjU3IDE2OS4xOTcgMzIzLjMzNiAxNjguNjc1TDMxMC4xMyAxNDcuNDU5QzMxMC4wMTkgMTQ3LjI3OCAzMDkuODIzIDE0Ny4xNjggMzA5LjYwNyAxNDcuMTY4SDI5NC4zNDJDMjkzLjQ1MiAxNDcuMTY4IDI5Mi43MjkgMTQ3Ljg5MSAyOTIuNzI5IDE0OC43ODFWMTgxLjExM0MyOTcuMjgxIDE4MS4yMzQgMzAxLjg1NCAxODEuMzcgMzA2LjQ1NyAxODEuNTJWMTY0LjM2NEMzMDYuNDU3IDE2NC4yMjkgMzA2LjYzMyAxNjQuMTc4IDMwNi43MDggMTY0LjI4OUwzMTguNDQxIDE4MS45NDdDMzI1LjEwNCAxODIuMTk5IDMzMS44MTggMTgyLjQ4IDMzOC41NjYgMTgyLjc5NlYxNDguNzgxQzMzOC41NjYgMTQ3Ljg5MSAzMzcuODQzIDE0Ny4xNjggMzM2Ljk1MyAxNDcuMTY4WiIgZmlsbD0iIzE4NkMzNyIvPgo8cGF0aCBkPSJNMzgxLjM4NCAxNDcuMTY4SDM0Mi44MzhDMzQxLjk1MyAxNDcuMTY4IDM0MS4yMjUgMTQ3Ljg5MSAzNDEuMjI1IDE0OC43ODFWMTU1LjgxNEMzNDEuMjI1IDE1Ni43MDMgMzQxLjk1MyAxNTcuNDI2IDM0Mi44MzggMTU3LjQyNkgzNTQuODAyVjE4My42MkMzNTkuNjQxIDE4My44ODcgMzY0LjUgMTg0LjE2OCAzNjkuMzc0IDE4NC40NjRWMTU3LjQyNkgzODEuMzg0QzM4Mi4yNzMgMTU3LjQyNiAzODIuOTk3IDE1Ni43MDMgMzgyLjk5NyAxNTUuODE0VjE0OC43ODFDMzgyLjk5NyAxNDcuODkxIDM4Mi4yNzMgMTQ3LjE2OCAzODEuMzg0IDE0Ny4xNjhaIiBmaWxsPSIjMTg2QzM3Ii8+CjxwYXRoIGQ9Ik00MjEuMDg2IDE3NS45ODRINDAwLjE4MlYxNzEuOUg0MTUuMDQ2QzQxNS45MzUgMTcxLjkgNDE2LjY1OSAxNzEuMTc2IDQxNi42NTkgMTcwLjI5MlYxNjMuNTNDNDE2LjY1OSAxNjIuNjQ2IDQxNS45MzUgMTYxLjkxOCA0MTUuMDQ2IDE2MS45MThINDAwLjE4MlYxNTguMzI2SDQyMC44MzRDNDIxLjE3MSAxNTguMzI2IDQyMS40NDIgMTU4LjA2NCA0MjEuNDQyIDE1Ny43MTNWMTQ4Ljc4MUM0MjEuNDQyIDE0Ny44OTEgNDIwLjcxOSAxNDcuMTY4IDQxOS44MzQgMTQ3LjE2OEgzODcuMjIyQzM4Ni4zMzMgMTQ3LjE2OCAzODUuNjA5IDE0Ny44OTEgMzg1LjYwOSAxNDguNzgxVjE4NS41MjlDMzk0Ljc1NSAxODYuMTY3IDQwMy45NCAxODYuODcxIDQxMy4xNDYgMTg3LjY0NEg0MjEuMDg2QzQyMS45NzUgMTg3LjY0NCA0MjIuNjk5IDE4Ni45MjEgNDIyLjY5OSAxODYuMDMyVjE3Ny41OTdDNDIyLjY5OSAxNzYuNzA4IDQyMS45NzUgMTc1Ljk4NCA0MjEuMDg2IDE3NS45ODRaIiBmaWxsPSIjMTg2QzM3Ii8+CjxwYXRoIGQ9Ik00NDIgMTk2LjkyOEM0MzkuODM5IDE5Ni42ODIgMzkyLjg5NiAxOTEuMzk3IDMxNS42NTMgMTg4LjcxNEMyNjYuMzk4IDE4Ni45OTYgMjA0LjgzMiAxODYuMzM4IDEzNC42OTQgMTg4LjcxNEM5Mi42MDk5IDE5MC4xNDEgNDcuNDQwNiAxOTIuNjU4IDAgMTk2LjY5MkMyLjMwNjQ1IDE5Ni4zOTYgMzQuNDM2IDE5Mi40MDIgODMuMjI4MyAxODguNzE0Qzg0Ljk4MiAxODguNTg0IDg2Ljc1NTggMTg4LjQ0OCA4OC41NTQ4IDE4OC4zMThDOTQuNDU0MSAxODcuODg1IDEwMC41NzQgMTg3LjQ1OCAxMDYuOTA2IDE4Ny4wNDdDMTEyLjc4IDE4Ni42NjUgMTE4LjgzIDE4Ni4yOTMgMTI1LjA0MSAxODUuOTM2QzEyOS43NDQgMTg1LjY2NSAxMzQuNTQzIDE4NS40MDQgMTM5LjQyMiAxODUuMTU4QzE0NC4xOTEgMTg0LjkxNiAxNDkuMDQgMTg0LjY4NSAxNTMuOTYgMTg0LjQ2NEMxNTguOTE0IDE4NC4yNDMgMTYzLjk0NCAxODQuMDM3IDE2OS4wMzkgMTgzLjg0NkMxNzEuMTYgMTgzLjc2NiAxNzMuMjg2IDE4My42OTEgMTc1LjQzMSAxODMuNjE1QzE4MC4xNiAxODMuNDU1IDE4NC45NDggMTgzLjMwOSAxODkuNzgyIDE4My4xNzNDMTkxLjIzIDE4My4xMzMgMTkyLjY4NyAxODMuMDkzIDE5NC4xNDQgMTgzLjA1OEMyMDcuNDkgMTgyLjcyMSAyMjEuMTg4IDE4Mi41MDUgMjM1LjExOCAxODIuNDQ1QzIzNy43MSAxODIuNDM1IDI0MC4zMTMgMTgyLjQzIDI0Mi45MTYgMTgyLjQzQzI1NS44NjYgMTgyLjQzIDI2OC45OTYgMTgyLjU3NSAyODIuMjE2IDE4Mi44ODdDMjg1LjcxNCAxODIuOTY3IDI4OS4yMTYgMTgzLjA2MyAyOTIuNzI5IDE4My4xNjhDMjk3LjI5NiAxODMuMzA0IDMwMS44NzQgMTgzLjQ2NSAzMDYuNDU3IDE4My42NDVDMzEwLjk1OSAxODMuODI2IDMxNS40NjIgMTg0LjAyMiAzMTkuOTY5IDE4NC4yNDNDMzI2LjE3IDE4NC41NSAzMzIuMzc2IDE4NC44OTYgMzM4LjU2NiAxODUuMjkzQzM0NC4wMDggMTg1LjYzNSAzNDkuNDQgMTg2LjAxNyAzNTQuODU3IDE4Ni40MjlDMzU5LjM1NSAxODYuNzc1IDM2My44NDcgMTg3LjE0NyAzNjguMzI0IDE4Ny41NDRDMzcyLjQ2NSAxODcuOTExIDM3Ni42IDE4OC4zMDIgMzgwLjcyMSAxODguNzE0QzQwMS42MTkgMTkwLjgwOSA0MjIuMTY2IDE5My41MTIgNDQyIDE5Ni45MjhaIiBmaWxsPSIjRkNDQjA2Ii8+Cjwvc3ZnPgo=" alt="Horizonte Pet Store" class="em-logo">';
+  document.querySelectorAll('.em-head').forEach(function(e){ e.innerHTML = BRAND; });
+
+  document.querySelectorAll('.em-foot').forEach(function(e){
+    var lead = e.getAttribute('data-lead') || 'Precisa de ajuda? Fale com a gente.';
+    e.innerHTML = '<b>'+lead+'</b>'
+      + '<div class="soc">WhatsApp (19) 99859-4379 · (19) 3577-1474</div>'
+      + 'contato@horizontepetstore.com.br · Seg a sex, 8h às 18h'
+      + '<div class="fine">Horizonte Pet Store · Corumbataí, SP · Cancelar inscrição · Preferências</div>';
+  });
+
+  var items = Array.prototype.slice.call(document.querySelectorAll('.nav-item'));
+  var panels = document.querySelectorAll('.panel');
+  var msel = document.getElementById('msel');
+
+  // build mobile dropdown mirroring nav (with group labels as optgroups)
+  var curGroup = null, og = null;
+  document.querySelectorAll('#nav > .grp, #nav > .nav-item').forEach(function(el){
+    if(el.classList.contains('grp')){
+      og = document.createElement('optgroup'); og.label = el.textContent; msel.appendChild(og);
+    } else {
+      var o = document.createElement('option');
+      o.value = el.getAttribute('data-target');
+      o.textContent = el.textContent.replace(/novo|seg\./gi,'').trim();
+      (og||msel).appendChild(o);
+    }
+  });
+
+  function show(id){
+    panels.forEach(function(p){ p.classList.toggle('active', p.id===id); });
+    items.forEach(function(i){ i.classList.toggle('active', i.getAttribute('data-target')===id); });
+    if(msel) msel.value = id;
+    var v = document.querySelector('.viewer'); if(v){ v.scrollTop = 0; }
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+  items.forEach(function(i){ i.addEventListener('click', function(){ show(i.getAttribute('data-target')); }); });
+  if(msel) msel.addEventListener('change', function(e){ show(e.target.value); });
+
+  document.querySelectorAll('.copybtn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var code = document.getElementById(btn.getAttribute('data-code'));
+      if(!code) return;
+      var text = code.innerText;
+      function feedback(){ var o=btn.textContent; btn.textContent='Copiado!'; setTimeout(function(){ btn.textContent=o; },1400); }
+      function selectNode(){ var r=document.createRange(); r.selectNodeContents(code); var s=window.getSelection(); s.removeAllRanges(); s.addRange(r); }
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(text).then(feedback).catch(function(){ selectNode(); feedback(); });
+      } else { selectNode(); feedback(); }
+    });
+  });
+</script>
+</body>
+</html>
