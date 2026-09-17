@@ -212,7 +212,13 @@
     <div class="grp">Crescimento · relacional</div>
     <button class="nav-item" data-target="carrinho">Carrinho Abandonado</button>
     <button class="nav-item" data-target="disponivel">Produto Disponível</button>
-    <button class="nav-item" data-target="posentrega">Pós-entrega <span class="badge novo">novo</span></button>
+    <button class="nav-item" data-target="posentrega">Pós-entrega</button>
+    <button class="nav-item" data-target="agradecimento">Agradecimento</button>
+    <button class="nav-item" data-target="reavaliacao">Reavaliação</button>
+    <button class="nav-item" data-target="resposta">Resposta de avaliação</button>
+    <button class="nav-item" data-target="respostaloja">Resposta (loja)</button>
+    <button class="nav-item" data-target="respostapergunta">Resposta de pergunta</button>
+    <button class="nav-item" data-target="nps">NPS</button>
     <button class="nav-item" data-target="reposicao">Reposição <span class="badge novo">novo</span></button>
     <button class="nav-item" data-target="newsletter">Confirmação Newsletter</button>
     <button class="nav-item" data-target="indicacao">Indicação a Amigo</button>
@@ -873,24 +879,900 @@ Veja abaixo detalhes do envio:&lt;/p&gt;
 
   <!-- 11 POS-ENTREGA (NOVO) -->
   <section class="panel" id="posentrega">
-    <div class="p-head"><h2>Pós-entrega / Avaliação</h2><span class="chip r">Relacional</span><span class="chip novo">novo · não existe hoje</span></div>
-    <p class="p-sub">O pedido de avaliação sai hoje nos e-mails de postagem, antes de o produto chegar. O certo é um e-mail próprio, disparado alguns dias após o envio, quando o cliente já usou. É também a melhor hora para cross-sell.</p>
+    <div class="p-head"><h2>Pós-entrega · Avaliação</h2><span class="chip r">Relacional</span><span class="chip c">Konfidency</span></div>
+    <p class="p-sub">Este pedido de avaliação é disparado pela <b>Konfidency</b> (plataforma de avaliações), não pela Tray. Por isso usa outro sistema de tags (<span class="tag">{{payload.name}}</span>, estilo Mustache) e é um HTML completo, não um corpo que vai no <span class="tag">[mensagem]</span>. Redesenhei no visual da Horizonte mantendo todas as tags, o loop de produtos, o link de avaliação e o pixel de rastreio.</p>
     <div class="ba">
-      <div><div class="col-label before"><span class="b">Antes</span></div>
-        <div class="frame"><div class="none-today"><div class="big">Não existe hoje</div><div class="sm">A avaliação está grudada no e-mail de postagem,<br>na hora errada da jornada.</div></div></div>
+      <div><div class="col-label before"><span class="b">Antes</span> <small>template padrão da Konfidency</small></div>
+        <div class="frame"><div class="chrome"><div class="subj">{{payload.name}}, queremos saber sua opinião</div></div>
+          <div class="old">
+            <div class="logo" style="text-align:center">[ logo Horizonte ]</div>
+            <p>{{payload.name}}, queremos saber sua opinião sobre sua última compra.</p>
+            <p style="font-weight:700;color:#212121;margin-top:12px">Resumo do Pedido:</p>
+            <p><span style="display:inline-block;width:40px;height:40px;background:#eee;border-radius:4px;text-align:center;line-height:40px;vertical-align:middle">&#128247;</span> <span>{{name}}</span></p>
+            <p style="text-align:center;margin-top:16px"><span style="background:#212121;color:#fff;padding:12px 40px;border-radius:7px;display:inline-block;font-weight:bold">avalie agora</span></p>
+            <p style="text-align:center;color:#777;font-size:11px;margin-top:14px">se não quiser mais receber e-mails para avaliar, clique aqui</p>
+          </div>
+        </div>
       </div>
-      <div><div class="col-label after"><span class="b">Depois · novo</span></div>
-        <div class="frame"><div class="chrome"><div class="subj">[nome_cliente], como foi com o seu pedido? 🌱</div><div class="pre">Sua opinião ajuda outros criadores.</div></div>
+      <div><div class="col-label after"><span class="b">Depois</span> <small>no visual da Horizonte</small></div>
+        <div class="frame"><div class="chrome"><div class="subj">{{payload.name}}, como foi sua compra? 🌱</div><div class="pre">Sua opinião ajuda outros criadores.</div></div>
           <div class="new"><div class="em-head"></div>
-            <div class="em-status"><div class="ico">💬</div><h3>Seu pedido já chegou, [nome_cliente]?</h3><p>Esperamos que sim! Se puder contar como foi, ajuda muito outros criadores, e a gente a melhorar sempre.</p></div>
-            <a class="em-btn" href="[site_loja]">Avaliar minha compra</a>
-            <div class="em-blk seeds"><b>🌱 Combina com o que você levou.</b> Uma seleção curada para o momento do seu pássaro (bloco por categoria ou manual).</div>
-            <div class="em-foot-curve"></div><div class="em-foot" data-lead="Ficou com alguma dúvida de uso?"></div>
+            <div class="em-status"><div class="ico">💬</div><h3>{{payload.name}}, como foi sua compra?</h3><p>Sua opinião ajuda outros criadores a escolher melhor, e a gente a melhorar sempre. Leva menos de um minuto.</p></div>
+            <div class="em-prod"><div class="prow"><div class="thumb">&#128038;</div><div><div class="pn">Resumo do pedido</div><div class="pm">seus produtos entram aqui (loop da Konfidency)</div></div></div></div>
+            <a class="em-btn" href="{{payload.rateLink}}">Avaliar agora</a>
+            <div class="em-foot" data-lead="Precisa de ajuda? Fale com a gente."></div>
           </div>
         </div>
       </div>
     </div>
+    <div class="pnote"><span class="s seed"></span><div><b>Não remova o pixel</b> <span class="tag">t.konfidency.com.br/tr...</span> no fim do código: é ele que registra a abertura na Konfidency. O botão aponta para <span class="tag">{{payload.rateLink}}</span> (link de avaliação que a Konfidency gera), e mantive a logo hospedada na Konfidency. Se preferir a mesma logo dos outros e-mails, dá pra trocar pela URL do ks-static.</div></div>
+
+    <div class="code-in-panel"><div class="cip-head"><span class="seed"></span> Código de produção (Konfidency)</div>
+    <p class="p-sub"><b>Assunto:</b> {{payload.name}}, queremos saber sua opinião<br/><b>Preheader:</b> Sua opinião ajuda outros criadores.</p>
+    <div class="codecol">
+      <div class="codewrap"><div class="clbl"><h4>Código atual</h4><span class="tagline">template Konfidency</span><button class="copybtn" data-code="atual-posentrega">Copiar</button></div><div class="codeblock"><pre id="atual-posentrega">&lt;!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'&gt;
+&lt;html xmlns='http://www.w3.org/1999/xhtml' xmlns:o='urn:schemas-microsoft-com:office:office'&gt;
+&lt;head&gt;
+  &lt;meta content='width=device-width, initial-scale=1' name='viewport'&gt;&lt;meta charset='UTF-8'&gt;
+  &lt;meta name='x-apple-disable-message-reformatting'&gt;&lt;meta http-equiv='X-UA-Compatible' content='IE=edge'&gt;
+  &lt;meta content='telephone=no' name='format-detection'&gt;&lt;title&gt;&lt;/title&gt;
+  &lt;link href='https://fonts.googleapis.com/css?family=Lato:400,400i,700,700i' rel='stylesheet'&gt;
+&lt;/head&gt;
+&lt;body style='background-color: #f6f6f6; font-family: Lato, sans-serif;'&gt;
+  &lt;table style='background-color: #fff; width: 90%; max-width: 600px; margin: 20px auto; color: #303030'&gt;
+    &lt;tr&gt;&lt;td style='text-align: center; padding: 20px'&gt;&lt;img height="60" src='https://uploads.konfidency.com.br/customers/horizontepetstore.png?'&gt;&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td style='font-size: 15px; text-align: left; padding: 10px'&gt;{{payload.name}}, queremos saber sua opinião sobre sua última compra.&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td align="left" bgcolor="#ffffff" style="margin:0;padding:10px;"&gt;
+      &lt;p style="margin:0;line-height:22px;color:#212121;font-size:16px;font-weight:700;"&gt;Resumo do Pedido:&lt;/p&gt;&lt;br/&gt;
+      {{#payload.first5Products}}
+      &lt;p&gt;&lt;img width="60" src="{{image}}" style="margin-right:16px;vertical-align:middle;"/&gt;
+      &lt;span style="margin:0;line-height:27.5px;color:#000;font-size:16px;font-weight:400;"&gt;{{name}}&lt;/span&gt;&lt;/p&gt;
+      {{/payload.first5Products}}&lt;br/&gt;
+    &lt;/td&gt;&lt;/tr&gt;
+    {{#payload.productCountMinus5}}
+    &lt;tr&gt;&lt;td align="left" bgcolor="#ffffff" style="margin:0;padding:10px;"&gt;
+      &lt;p style="margin:0;line-height:27.5px;color:#828282;font-size:14px;font-weight:400;"&gt;e mais &lt;span style="color:#212121"&gt;{{.}}&lt;/span&gt; produto(s)&lt;/p&gt;
+    &lt;/td&gt;&lt;/tr&gt;
+    {{/payload.productCountMinus5}}
+    &lt;tr&gt;&lt;td style='text-align:center;padding:10px 10px 20px 10px'&gt;
+      &lt;a href='{{payload.rateLink}}'&gt;&lt;div style='font-size:16px;background:#212121;display:inline-block;padding:12px 40px;width:160px;color:#fff;font-weight:bold;border-radius:7px;'&gt;avalie agora&lt;/div&gt;&lt;/a&gt;
+    &lt;/td&gt;&lt;/tr&gt;
+  &lt;/table&gt;
+  &lt;p style='text-align:center;font-size:14px;color:#777'&gt;se não quiser mais receber e-mails para avaliar nossos produtos, &lt;a href='{{payload.unsubscribeLink}}'&gt;clique aqui&lt;/a&gt;&lt;/p&gt;
+  &lt;img src='https://t.konfidency.com.br/tr?action=open&amp;notificationId={{payload._id}}&amp;source=email' width='1' height='1'/&gt;
+&lt;/body&gt;&lt;/html&gt;</pre></div></div>
+      <div class="codewrap"><div class="clbl"><h4>Novo código (HTML completo)</h4><button class="copybtn" data-code="code-posentrega">Copiar</button></div><div class="codeblock"><pre id="code-posentrega">&lt;!DOCTYPE html&gt;
+&lt;html xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"/&gt;
+  &lt;meta content="width=device-width, initial-scale=1" name="viewport"/&gt;
+  &lt;meta name="x-apple-disable-message-reformatting"/&gt;
+  &lt;meta http-equiv="X-UA-Compatible" content="IE=edge"/&gt;
+  &lt;meta content="telephone=no" name="format-detection"/&gt;
+  &lt;meta name="color-scheme" content="light dark"/&gt;
+  &lt;meta name="supported-color-schemes" content="light dark"/&gt;
+  &lt;title&gt;&lt;/title&gt;
+  &lt;link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&amp;display=swap" rel="stylesheet"/&gt;
+&lt;/head&gt;
+&lt;body style="margin:0; padding:0; background:#EDEBE4; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;
+
+  &lt;!-- Preheader (previa no inbox) --&gt;
+  &lt;div style="display:none; max-height:0; overflow:hidden; mso-hide:all; font-size:1px; line-height:1px; color:#EDEBE4;"&gt;Sua opinião ajuda outros criadores. Leva menos de um minuto.&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&lt;/div&gt;
+
+  &lt;table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#EDEBE4;"&gt;
+    &lt;tr&gt;&lt;td align="center" style="padding:24px 12px;"&gt;
+      &lt;table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="width:600px; max-width:600px; color:#092312; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;
+
+        &lt;!-- Header creme + logo --&gt;
+        &lt;tr&gt;&lt;td align="center" style="background:#F4F2EC; padding:26px 24px 28px;"&gt;
+          &lt;img src="https://uploads.konfidency.com.br/customers/horizontepetstore.png" alt="Horizonte Pet Store" width="150" style="display:block; margin:0 auto; width:150px; max-width:60%; height:auto; border:0;"/&gt;
+        &lt;/td&gt;&lt;/tr&gt;
+
+        &lt;!-- Corpo branco --&gt;
+        &lt;tr&gt;&lt;td style="background:#ffffff; padding:30px 26px;"&gt;
+          &lt;div style="text-align:center; font-size:34px; line-height:1; margin:0 0 8px;"&gt;💬&lt;/div&gt;
+          &lt;h1 style="margin:0 0 10px; font-weight:700; font-size:23px; line-height:1.2; color:#092312; text-align:center; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;{{payload.name}}, como foi sua compra?&lt;/h1&gt;
+          &lt;p style="margin:0 0 24px; font-size:15px; line-height:1.6; color:#092312; text-align:center; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Sua opinião ajuda outros criadores a escolher melhor, e a gente a melhorar sempre. Leva menos de um minuto.&lt;/p&gt;
+
+          &lt;p style="margin:0 0 12px; font-size:13px; font-weight:700; color:#092312; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Resumo do pedido&lt;/p&gt;
+          {{#payload.first5Products}}
+          &lt;table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 8px;"&gt;
+            &lt;tr&gt;
+              &lt;td width="60" style="vertical-align:middle;"&gt;&lt;img width="56" src="{{image}}" alt="" style="display:block; width:56px; height:auto; border-radius:8px; border:1px solid #E6E3DA;"/&gt;&lt;/td&gt;
+              &lt;td style="vertical-align:middle; padding-left:12px; font-size:14px; color:#092312; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;{{name}}&lt;/td&gt;
+            &lt;/tr&gt;
+          &lt;/table&gt;
+          {{/payload.first5Products}}
+          {{#payload.productCountMinus5}}
+          &lt;p style="margin:6px 0 0; font-size:13px; color:#5B564E; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;e mais &lt;span style="color:#092312; font-weight:700;"&gt;{{.}}&lt;/span&gt; produto(s)&lt;/p&gt;
+          {{/payload.productCountMinus5}}
+
+          &lt;!-- Botao CTA --&gt;
+          &lt;table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center" style="margin:26px auto 6px;"&gt;
+            &lt;tr&gt;&lt;td align="center" bgcolor="#FFC100" style="border-radius:100px;"&gt;
+              &lt;a href="{{payload.rateLink}}" style="display:inline-block; padding:14px 42px; font-size:15px; font-weight:700; color:#221B05; text-decoration:none; border-radius:100px; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Avaliar agora&lt;/a&gt;
+            &lt;/td&gt;&lt;/tr&gt;
+          &lt;/table&gt;
+        &lt;/td&gt;&lt;/tr&gt;
+
+        &lt;!-- Footer verde --&gt;
+        &lt;tr&gt;&lt;td align="center" style="background:#18592F; padding:22px 26px 26px; color:#ffffff; font-size:12px; line-height:1.7; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;
+          &lt;strong style="color:#ffffff; font-size:13px;"&gt;Precisa de ajuda? Fale com a gente.&lt;/strong&gt;&lt;br/&gt;
+          &lt;a href="https://wa.me/5519998594379" style="color:#FFC100; text-decoration:none;"&gt;WhatsApp (19) 99859-4379&lt;/a&gt; &amp;nbsp;&amp;middot;&amp;nbsp; &lt;a href="tel:+551935771474" style="color:#FFC100; text-decoration:none;"&gt;(19) 3577-1474&lt;/a&gt;&lt;br/&gt;
+          &lt;a href="mailto:contato@horizontepetstore.com.br" style="color:#ffffff; text-decoration:none;"&gt;contato@horizontepetstore.com.br&lt;/a&gt; &amp;nbsp;&amp;middot;&amp;nbsp; Seg a sex, 8h às 18h
+        &lt;/td&gt;&lt;/tr&gt;
+
+      &lt;/table&gt;
+
+      &lt;!-- Descadastro --&gt;
+      &lt;p style="text-align:center; font-size:12px; color:#8a857c; font-family: Poppins, Arial, Helvetica, sans-serif; max-width:600px; margin:14px auto 0;"&gt;Se não quiser mais receber e-mails de avaliação, &lt;a href="{{payload.unsubscribeLink}}" style="color:#8a857c;"&gt;clique aqui&lt;/a&gt;.&lt;/p&gt;
+
+    &lt;/td&gt;&lt;/tr&gt;
+  &lt;/table&gt;
+
+  &lt;!-- Pixel de rastreio da Konfidency (NAO REMOVER: registra a abertura) --&gt;
+  &lt;img src="https://t.konfidency.com.br/tr?action=open&amp;notificationId={{payload._id}}&amp;source=email" width="1" height="1" alt=""/&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div></div>
+    </div>
+    </div>
   </section>
+
+  <section class="panel" id="agradecimento">
+    <div class="p-head"><h2>Agradecimento de avaliação</h2><span class="chip r">Relacional</span><span class="chip c">Konfidency</span></div>
+    <p class="p-sub">Disparado pela <b>Konfidency</b> depois que o cliente avalia. É um "obrigado" simples, com as tags <span class="tag">{{payload.name}}</span> e <span class="tag">{{payload.orderId}}</span>. HTML completo e independente (não vai no <span class="tag">[mensagem]</span>). Este não tem pixel de rastreio, diferente do de solicitação.</p>
+    <div class="ba">
+      <div><div class="col-label before"><span class="b">Antes</span> <small>template padrão da Konfidency</small></div>
+        <div class="frame"><div class="chrome"><div class="subj">{{payload.name}}, agradecemos sua avaliação</div></div>
+          <div class="old">
+            <div class="logo" style="text-align:center">[ logo Horizonte ]</div>
+            <p>{{payload.name}}, agradecemos pela sua avaliação sobre o pedido {{payload.orderId}}!</p>
+            <p>Sua avaliação será publicada na loja em breve.</p>
+          </div>
+        </div>
+      </div>
+      <div><div class="col-label after"><span class="b">Depois</span> <small>no visual da Horizonte</small></div>
+        <div class="frame"><div class="chrome"><div class="subj">Obrigado pela sua avaliação, {{payload.name}}! ⭐</div><div class="pre">Sua avaliação será publicada na loja em breve.</div></div>
+          <div class="new"><div class="em-head"></div>
+            <div class="em-status"><div class="ico">⭐</div><h3>Obrigado pela sua avaliação, {{payload.name}}!</h3><p>Sua opinião sobre o pedido {{payload.orderId}} ajuda outros criadores a escolher melhor. Ela será publicada na loja em breve.</p></div>
+            <div class="em-blk seeds"><b>🌱 Obrigado por fazer parte do ninho.</b> Toda compra vira semente, e toda opinião ajuda a Horizonte a cuidar melhor das aves.</div>
+            <div class="em-foot" data-lead="Precisa de ajuda? Fale com a gente."></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="code-in-panel"><div class="cip-head"><span class="seed"></span> Código de produção (Konfidency)</div>
+    <p class="p-sub"><b>Assunto:</b> {{payload.name}}, agradecemos sua avaliação<br/><b>Preheader:</b> Sua avaliação será publicada na loja em breve.</p>
+    <div class="codecol">
+      <div class="codewrap"><div class="clbl"><h4>Código atual</h4><span class="tagline">template Konfidency</span><button class="copybtn" data-code="atual-agradecimento">Copiar</button></div><div class="codeblock"><pre id="atual-agradecimento">&lt;!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'&gt;
+&lt;html xmlns='http://www.w3.org/1999/xhtml' xmlns:o='urn:schemas-microsoft-com:office:office'&gt;
+&lt;head&gt;
+  &lt;meta content='width=device-width, initial-scale=1' name='viewport'&gt;&lt;meta charset='UTF-8'&gt;
+  &lt;meta name='x-apple-disable-message-reformatting'&gt;&lt;meta http-equiv='X-UA-Compatible' content='IE=edge'&gt;
+  &lt;meta content='telephone=no' name='format-detection'&gt;&lt;title&gt;&lt;/title&gt;
+  &lt;link href='https://fonts.googleapis.com/css?family=Lato:400,400i,700,700i' rel='stylesheet'&gt;
+&lt;/head&gt;
+&lt;body style='background-color:#f6f6f6;font-family:Lato,sans-serif;'&gt;
+  &lt;table style='background-color:#fff;width:90%;max-width:600px;margin:20px auto;color:#303030'&gt;
+    &lt;tr&gt;&lt;td style='text-align:center;padding:20px'&gt;&lt;img src='https://uploads.konfidency.com.br/customers/horizontepetstore.png' width='172'&gt;&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td style="font-size:18px;text-align:left;padding:10px"&gt;
+      &lt;p&gt;{{payload.name}}, agradecemos pela sua avaliação sobre o pedido {{payload.orderId}}!&lt;/p&gt;
+      &lt;p&gt;Sua avaliação será publicada na loja em breve.&lt;/p&gt;
+    &lt;/td&gt;&lt;/tr&gt;
+  &lt;/table&gt;
+&lt;/body&gt;&lt;/html&gt;</pre></div></div>
+      <div class="codewrap"><div class="clbl"><h4>Novo código (HTML completo)</h4><button class="copybtn" data-code="code-agradecimento">Copiar</button></div><div class="codeblock"><pre id="code-agradecimento">&lt;!DOCTYPE html&gt;
+&lt;html xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"/&gt;
+  &lt;meta content="width=device-width, initial-scale=1" name="viewport"/&gt;
+  &lt;meta name="x-apple-disable-message-reformatting"/&gt;
+  &lt;meta http-equiv="X-UA-Compatible" content="IE=edge"/&gt;
+  &lt;meta content="telephone=no" name="format-detection"/&gt;
+  &lt;meta name="color-scheme" content="light dark"/&gt;
+  &lt;meta name="supported-color-schemes" content="light dark"/&gt;
+  &lt;title&gt;&lt;/title&gt;
+  &lt;link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&amp;display=swap" rel="stylesheet"/&gt;
+&lt;/head&gt;
+&lt;body style="margin:0; padding:0; background:#EDEBE4; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;
+
+  &lt;!-- Preheader --&gt;
+  &lt;div style="display:none; max-height:0; overflow:hidden; mso-hide:all; font-size:1px; line-height:1px; color:#EDEBE4;"&gt;Sua avaliação será publicada na loja em breve.&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&lt;/div&gt;
+
+  &lt;table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#EDEBE4;"&gt;
+    &lt;tr&gt;&lt;td align="center" style="padding:24px 12px;"&gt;
+      &lt;table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="width:600px; max-width:600px; color:#092312; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;
+
+        &lt;!-- Header creme + logo --&gt;
+        &lt;tr&gt;&lt;td align="center" style="background:#F4F2EC; padding:26px 24px 28px;"&gt;
+          &lt;img src="https://uploads.konfidency.com.br/customers/horizontepetstore.png" alt="Horizonte Pet Store" width="150" style="display:block; margin:0 auto; width:150px; max-width:60%; height:auto; border:0;"/&gt;
+        &lt;/td&gt;&lt;/tr&gt;
+
+        &lt;!-- Corpo branco --&gt;
+        &lt;tr&gt;&lt;td style="background:#ffffff; padding:32px 26px;"&gt;
+          &lt;div style="text-align:center; font-size:34px; line-height:1; margin:0 0 8px;"&gt;⭐&lt;/div&gt;
+          &lt;h1 style="margin:0 0 10px; font-weight:700; font-size:23px; line-height:1.2; color:#092312; text-align:center; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Obrigado pela sua avaliação, {{payload.name}}!&lt;/h1&gt;
+          &lt;p style="margin:0 0 22px; font-size:15px; line-height:1.6; color:#092312; text-align:center; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Sua opinião sobre o pedido &lt;b&gt;{{payload.orderId}}&lt;/b&gt; ajuda outros criadores a escolher melhor. Ela será publicada na loja em breve.&lt;/p&gt;
+
+          &lt;table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"&gt;
+            &lt;tr&gt;&lt;td style="background:#E3EDE4; border:1px solid #CFE0D5; border-radius:12px; padding:16px 18px; font-size:13px; line-height:1.55; color:#092312; text-align:center; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;&lt;b&gt;🌱 Obrigado por fazer parte do ninho.&lt;/b&gt; Toda compra vira semente, e toda opinião ajuda a Horizonte a cuidar melhor das aves.&lt;/td&gt;&lt;/tr&gt;
+          &lt;/table&gt;
+        &lt;/td&gt;&lt;/tr&gt;
+
+        &lt;!-- Footer verde --&gt;
+        &lt;tr&gt;&lt;td align="center" style="background:#18592F; padding:22px 26px 26px; color:#ffffff; font-size:12px; line-height:1.7; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;
+          &lt;strong style="color:#ffffff; font-size:13px;"&gt;Precisa de ajuda? Fale com a gente.&lt;/strong&gt;&lt;br/&gt;
+          &lt;a href="https://wa.me/5519998594379" style="color:#FFC100; text-decoration:none;"&gt;WhatsApp (19) 99859-4379&lt;/a&gt; &amp;nbsp;&amp;middot;&amp;nbsp; &lt;a href="tel:+551935771474" style="color:#FFC100; text-decoration:none;"&gt;(19) 3577-1474&lt;/a&gt;&lt;br/&gt;
+          &lt;a href="mailto:contato@horizontepetstore.com.br" style="color:#ffffff; text-decoration:none;"&gt;contato@horizontepetstore.com.br&lt;/a&gt; &amp;nbsp;&amp;middot;&amp;nbsp; Seg a sex, 8h às 18h
+        &lt;/td&gt;&lt;/tr&gt;
+
+      &lt;/table&gt;
+    &lt;/td&gt;&lt;/tr&gt;
+  &lt;/table&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div></div>
+    </div>
+    </div>
+  </section>
+
+  <section class="panel" id="reavaliacao">
+    <div class="p-head"><h2>Solicitação de reavaliação</h2><span class="chip r">Relacional</span><span class="chip c">Konfidency</span></div>
+    <p class="p-sub">Pede ao cliente uma opinião atualizada sobre um produto. Konfidency, HTML completo. Usa outro conjunto de tags (<span class="tag">{{customerName}}</span>, <span class="tag">{{productName}}</span>) e duas seções condicionais: o motivo (<span class="tag">{{#reason}}</span>) e a avaliação anterior com estrelas (<span class="tag">{{#originalReview}}</span>). Mantive tudo, só troquei o visual.</p>
+    <div class="ba">
+      <div><div class="col-label before"><span class="b">Antes</span> <small>template padrão da Konfidency</small></div>
+        <div class="frame"><div class="chrome"><div class="subj">{{customerName}}, solicitamos sua reavaliação sobre {{productName}}</div></div>
+          <div class="old">
+            <div class="logo" style="text-align:center">[ logo Horizonte ]</div>
+            <p>{{customerName}}, gostaríamos de saber sua opinião atualizada sobre <strong>{{productName}}</strong>!</p>
+            <p style="font-weight:700;margin-top:12px">Por que estamos pedindo:</p>
+            <p style="background:#f5f5f5;padding:12px;border-radius:3px">{{text}}</p>
+            <p style="font-weight:700;margin-top:12px">Sua avaliação anterior:</p>
+            <p style="background:#f5f5f5;padding:12px;border-radius:3px"><span style="color:#FFD700;font-size:18px">★★★★☆</span> <span style="color:#666;font-size:13px">(4/5)</span><br/><br/><i style="color:#666">"{{.}}"</i></p>
+            <p style="text-align:center;margin-top:14px"><span style="background:#212121;color:#fff;padding:12px 40px;border-radius:7px;display:inline-block;font-weight:bold">reavaliar produto</span></p>
+            <p style="text-align:center;color:#999;font-size:11px">Este link é válido até {{expirationDate}}</p>
+          </div>
+        </div>
+      </div>
+      <div><div class="col-label after"><span class="b">Depois</span> <small>no visual da Horizonte</small></div>
+        <div class="frame"><div class="chrome"><div class="subj">{{customerName}}, que tal atualizar sua avaliação? 🔄</div><div class="pre">Sua opinião atualizada ajuda outros criadores.</div></div>
+          <div class="new"><div class="em-head"></div>
+            <div class="em-status"><div class="ico">🔄</div><h3>{{customerName}}, que tal atualizar sua avaliação?</h3><p>Gostaríamos de saber sua opinião atualizada sobre <b>{{productName}}</b>.</p></div>
+            <div class="em-blk info"><b>Por que estamos pedindo</b><br/>{{text}}</div>
+            <div class="em-blk"><b>Sua avaliação anterior</b><br/><span style="color:#E0A233;font-size:18px;letter-spacing:2px">★★★★☆</span> <span style="color:#5B564E;font-size:13px">(4/5)</span><br/><br/><i style="color:#5B564E">"{{.}}"</i></div>
+            <a class="em-btn" href="{{reevaluationUrl}}">Reavaliar produto</a>
+            <div class="em-prazo" style="font-size:12px;color:#8a857c">Este link é válido até {{expirationDate}}</div>
+            <div class="em-foot" data-lead="Precisa de ajuda? Fale com a gente."></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pnote"><span class="s seed"></span><div>As seções de motivo e avaliação anterior são <b>condicionais</b> (<span class="tag">{{#reason}}</span> / <span class="tag">{{#originalReview}}</span>): só aparecem quando a Konfidency tem esses dados. No código elas estão envolvidas pelas tags de abertura/fechamento, então funcionam automaticamente.</div></div>
+
+    <div class="code-in-panel"><div class="cip-head"><span class="seed"></span> Código de produção (Konfidency)</div>
+    <p class="p-sub"><b>Assunto:</b> {{customerName}}, solicitamos sua reavaliação sobre {{productName}}<br/><b>Preheader:</b> Sua opinião atualizada ajuda outros criadores.</p>
+    <div class="codecol">
+      <div class="codewrap"><div class="clbl"><h4>Código atual</h4><span class="tagline">template Konfidency</span><button class="copybtn" data-code="atual-reavaliacao">Copiar</button></div><div class="codeblock"><pre id="atual-reavaliacao">&lt;!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'&gt;
+&lt;html xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office"&gt;
+&lt;head&gt;
+  &lt;meta content="width=device-width, initial-scale=1" name="viewport"/&gt;&lt;meta charset="UTF-8"/&gt;
+  &lt;meta name="x-apple-disable-message-reformatting"/&gt;&lt;meta http-equiv="X-UA-Compatible" content="IE=edge"/&gt;
+  &lt;meta content="telephone=no" name="format-detection"/&gt;&lt;title&gt;Solicitação de Reavaliação&lt;/title&gt;
+  &lt;link href="https://fonts.googleapis.com/css?family=Lato:400,400i,700,700i" rel="stylesheet"/&gt;
+&lt;/head&gt;
+&lt;body style="background-color:#f6f6f6;font-family:Lato,sans-serif"&gt;
+  &lt;table style="background-color:#fff;width:90%;max-width:600px;margin:20px auto;color:#303030"&gt;
+    &lt;tr&gt;&lt;td style="text-align:center;padding:20px"&gt;&lt;img src="https://uploads.konfidency.com.br/customers/horizontepetstore.png" width="172" alt="{{storeName}}"/&gt;&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td style="font-size:18px;text-align:left;padding:10px"&gt;{{customerName}}, gostaríamos de saber sua opinião atualizada sobre &lt;strong&gt;{{productName}}&lt;/strong&gt;!&lt;/td&gt;&lt;/tr&gt;
+    {{#reason}}
+    &lt;tr&gt;&lt;td style="font-size:16px;text-align:left;padding:10px"&gt;&lt;b&gt;Por que estamos pedindo:&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td style="font-size:16px;text-align:left"&gt;&lt;p style="margin:10px;padding:20px;background-color:#f5f5f5;border-radius:3px"&gt;{{text}}&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+    {{/reason}}
+    {{#originalReview}}
+    &lt;tr&gt;&lt;td style="font-size:16px;text-align:left;padding:10px"&gt;&lt;b&gt;Sua avaliação anterior:&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td style="font-size:16px;text-align:left"&gt;&lt;p style="margin:10px;padding:20px;background-color:#f5f5f5;border-radius:3px"&gt;
+      &lt;span style="color:#FFD700;font-size:20px;letter-spacing:2px;"&gt;{{stars}}&lt;/span&gt;
+      &lt;span style="color:#666;font-size:14px;"&gt; ({{rating}}/5)&lt;/span&gt;
+      {{#comment}}&lt;br/&gt;&lt;br/&gt;&lt;i style="color:#666;"&gt;"{{.}}"&lt;/i&gt;{{/comment}}
+    &lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+    {{/originalReview}}
+    &lt;tr&gt;&lt;td style="font-size:16px;text-align:left;padding:10px"&gt;Sua opinião é muito importante para nós e para outros clientes.&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td style="text-align:center;padding:10px 10px 20px 10px"&gt;
+      &lt;a href="{{reevaluationUrl}}" style="text-decoration:none;"&gt;&lt;div style="font-size:16px;background:#212121;display:inline-block;padding:12px 40px;min-width:160px;color:#fff;font-weight:bold;border-radius:7px;"&gt;reavaliar produto&lt;/div&gt;&lt;/a&gt;
+    &lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td style="text-align:center;padding:10px;color:#999;font-size:12px;"&gt;Este link é válido até {{expirationDate}}&lt;/td&gt;&lt;/tr&gt;
+  &lt;/table&gt;
+&lt;/body&gt;&lt;/html&gt;</pre></div></div>
+      <div class="codewrap"><div class="clbl"><h4>Novo código (HTML completo)</h4><button class="copybtn" data-code="code-reavaliacao">Copiar</button></div><div class="codeblock"><pre id="code-reavaliacao">&lt;!DOCTYPE html&gt;
+&lt;html xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"/&gt;
+  &lt;meta content="width=device-width, initial-scale=1" name="viewport"/&gt;
+  &lt;meta name="x-apple-disable-message-reformatting"/&gt;
+  &lt;meta http-equiv="X-UA-Compatible" content="IE=edge"/&gt;
+  &lt;meta content="telephone=no" name="format-detection"/&gt;
+  &lt;meta name="color-scheme" content="light dark"/&gt;
+  &lt;meta name="supported-color-schemes" content="light dark"/&gt;
+  &lt;title&gt;&lt;/title&gt;
+  &lt;link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&amp;display=swap" rel="stylesheet"/&gt;
+&lt;/head&gt;
+&lt;body style="margin:0; padding:0; background:#EDEBE4; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;
+
+  &lt;!-- Preheader --&gt;
+  &lt;div style="display:none; max-height:0; overflow:hidden; mso-hide:all; font-size:1px; line-height:1px; color:#EDEBE4;"&gt;Sua opinião atualizada ajuda outros criadores.&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&lt;/div&gt;
+
+  &lt;table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#EDEBE4;"&gt;
+    &lt;tr&gt;&lt;td align="center" style="padding:24px 12px;"&gt;
+      &lt;table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="width:600px; max-width:600px; color:#092312; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;
+
+        &lt;!-- Header creme + logo --&gt;
+        &lt;tr&gt;&lt;td align="center" style="background:#F4F2EC; padding:26px 24px 28px;"&gt;
+          &lt;img src="https://uploads.konfidency.com.br/customers/horizontepetstore.png" alt="{{storeName}}" width="150" style="display:block; margin:0 auto; width:150px; max-width:60%; height:auto; border:0;"/&gt;
+        &lt;/td&gt;&lt;/tr&gt;
+
+        &lt;!-- Corpo branco --&gt;
+        &lt;tr&gt;&lt;td style="background:#ffffff; padding:32px 26px;"&gt;
+          &lt;div style="text-align:center; font-size:34px; line-height:1; margin:0 0 8px;"&gt;🔄&lt;/div&gt;
+          &lt;h1 style="margin:0 0 10px; font-weight:700; font-size:23px; line-height:1.2; color:#092312; text-align:center; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;{{customerName}}, que tal atualizar sua avaliação?&lt;/h1&gt;
+          &lt;p style="margin:0 0 22px; font-size:15px; line-height:1.6; color:#092312; text-align:center; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Gostaríamos de saber sua opinião atualizada sobre &lt;b&gt;{{productName}}&lt;/b&gt;. Ela ajuda a gente e outros criadores.&lt;/p&gt;
+
+          {{#reason}}
+          &lt;p style="margin:0 0 8px; font-size:13px; font-weight:700; color:#092312; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Por que estamos pedindo&lt;/p&gt;
+          &lt;table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 18px;"&gt;
+            &lt;tr&gt;&lt;td style="background:#EEF3F4; border:1px solid #CBDDE2; border-radius:12px; padding:16px 18px; font-size:13px; line-height:1.55; color:#092312; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;{{text}}&lt;/td&gt;&lt;/tr&gt;
+          &lt;/table&gt;
+          {{/reason}}
+
+          {{#originalReview}}
+          &lt;p style="margin:0 0 8px; font-size:13px; font-weight:700; color:#092312; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Sua avaliação anterior&lt;/p&gt;
+          &lt;table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 18px;"&gt;
+            &lt;tr&gt;&lt;td style="background:#FBFBFA; border:1px solid #E6E3DA; border-radius:12px; padding:16px 18px; font-size:13px; line-height:1.55; color:#092312; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;
+              &lt;span style="color:#E0A233; font-size:20px; letter-spacing:2px;"&gt;{{stars}}&lt;/span&gt;
+              &lt;span style="color:#5B564E; font-size:14px;"&gt; ({{rating}}/5)&lt;/span&gt;
+              {{#comment}}&lt;br/&gt;&lt;br/&gt;&lt;i style="color:#5B564E;"&gt;"{{.}}"&lt;/i&gt;{{/comment}}
+            &lt;/td&gt;&lt;/tr&gt;
+          &lt;/table&gt;
+          {{/originalReview}}
+
+          &lt;!-- Botao CTA --&gt;
+          &lt;table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center" style="margin:22px auto 6px;"&gt;
+            &lt;tr&gt;&lt;td align="center" bgcolor="#FFC100" style="border-radius:100px;"&gt;
+              &lt;a href="{{reevaluationUrl}}" style="display:inline-block; padding:14px 40px; font-size:15px; font-weight:700; color:#221B05; text-decoration:none; border-radius:100px; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Reavaliar produto&lt;/a&gt;
+            &lt;/td&gt;&lt;/tr&gt;
+          &lt;/table&gt;
+          &lt;p style="text-align:center; font-size:12px; color:#8a857c; margin:10px 0 0; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Este link é válido até {{expirationDate}}.&lt;/p&gt;
+        &lt;/td&gt;&lt;/tr&gt;
+
+        &lt;!-- Footer verde --&gt;
+        &lt;tr&gt;&lt;td align="center" style="background:#18592F; padding:22px 26px 26px; color:#ffffff; font-size:12px; line-height:1.7; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;
+          &lt;strong style="color:#ffffff; font-size:13px;"&gt;Precisa de ajuda? Fale com a gente.&lt;/strong&gt;&lt;br/&gt;
+          &lt;a href="https://wa.me/5519998594379" style="color:#FFC100; text-decoration:none;"&gt;WhatsApp (19) 99859-4379&lt;/a&gt; &amp;nbsp;&amp;middot;&amp;nbsp; &lt;a href="tel:+551935771474" style="color:#FFC100; text-decoration:none;"&gt;(19) 3577-1474&lt;/a&gt;&lt;br/&gt;
+          &lt;a href="mailto:contato@horizontepetstore.com.br" style="color:#ffffff; text-decoration:none;"&gt;contato@horizontepetstore.com.br&lt;/a&gt; &amp;nbsp;&amp;middot;&amp;nbsp; Seg a sex, 8h às 18h
+        &lt;/td&gt;&lt;/tr&gt;
+
+      &lt;/table&gt;
+    &lt;/td&gt;&lt;/tr&gt;
+  &lt;/table&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div></div>
+    </div>
+    </div>
+  </section>
+
+  <section class="panel" id="resposta">
+    <div class="p-head"><h2>Resposta de avaliação</h2><span class="chip r">Relacional</span><span class="chip c">Konfidency</span></div>
+    <p class="p-sub">Avisa o cliente que a loja respondeu à avaliação dele. Konfidency, HTML completo. Mostra a avaliação original (<span class="tag">{{payload.text}}</span>) e a resposta da loja (<span class="tag">{{payload.replyText}}</span>), com botão para <span class="tag">{{payload.productUrl}}</span>. Tem pixel de rastreio.</p>
+    <div class="ba">
+      <div><div class="col-label before"><span class="b">Antes</span> <small>template padrão da Konfidency</small></div>
+        <div class="frame"><div class="chrome"><div class="subj">{{payload.name}}, respondemos sua avaliação sobre {{payload.product}}</div></div>
+          <div class="old">
+            <div class="logo" style="text-align:center">[ logo Horizonte ]</div>
+            <p>{{payload.name}}, respondemos sua avaliação sobre {{payload.product}}!</p>
+            <p><b>Avaliação enviada em {{payload.created}}:</b> {{payload.text}}</p>
+            <p><b>Resposta da loja:</b> {{payload.replyText}} (enviada em {{payload.replyCreated}})</p>
+            <p style="text-align:center;margin-top:14px"><span style="background:#212121;color:#fff;padding:12px 40px;border-radius:7px;display:inline-block;font-weight:bold">ver resposta no site</span></p>
+          </div>
+        </div>
+      </div>
+      <div><div class="col-label after"><span class="b">Depois</span> <small>no visual da Horizonte</small></div>
+        <div class="frame"><div class="chrome"><div class="subj">{{payload.name}}, respondemos sua avaliação! ↩️</div><div class="pre">A Horizonte respondeu sua avaliação.</div></div>
+          <div class="new"><div class="em-head"></div>
+            <div class="em-status"><div class="ico">↩️</div><h3>{{payload.name}}, respondemos sua avaliação!</h3><p>Você comentou sobre {{payload.product}} e a gente quis responder. Veja abaixo:</p></div>
+            <div class="em-blk"><b>Sua avaliação</b> <span style="color:#8a857c">&middot; {{payload.created}}</span><br/><br/><i style="color:#5B564E">"{{payload.text}}"</i></div>
+            <div class="em-blk seeds"><b>🌱 Resposta da Horizonte</b> <span style="color:#5a7a63">&middot; {{payload.replyCreated}}</span><br/><br/>{{payload.replyText}}</div>
+            <a class="em-btn" href="{{payload.productUrl}}">Ver resposta no site</a>
+            <div class="em-foot" data-lead="Precisa de ajuda? Fale com a gente."></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="code-in-panel"><div class="cip-head"><span class="seed"></span> Código de produção (Konfidency)</div>
+    <p class="p-sub"><b>Assunto:</b> {{payload.name}}, respondemos sua avaliação sobre {{payload.product}}<br/><b>Preheader:</b> A Horizonte respondeu sua avaliação.</p>
+    <div class="codecol">
+      <div class="codewrap"><div class="clbl"><h4>Código atual</h4><span class="tagline">template Konfidency</span><button class="copybtn" data-code="atual-resposta">Copiar</button></div><div class="codeblock"><pre id="atual-resposta">&lt;!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'&gt;
+&lt;html xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office"&gt;
+&lt;head&gt;
+  &lt;meta content="width=device-width, initial-scale=1" name="viewport"/&gt;&lt;meta charset="UTF-8"/&gt;
+  &lt;meta name="x-apple-disable-message-reformatting"/&gt;&lt;meta http-equiv="X-UA-Compatible" content="IE=edge"/&gt;
+  &lt;meta content="telephone=no" name="format-detection"/&gt;&lt;title&gt;&lt;/title&gt;
+  &lt;link href="https://fonts.googleapis.com/css?family=Lato:400,400i,700,700i" rel="stylesheet"/&gt;
+&lt;/head&gt;
+&lt;body style="background-color:#f6f6f6;font-family:Lato,sans-serif"&gt;
+  &lt;table style="background-color:#fff;width:90%;max-width:600px;margin:20px auto;color:#303030"&gt;
+    &lt;tr&gt;&lt;td style="text-align:center;padding:20px"&gt;&lt;img src="https://uploads.konfidency.com.br/customers/horizontepetstore.png" width="172"/&gt;&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td style="font-size:18px;text-align:left;padding:10px"&gt;{{payload.name}}, respondemos sua avaliação sobre {{payload.product}}!&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td style="font-size:16px;text-align:left;padding:10px"&gt;&lt;b&gt;Avaliação enviada em {{payload.created}}:&lt;/b&gt; {{payload.text}}&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td style="font-size:16px;text-align:left;padding:10px"&gt;&lt;b&gt;Resposta da loja:&lt;/b&gt; {{payload.replyText}} (enviada em {{payload.replyCreated}})&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td style="text-align:center;padding:10px 10px 20px 10px"&gt;
+      &lt;a href="{{payload.productUrl}}"&gt;&lt;div style="font-size:16px;background:#212121;display:inline-block;padding:12px 40px;width:160px;color:#fff;font-weight:bold;border-radius:7px;"&gt;ver resposta no site&lt;/div&gt;&lt;/a&gt;
+    &lt;/td&gt;&lt;/tr&gt;
+  &lt;/table&gt;
+  &lt;img src="https://t.konfidency.com.br/tr?action=open&amp;notificationId={{payload._id}}&amp;source=email" width="1" height="1"/&gt;
+&lt;/body&gt;&lt;/html&gt;</pre></div></div>
+      <div class="codewrap"><div class="clbl"><h4>Novo código (HTML completo)</h4><button class="copybtn" data-code="code-resposta">Copiar</button></div><div class="codeblock"><pre id="code-resposta">&lt;!DOCTYPE html&gt;
+&lt;html xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"/&gt;
+  &lt;meta content="width=device-width, initial-scale=1" name="viewport"/&gt;
+  &lt;meta name="x-apple-disable-message-reformatting"/&gt;
+  &lt;meta http-equiv="X-UA-Compatible" content="IE=edge"/&gt;
+  &lt;meta content="telephone=no" name="format-detection"/&gt;
+  &lt;meta name="color-scheme" content="light dark"/&gt;
+  &lt;meta name="supported-color-schemes" content="light dark"/&gt;
+  &lt;title&gt;&lt;/title&gt;
+  &lt;link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&amp;display=swap" rel="stylesheet"/&gt;
+&lt;/head&gt;
+&lt;body style="margin:0; padding:0; background:#EDEBE4; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;
+
+  &lt;!-- Preheader --&gt;
+  &lt;div style="display:none; max-height:0; overflow:hidden; mso-hide:all; font-size:1px; line-height:1px; color:#EDEBE4;"&gt;A Horizonte respondeu sua avaliação.&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&lt;/div&gt;
+
+  &lt;table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#EDEBE4;"&gt;
+    &lt;tr&gt;&lt;td align="center" style="padding:24px 12px;"&gt;
+      &lt;table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="width:600px; max-width:600px; color:#092312; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;
+
+        &lt;!-- Header creme + logo --&gt;
+        &lt;tr&gt;&lt;td align="center" style="background:#F4F2EC; padding:26px 24px 28px;"&gt;
+          &lt;img src="https://uploads.konfidency.com.br/customers/horizontepetstore.png" alt="Horizonte Pet Store" width="150" style="display:block; margin:0 auto; width:150px; max-width:60%; height:auto; border:0;"/&gt;
+        &lt;/td&gt;&lt;/tr&gt;
+
+        &lt;!-- Corpo branco --&gt;
+        &lt;tr&gt;&lt;td style="background:#ffffff; padding:32px 26px;"&gt;
+          &lt;div style="text-align:center; font-size:34px; line-height:1; margin:0 0 8px;"&gt;↩️&lt;/div&gt;
+          &lt;h1 style="margin:0 0 10px; font-weight:700; font-size:23px; line-height:1.2; color:#092312; text-align:center; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;{{payload.name}}, respondemos sua avaliação!&lt;/h1&gt;
+          &lt;p style="margin:0 0 22px; font-size:15px; line-height:1.6; color:#092312; text-align:center; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Você comentou sobre &lt;b&gt;{{payload.product}}&lt;/b&gt; e a gente quis responder. Veja abaixo:&lt;/p&gt;
+
+          &lt;!-- Avaliacao do cliente --&gt;
+          &lt;table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 12px;"&gt;
+            &lt;tr&gt;&lt;td style="background:#FBFBFA; border:1px solid #E6E3DA; border-radius:12px; padding:16px 18px; font-size:13px; line-height:1.55; color:#092312; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;&lt;b&gt;Sua avaliação&lt;/b&gt; &lt;span style="color:#8a857c;"&gt;&amp;middot; {{payload.created}}&lt;/span&gt;&lt;br/&gt;&lt;br/&gt;&lt;i style="color:#5B564E;"&gt;"{{payload.text}}"&lt;/i&gt;&lt;/td&gt;&lt;/tr&gt;
+          &lt;/table&gt;
+
+          &lt;!-- Resposta da loja --&gt;
+          &lt;table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 6px;"&gt;
+            &lt;tr&gt;&lt;td style="background:#E3EDE4; border:1px solid #CFE0D5; border-radius:12px; padding:16px 18px; font-size:13px; line-height:1.55; color:#092312; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;&lt;b&gt;🌱 Resposta da Horizonte&lt;/b&gt; &lt;span style="color:#5a7a63;"&gt;&amp;middot; {{payload.replyCreated}}&lt;/span&gt;&lt;br/&gt;&lt;br/&gt;{{payload.replyText}}&lt;/td&gt;&lt;/tr&gt;
+          &lt;/table&gt;
+
+          &lt;!-- Botao CTA --&gt;
+          &lt;table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center" style="margin:24px auto 6px;"&gt;
+            &lt;tr&gt;&lt;td align="center" bgcolor="#FFC100" style="border-radius:100px;"&gt;
+              &lt;a href="{{payload.productUrl}}" style="display:inline-block; padding:14px 40px; font-size:15px; font-weight:700; color:#221B05; text-decoration:none; border-radius:100px; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Ver resposta no site&lt;/a&gt;
+            &lt;/td&gt;&lt;/tr&gt;
+          &lt;/table&gt;
+        &lt;/td&gt;&lt;/tr&gt;
+
+        &lt;!-- Footer verde --&gt;
+        &lt;tr&gt;&lt;td align="center" style="background:#18592F; padding:22px 26px 26px; color:#ffffff; font-size:12px; line-height:1.7; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;
+          &lt;strong style="color:#ffffff; font-size:13px;"&gt;Precisa de ajuda? Fale com a gente.&lt;/strong&gt;&lt;br/&gt;
+          &lt;a href="https://wa.me/5519998594379" style="color:#FFC100; text-decoration:none;"&gt;WhatsApp (19) 99859-4379&lt;/a&gt; &amp;nbsp;&amp;middot;&amp;nbsp; &lt;a href="tel:+551935771474" style="color:#FFC100; text-decoration:none;"&gt;(19) 3577-1474&lt;/a&gt;&lt;br/&gt;
+          &lt;a href="mailto:contato@horizontepetstore.com.br" style="color:#ffffff; text-decoration:none;"&gt;contato@horizontepetstore.com.br&lt;/a&gt; &amp;nbsp;&amp;middot;&amp;nbsp; Seg a sex, 8h às 18h
+        &lt;/td&gt;&lt;/tr&gt;
+
+      &lt;/table&gt;
+    &lt;/td&gt;&lt;/tr&gt;
+  &lt;/table&gt;
+
+  &lt;!-- Pixel de rastreio da Konfidency (NAO REMOVER) --&gt;
+  &lt;img src="https://t.konfidency.com.br/tr?action=open&amp;notificationId={{payload._id}}&amp;source=email" width="1" height="1" alt=""/&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div></div>
+    </div>
+    </div>
+  </section>
+
+  <section class="panel" id="respostaloja">
+    <div class="p-head"><h2>Resposta de avaliação (loja)</h2><span class="chip r">Relacional</span><span class="chip c">Konfidency</span></div>
+    <p class="p-sub">Igual ao anterior, mas para avaliação <b>da loja</b> (não de um produto): não tem datas nem <span class="tag">{{payload.product}}</span>. Mostra a avaliação (<span class="tag">{{payload.text}}</span>) e a resposta (<span class="tag">{{payload.replyText}}</span>), botão para <span class="tag">{{payload.productUrl}}</span>, com pixel.</p>
+    <div class="ba">
+      <div><div class="col-label before"><span class="b">Antes</span> <small>template padrão da Konfidency</small></div>
+        <div class="frame"><div class="chrome"><div class="subj">{{payload.name}}, respondemos sua avaliação sobre a loja</div></div>
+          <div class="old">
+            <div class="logo" style="text-align:center">[ logo Horizonte ]</div>
+            <p>{{payload.name}}, respondemos sua avaliação sobre a loja!</p>
+            <p style="font-weight:700;margin-top:10px">Texto da Avaliação:</p>
+            <p style="background:#f5f5f5;padding:12px;border-radius:3px">{{payload.text}}</p>
+            <p style="font-weight:700;margin-top:10px">Resposta:</p>
+            <p style="background:#f5f5f5;padding:12px;border-radius:3px">{{payload.replyText}}</p>
+            <p style="text-align:center;margin-top:14px"><span style="background:#212121;color:#fff;padding:12px 40px;border-radius:7px;display:inline-block;font-weight:bold">ver resposta no site ou comprar</span></p>
+          </div>
+        </div>
+      </div>
+      <div><div class="col-label after"><span class="b">Depois</span> <small>no visual da Horizonte</small></div>
+        <div class="frame"><div class="chrome"><div class="subj">{{payload.name}}, respondemos sua avaliação! 🏪</div><div class="pre">A Horizonte respondeu sua avaliação da loja.</div></div>
+          <div class="new"><div class="em-head"></div>
+            <div class="em-status"><div class="ico">🏪</div><h3>{{payload.name}}, respondemos sua avaliação!</h3><p>Você avaliou a Horizonte e a gente quis responder. Veja abaixo:</p></div>
+            <div class="em-blk"><b>Sua avaliação</b><br/><br/><i style="color:#5B564E">"{{payload.text}}"</i></div>
+            <div class="em-blk seeds"><b>🌱 Resposta da Horizonte</b><br/><br/>{{payload.replyText}}</div>
+            <a class="em-btn" href="{{payload.productUrl}}">Ver no site</a>
+            <div class="em-foot" data-lead="Precisa de ajuda? Fale com a gente."></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="code-in-panel"><div class="cip-head"><span class="seed"></span> Código de produção (Konfidency)</div>
+    <p class="p-sub"><b>Assunto:</b> {{payload.name}}, respondemos sua avaliação sobre a loja<br/><b>Preheader:</b> A Horizonte respondeu sua avaliação da loja.</p>
+    <div class="codecol">
+      <div class="codewrap"><div class="clbl"><h4>Código atual</h4><span class="tagline">template Konfidency</span><button class="copybtn" data-code="atual-respostaloja">Copiar</button></div><div class="codeblock"><pre id="atual-respostaloja">&lt;!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'&gt;
+&lt;html xmlns='http://www.w3.org/1999/xhtml' xmlns:o='urn:schemas-microsoft-com:office:office'&gt;
+&lt;head&gt;
+  &lt;meta content='width=device-width, initial-scale=1' name='viewport'&gt;&lt;meta charset='UTF-8'&gt;
+  &lt;meta name='x-apple-disable-message-reformatting'&gt;&lt;meta http-equiv='X-UA-Compatible' content='IE=edge'&gt;
+  &lt;meta content='telephone=no' name='format-detection'&gt;&lt;title&gt;&lt;/title&gt;
+  &lt;link href='https://fonts.googleapis.com/css?family=Lato:400,400i,700,700i' rel='stylesheet'&gt;
+&lt;/head&gt;
+&lt;body style='background-color:#f6f6f6;font-family:Lato,sans-serif;'&gt;
+  &lt;table style='background-color:#fff;width:90%;max-width:600px;margin:20px auto;color:#303030'&gt;
+    &lt;tr&gt;&lt;td style='text-align:center;padding:20px'&gt;&lt;img src='https://uploads.konfidency.com.br/customers/horizontepetstore.png' width='172'&gt;&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td style='font-size:18px;text-align:left;padding:10px'&gt;{{payload.name}}, respondemos sua avaliação sobre a loja!&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td style="font-size:16px;text-align:left;padding:10px;"&gt;&lt;b&gt;Texto da Avaliação:&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td style="font-size:16px;text-align:left;"&gt;&lt;p style="margin:10px;padding:20px;background-color:#f5f5f5;border-radius:3px;"&gt;{{payload.text}}&lt;br/&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td style="font-size:16px;text-align:left;padding:10px;"&gt;&lt;b&gt;Resposta:&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td style="font-size:16px;text-align:left;"&gt;&lt;p style="margin:10px;padding:20px;background-color:#f5f5f5;border-radius:3px;"&gt;{{payload.replyText}}&lt;br/&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td style='text-align:center;padding:10px 10px 20px 10px'&gt;
+      &lt;a href='{{payload.productUrl}}'&gt;&lt;div style='font-size:16px;background:#212121;display:inline-block;padding:12px 40px;min-width:160px;color:#fff;font-weight:bold;border-radius:7px;'&gt;ver resposta no site ou comprar&lt;/div&gt;&lt;/a&gt;
+    &lt;/td&gt;&lt;/tr&gt;
+  &lt;/table&gt;
+  &lt;img src='https://t.konfidency.com.br/tr?action=open&amp;notificationId={{payload._id}}&amp;source=email' width='1' height='1'/&gt;
+&lt;/body&gt;&lt;/html&gt;</pre></div></div>
+      <div class="codewrap"><div class="clbl"><h4>Novo código (HTML completo)</h4><button class="copybtn" data-code="code-respostaloja">Copiar</button></div><div class="codeblock"><pre id="code-respostaloja">&lt;!DOCTYPE html&gt;
+&lt;html xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"/&gt;
+  &lt;meta content="width=device-width, initial-scale=1" name="viewport"/&gt;
+  &lt;meta name="x-apple-disable-message-reformatting"/&gt;
+  &lt;meta http-equiv="X-UA-Compatible" content="IE=edge"/&gt;
+  &lt;meta content="telephone=no" name="format-detection"/&gt;
+  &lt;meta name="color-scheme" content="light dark"/&gt;
+  &lt;meta name="supported-color-schemes" content="light dark"/&gt;
+  &lt;title&gt;&lt;/title&gt;
+  &lt;link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&amp;display=swap" rel="stylesheet"/&gt;
+&lt;/head&gt;
+&lt;body style="margin:0; padding:0; background:#EDEBE4; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;
+
+  &lt;!-- Preheader --&gt;
+  &lt;div style="display:none; max-height:0; overflow:hidden; mso-hide:all; font-size:1px; line-height:1px; color:#EDEBE4;"&gt;A Horizonte respondeu sua avaliação da loja.&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&lt;/div&gt;
+
+  &lt;table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#EDEBE4;"&gt;
+    &lt;tr&gt;&lt;td align="center" style="padding:24px 12px;"&gt;
+      &lt;table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="width:600px; max-width:600px; color:#092312; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;
+
+        &lt;!-- Header creme + logo --&gt;
+        &lt;tr&gt;&lt;td align="center" style="background:#F4F2EC; padding:26px 24px 28px;"&gt;
+          &lt;img src="https://uploads.konfidency.com.br/customers/horizontepetstore.png" alt="Horizonte Pet Store" width="150" style="display:block; margin:0 auto; width:150px; max-width:60%; height:auto; border:0;"/&gt;
+        &lt;/td&gt;&lt;/tr&gt;
+
+        &lt;!-- Corpo branco --&gt;
+        &lt;tr&gt;&lt;td style="background:#ffffff; padding:32px 26px;"&gt;
+          &lt;div style="text-align:center; font-size:34px; line-height:1; margin:0 0 8px;"&gt;🏪&lt;/div&gt;
+          &lt;h1 style="margin:0 0 10px; font-weight:700; font-size:23px; line-height:1.2; color:#092312; text-align:center; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;{{payload.name}}, respondemos sua avaliação!&lt;/h1&gt;
+          &lt;p style="margin:0 0 22px; font-size:15px; line-height:1.6; color:#092312; text-align:center; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Você avaliou a Horizonte e a gente quis responder. Veja abaixo:&lt;/p&gt;
+
+          &lt;!-- Avaliacao do cliente --&gt;
+          &lt;table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 12px;"&gt;
+            &lt;tr&gt;&lt;td style="background:#FBFBFA; border:1px solid #E6E3DA; border-radius:12px; padding:16px 18px; font-size:13px; line-height:1.55; color:#092312; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;&lt;b&gt;Sua avaliação&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;&lt;i style="color:#5B564E;"&gt;"{{payload.text}}"&lt;/i&gt;&lt;/td&gt;&lt;/tr&gt;
+          &lt;/table&gt;
+
+          &lt;!-- Resposta da loja --&gt;
+          &lt;table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 6px;"&gt;
+            &lt;tr&gt;&lt;td style="background:#E3EDE4; border:1px solid #CFE0D5; border-radius:12px; padding:16px 18px; font-size:13px; line-height:1.55; color:#092312; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;&lt;b&gt;🌱 Resposta da Horizonte&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;{{payload.replyText}}&lt;/td&gt;&lt;/tr&gt;
+          &lt;/table&gt;
+
+          &lt;!-- Botao CTA --&gt;
+          &lt;table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center" style="margin:24px auto 6px;"&gt;
+            &lt;tr&gt;&lt;td align="center" bgcolor="#FFC100" style="border-radius:100px;"&gt;
+              &lt;a href="{{payload.productUrl}}" style="display:inline-block; padding:14px 40px; font-size:15px; font-weight:700; color:#221B05; text-decoration:none; border-radius:100px; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Ver no site&lt;/a&gt;
+            &lt;/td&gt;&lt;/tr&gt;
+          &lt;/table&gt;
+        &lt;/td&gt;&lt;/tr&gt;
+
+        &lt;!-- Footer verde --&gt;
+        &lt;tr&gt;&lt;td align="center" style="background:#18592F; padding:22px 26px 26px; color:#ffffff; font-size:12px; line-height:1.7; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;
+          &lt;strong style="color:#ffffff; font-size:13px;"&gt;Precisa de ajuda? Fale com a gente.&lt;/strong&gt;&lt;br/&gt;
+          &lt;a href="https://wa.me/5519998594379" style="color:#FFC100; text-decoration:none;"&gt;WhatsApp (19) 99859-4379&lt;/a&gt; &amp;nbsp;&amp;middot;&amp;nbsp; &lt;a href="tel:+551935771474" style="color:#FFC100; text-decoration:none;"&gt;(19) 3577-1474&lt;/a&gt;&lt;br/&gt;
+          &lt;a href="mailto:contato@horizontepetstore.com.br" style="color:#ffffff; text-decoration:none;"&gt;contato@horizontepetstore.com.br&lt;/a&gt; &amp;nbsp;&amp;middot;&amp;nbsp; Seg a sex, 8h às 18h
+        &lt;/td&gt;&lt;/tr&gt;
+
+      &lt;/table&gt;
+    &lt;/td&gt;&lt;/tr&gt;
+  &lt;/table&gt;
+
+  &lt;!-- Pixel de rastreio da Konfidency (NAO REMOVER) --&gt;
+  &lt;img src="https://t.konfidency.com.br/tr?action=open&amp;notificationId={{payload._id}}&amp;source=email" width="1" height="1" alt=""/&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div></div>
+    </div>
+    </div>
+  </section>
+
+  <section class="panel" id="respostapergunta">
+    <div class="p-head"><h2>Resposta de pergunta</h2><span class="chip r">Relacional</span><span class="chip c">Konfidency</span></div>
+    <p class="p-sub">Avisa o cliente que a loja respondeu uma <b>pergunta</b> dele sobre um produto (recurso de perguntas &amp; respostas). Mesma mecânica da resposta de avaliação: mostra a pergunta (<span class="tag">{{payload.text}}</span>) e a resposta (<span class="tag">{{payload.replyText}}</span>), botão para <span class="tag">{{payload.productUrl}}</span>, com pixel.</p>
+    <div class="ba">
+      <div><div class="col-label before"><span class="b">Antes</span> <small>template padrão da Konfidency</small></div>
+        <div class="frame"><div class="chrome"><div class="subj">{{payload.name}}, respondemos sua pergunta sobre {{payload.product}}</div></div>
+          <div class="old">
+            <div class="logo" style="text-align:center">[ logo Horizonte ]</div>
+            <p>{{payload.name}}, respondemos sua pergunta sobre {{payload.product}}!</p>
+            <p><b>Pergunta:</b> {{payload.text}} (enviada em {{payload.created}})</p>
+            <p><b>Resposta:</b> {{payload.replyText}} (enviada em {{payload.replyCreated}})</p>
+            <p style="text-align:center;margin-top:14px"><span style="background:#212121;color:#fff;padding:12px 40px;border-radius:7px;display:inline-block;font-weight:bold">ver resposta no site</span></p>
+          </div>
+        </div>
+      </div>
+      <div><div class="col-label after"><span class="b">Depois</span> <small>no visual da Horizonte</small></div>
+        <div class="frame"><div class="chrome"><div class="subj">{{payload.name}}, respondemos sua pergunta! ❓</div><div class="pre">A Horizonte respondeu sua pergunta.</div></div>
+          <div class="new"><div class="em-head"></div>
+            <div class="em-status"><div class="ico">❓</div><h3>{{payload.name}}, respondemos sua pergunta!</h3><p>Você perguntou sobre {{payload.product}} e a gente respondeu. Veja abaixo:</p></div>
+            <div class="em-blk"><b>Sua pergunta</b> <span style="color:#8a857c">&middot; {{payload.created}}</span><br/><br/><i style="color:#5B564E">"{{payload.text}}"</i></div>
+            <div class="em-blk seeds"><b>🌱 Resposta da Horizonte</b> <span style="color:#5a7a63">&middot; {{payload.replyCreated}}</span><br/><br/>{{payload.replyText}}</div>
+            <a class="em-btn" href="{{payload.productUrl}}">Ver resposta no site</a>
+            <div class="em-foot" data-lead="Precisa de ajuda? Fale com a gente."></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="code-in-panel"><div class="cip-head"><span class="seed"></span> Código de produção (Konfidency)</div>
+    <p class="p-sub"><b>Assunto:</b> {{payload.name}}, respondemos sua pergunta sobre {{payload.product}}<br/><b>Preheader:</b> A Horizonte respondeu sua pergunta.</p>
+    <div class="codecol">
+      <div class="codewrap"><div class="clbl"><h4>Código atual</h4><span class="tagline">template Konfidency</span><button class="copybtn" data-code="atual-respostapergunta">Copiar</button></div><div class="codeblock"><pre id="atual-respostapergunta">&lt;!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'&gt;
+&lt;html xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office"&gt;
+&lt;head&gt;
+  &lt;meta content="width=device-width, initial-scale=1" name="viewport"/&gt;&lt;meta charset="UTF-8"/&gt;
+  &lt;meta name="x-apple-disable-message-reformatting"/&gt;&lt;meta http-equiv="X-UA-Compatible" content="IE=edge"/&gt;
+  &lt;meta content="telephone=no" name="format-detection"/&gt;&lt;title&gt;&lt;/title&gt;
+  &lt;link href="https://fonts.googleapis.com/css?family=Lato:400,400i,700,700i" rel="stylesheet"/&gt;
+&lt;/head&gt;
+&lt;body style="background-color:#f6f6f6;font-family:Lato,sans-serif"&gt;
+  &lt;table style="background-color:#fff;width:90%;max-width:600px;margin:20px auto;color:#303030"&gt;
+    &lt;tr&gt;&lt;td style="text-align:center;padding:20px"&gt;&lt;img src="https://uploads.konfidency.com.br/customers/horizontepetstore.png" width="172"/&gt;&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td style="font-size:18px;text-align:left;padding:10px"&gt;{{payload.name}}, respondemos sua pergunta sobre {{payload.product}}!&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td style="font-size:16px;text-align:left;padding:10px"&gt;&lt;b&gt;Pergunta:&lt;/b&gt; {{payload.text}} (enviada em {{payload.created}})&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td style="font-size:16px;text-align:left;padding:10px"&gt;&lt;b&gt;Resposta:&lt;/b&gt; {{payload.replyText}} (enviada em {{payload.replyCreated}})&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td style="text-align:center;padding:10px 10px 20px 10px"&gt;
+      &lt;a href="{{payload.productUrl}}"&gt;&lt;div style="font-size:16px;background:#212121;display:inline-block;padding:12px 40px;width:160px;color:#fff;font-weight:bold;border-radius:7px;"&gt;ver resposta no site&lt;/div&gt;&lt;/a&gt;
+    &lt;/td&gt;&lt;/tr&gt;
+  &lt;/table&gt;
+  &lt;img src="https://t.konfidency.com.br/tr?action=open&amp;notificationId={{payload._id}}&amp;source=email" width="1" height="1"/&gt;
+&lt;/body&gt;&lt;/html&gt;</pre></div></div>
+      <div class="codewrap"><div class="clbl"><h4>Novo código (HTML completo)</h4><button class="copybtn" data-code="code-respostapergunta">Copiar</button></div><div class="codeblock"><pre id="code-respostapergunta">&lt;!DOCTYPE html&gt;
+&lt;html xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"/&gt;
+  &lt;meta content="width=device-width, initial-scale=1" name="viewport"/&gt;
+  &lt;meta name="x-apple-disable-message-reformatting"/&gt;
+  &lt;meta http-equiv="X-UA-Compatible" content="IE=edge"/&gt;
+  &lt;meta content="telephone=no" name="format-detection"/&gt;
+  &lt;meta name="color-scheme" content="light dark"/&gt;
+  &lt;meta name="supported-color-schemes" content="light dark"/&gt;
+  &lt;title&gt;&lt;/title&gt;
+  &lt;link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&amp;display=swap" rel="stylesheet"/&gt;
+&lt;/head&gt;
+&lt;body style="margin:0; padding:0; background:#EDEBE4; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;
+
+  &lt;!-- Preheader --&gt;
+  &lt;div style="display:none; max-height:0; overflow:hidden; mso-hide:all; font-size:1px; line-height:1px; color:#EDEBE4;"&gt;A Horizonte respondeu sua pergunta.&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&lt;/div&gt;
+
+  &lt;table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#EDEBE4;"&gt;
+    &lt;tr&gt;&lt;td align="center" style="padding:24px 12px;"&gt;
+      &lt;table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="width:600px; max-width:600px; color:#092312; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;
+
+        &lt;!-- Header creme + logo --&gt;
+        &lt;tr&gt;&lt;td align="center" style="background:#F4F2EC; padding:26px 24px 28px;"&gt;
+          &lt;img src="https://uploads.konfidency.com.br/customers/horizontepetstore.png" alt="Horizonte Pet Store" width="150" style="display:block; margin:0 auto; width:150px; max-width:60%; height:auto; border:0;"/&gt;
+        &lt;/td&gt;&lt;/tr&gt;
+
+        &lt;!-- Corpo branco --&gt;
+        &lt;tr&gt;&lt;td style="background:#ffffff; padding:32px 26px;"&gt;
+          &lt;div style="text-align:center; font-size:34px; line-height:1; margin:0 0 8px;"&gt;❓&lt;/div&gt;
+          &lt;h1 style="margin:0 0 10px; font-weight:700; font-size:23px; line-height:1.2; color:#092312; text-align:center; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;{{payload.name}}, respondemos sua pergunta!&lt;/h1&gt;
+          &lt;p style="margin:0 0 22px; font-size:15px; line-height:1.6; color:#092312; text-align:center; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Você perguntou sobre &lt;b&gt;{{payload.product}}&lt;/b&gt; e a gente respondeu. Veja abaixo:&lt;/p&gt;
+
+          &lt;!-- Pergunta do cliente --&gt;
+          &lt;table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 12px;"&gt;
+            &lt;tr&gt;&lt;td style="background:#FBFBFA; border:1px solid #E6E3DA; border-radius:12px; padding:16px 18px; font-size:13px; line-height:1.55; color:#092312; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;&lt;b&gt;Sua pergunta&lt;/b&gt; &lt;span style="color:#8a857c;"&gt;&amp;middot; {{payload.created}}&lt;/span&gt;&lt;br/&gt;&lt;br/&gt;&lt;i style="color:#5B564E;"&gt;"{{payload.text}}"&lt;/i&gt;&lt;/td&gt;&lt;/tr&gt;
+          &lt;/table&gt;
+
+          &lt;!-- Resposta da loja --&gt;
+          &lt;table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 6px;"&gt;
+            &lt;tr&gt;&lt;td style="background:#E3EDE4; border:1px solid #CFE0D5; border-radius:12px; padding:16px 18px; font-size:13px; line-height:1.55; color:#092312; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;&lt;b&gt;🌱 Resposta da Horizonte&lt;/b&gt; &lt;span style="color:#5a7a63;"&gt;&amp;middot; {{payload.replyCreated}}&lt;/span&gt;&lt;br/&gt;&lt;br/&gt;{{payload.replyText}}&lt;/td&gt;&lt;/tr&gt;
+          &lt;/table&gt;
+
+          &lt;!-- Botao CTA --&gt;
+          &lt;table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center" style="margin:24px auto 6px;"&gt;
+            &lt;tr&gt;&lt;td align="center" bgcolor="#FFC100" style="border-radius:100px;"&gt;
+              &lt;a href="{{payload.productUrl}}" style="display:inline-block; padding:14px 40px; font-size:15px; font-weight:700; color:#221B05; text-decoration:none; border-radius:100px; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Ver resposta no site&lt;/a&gt;
+            &lt;/td&gt;&lt;/tr&gt;
+          &lt;/table&gt;
+        &lt;/td&gt;&lt;/tr&gt;
+
+        &lt;!-- Footer verde --&gt;
+        &lt;tr&gt;&lt;td align="center" style="background:#18592F; padding:22px 26px 26px; color:#ffffff; font-size:12px; line-height:1.7; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;
+          &lt;strong style="color:#ffffff; font-size:13px;"&gt;Precisa de ajuda? Fale com a gente.&lt;/strong&gt;&lt;br/&gt;
+          &lt;a href="https://wa.me/5519998594379" style="color:#FFC100; text-decoration:none;"&gt;WhatsApp (19) 99859-4379&lt;/a&gt; &amp;nbsp;&amp;middot;&amp;nbsp; &lt;a href="tel:+551935771474" style="color:#FFC100; text-decoration:none;"&gt;(19) 3577-1474&lt;/a&gt;&lt;br/&gt;
+          &lt;a href="mailto:contato@horizontepetstore.com.br" style="color:#ffffff; text-decoration:none;"&gt;contato@horizontepetstore.com.br&lt;/a&gt; &amp;nbsp;&amp;middot;&amp;nbsp; Seg a sex, 8h às 18h
+        &lt;/td&gt;&lt;/tr&gt;
+
+      &lt;/table&gt;
+    &lt;/td&gt;&lt;/tr&gt;
+  &lt;/table&gt;
+
+  &lt;!-- Pixel de rastreio da Konfidency (NAO REMOVER) --&gt;
+  &lt;img src="https://t.konfidency.com.br/tr?action=open&amp;notificationId={{payload._id}}&amp;source=email" width="1" height="1" alt=""/&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div></div>
+    </div>
+    </div>
+  </section>
+
+  <section class="panel" id="nps">
+    <div class="p-head"><h2>Solicitação de NPS</h2><span class="chip r">Relacional</span><span class="chip c">Konfidency</span></div>
+    <p class="p-sub">Pesquisa de recomendação (0 a 10). O coração é a escala clicável: 11 botões, cada um linkando <span class="tag">{{payload.rateLink}}?npsRating=N</span>, com cores por faixa (vermelho 0-6, amarelo 7-8, verde 9-10). Mantive a escala, as cores e o pixel; só refinei o visual e adicionei rótulos nas pontas.</p>
+    <div class="ba">
+      <div><div class="col-label before"><span class="b">Antes</span> <small>template padrão da Konfidency</small></div>
+        <div class="frame"><div class="chrome"><div class="subj">{{payload.name}}, como estamos indo?</div></div>
+          <div class="old">
+            <div class="logo" style="text-align:center">[ logo Horizonte ]</div>
+            <p style="text-align:center">{{payload.name}}, de 0 a 10, qual a probabilidade de você recomendar a Horizonte a um amigo ou familiar?</p>
+            <p style="text-align:center;margin-top:12px"><span style="border-radius:6px;background:#FADAD9;width:26px;height:26px;display:inline-block;line-height:26px;text-align:center;color:#740000;font-weight:700;font-size:12px;margin:2px">0</span><span style="border-radius:6px;background:#FADAD9;width:26px;height:26px;display:inline-block;line-height:26px;text-align:center;color:#740000;font-weight:700;font-size:12px;margin:2px">1</span><span style="border-radius:6px;background:#FADAD9;width:26px;height:26px;display:inline-block;line-height:26px;text-align:center;color:#740000;font-weight:700;font-size:12px;margin:2px">2</span><span style="border-radius:6px;background:#FADAD9;width:26px;height:26px;display:inline-block;line-height:26px;text-align:center;color:#740000;font-weight:700;font-size:12px;margin:2px">3</span><span style="border-radius:6px;background:#FADAD9;width:26px;height:26px;display:inline-block;line-height:26px;text-align:center;color:#740000;font-weight:700;font-size:12px;margin:2px">4</span><span style="border-radius:6px;background:#FADAD9;width:26px;height:26px;display:inline-block;line-height:26px;text-align:center;color:#740000;font-weight:700;font-size:12px;margin:2px">5</span><span style="border-radius:6px;background:#FADAD9;width:26px;height:26px;display:inline-block;line-height:26px;text-align:center;color:#740000;font-weight:700;font-size:12px;margin:2px">6</span><span style="border-radius:6px;background:#FCEAD4;width:26px;height:26px;display:inline-block;line-height:26px;text-align:center;color:#986502;font-weight:700;font-size:12px;margin:2px">7</span><span style="border-radius:6px;background:#FCEAD4;width:26px;height:26px;display:inline-block;line-height:26px;text-align:center;color:#986502;font-weight:700;font-size:12px;margin:2px">8</span><span style="border-radius:6px;background:#D7F0D6;width:26px;height:26px;display:inline-block;line-height:26px;text-align:center;color:#005921;font-weight:700;font-size:12px;margin:2px">9</span><span style="border-radius:6px;background:#D7F0D6;width:26px;height:26px;display:inline-block;line-height:26px;text-align:center;color:#005921;font-weight:700;font-size:12px;margin:2px">10</span></p>
+            <p style="text-align:center;font-size:11px;color:#777;margin-top:12px">Clique na resposta, ou copie o link: {{payload.rateLink}}</p>
+          </div>
+        </div>
+      </div>
+      <div><div class="col-label after"><span class="b">Depois</span> <small>no visual da Horizonte</small></div>
+        <div class="frame"><div class="chrome"><div class="subj">{{payload.name}}, como estamos indo? 📊</div><div class="pre">De 0 a 10, você recomendaria a Horizonte?</div></div>
+          <div class="new"><div class="em-head"></div>
+            <div class="em-status"><div class="ico">📊</div><h3>{{payload.name}}, como estamos indo?</h3><p>De 0 a 10, qual a probabilidade de você recomendar a Horizonte a um amigo ou familiar?</p></div>
+            <div style="text-align:center;padding:6px 16px 2px"><span style="border-radius:6px;background:#FADAD9;width:26px;height:26px;display:inline-block;line-height:26px;text-align:center;color:#740000;font-weight:700;font-size:12px;margin:2px">0</span><span style="border-radius:6px;background:#FADAD9;width:26px;height:26px;display:inline-block;line-height:26px;text-align:center;color:#740000;font-weight:700;font-size:12px;margin:2px">1</span><span style="border-radius:6px;background:#FADAD9;width:26px;height:26px;display:inline-block;line-height:26px;text-align:center;color:#740000;font-weight:700;font-size:12px;margin:2px">2</span><span style="border-radius:6px;background:#FADAD9;width:26px;height:26px;display:inline-block;line-height:26px;text-align:center;color:#740000;font-weight:700;font-size:12px;margin:2px">3</span><span style="border-radius:6px;background:#FADAD9;width:26px;height:26px;display:inline-block;line-height:26px;text-align:center;color:#740000;font-weight:700;font-size:12px;margin:2px">4</span><span style="border-radius:6px;background:#FADAD9;width:26px;height:26px;display:inline-block;line-height:26px;text-align:center;color:#740000;font-weight:700;font-size:12px;margin:2px">5</span><span style="border-radius:6px;background:#FADAD9;width:26px;height:26px;display:inline-block;line-height:26px;text-align:center;color:#740000;font-weight:700;font-size:12px;margin:2px">6</span><span style="border-radius:6px;background:#FCEAD4;width:26px;height:26px;display:inline-block;line-height:26px;text-align:center;color:#986502;font-weight:700;font-size:12px;margin:2px">7</span><span style="border-radius:6px;background:#FCEAD4;width:26px;height:26px;display:inline-block;line-height:26px;text-align:center;color:#986502;font-weight:700;font-size:12px;margin:2px">8</span><span style="border-radius:6px;background:#D7F0D6;width:26px;height:26px;display:inline-block;line-height:26px;text-align:center;color:#005921;font-weight:700;font-size:12px;margin:2px">9</span><span style="border-radius:6px;background:#D7F0D6;width:26px;height:26px;display:inline-block;line-height:26px;text-align:center;color:#005921;font-weight:700;font-size:12px;margin:2px">10</span></div>
+            <div style="padding:4px 24px 0;display:flex;justify-content:space-between;font-size:11px;color:#8a857c"><span>Nada provável</span><span>Super provável</span></div>
+            <div class="em-blk info" style="text-align:center;font-size:12px">Clique num número acima, ou copie e cole o link {{payload.rateLink}}</div>
+            <div class="em-foot" data-lead="Precisa de ajuda? Fale com a gente."></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="code-in-panel"><div class="cip-head"><span class="seed"></span> Código de produção (Konfidency)</div>
+    <p class="p-sub"><b>Assunto:</b> {{payload.name}}, como estamos indo?<br/><b>Preheader:</b> De 0 a 10, você recomendaria a Horizonte?</p>
+    <div class="codecol">
+      <div class="codewrap"><div class="clbl"><h4>Código atual</h4><span class="tagline">template Konfidency (0-10 resumido)</span><button class="copybtn" data-code="atual-nps">Copiar</button></div><div class="codeblock"><pre id="atual-nps">&lt;!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'&gt;
+&lt;html xmlns='http://www.w3.org/1999/xhtml' xmlns:o='urn:schemas-microsoft-com:office:office'&gt;
+&lt;head&gt;
+  &lt;meta content='width=device-width, initial-scale=1' name='viewport'&gt;&lt;meta charset='UTF-8'&gt;
+  &lt;meta name='x-apple-disable-message-reformatting'&gt;&lt;meta http-equiv='X-UA-Compatible' content='IE=edge'&gt;
+  &lt;meta content='telephone=no' name='format-detection'&gt;&lt;title&gt;&lt;/title&gt;
+  &lt;link href='https://fonts.googleapis.com/css?family=Lato:400,400i,700,700i' rel='stylesheet'&gt;
+&lt;/head&gt;
+&lt;body style='background-color: #f6f6f6; font-family: Lato, sans-serif;'&gt;
+  &lt;table style='background-color: #fff; width: 90%; max-width: 600px; margin: 20px auto; color: #303030'&gt;
+    &lt;tr&gt;&lt;td style='text-align: center; padding: 20px'&gt;&lt;img height="40" src='https://uploads.konfidency.com.br/customers/horizontepetstore.png'&gt;&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td style='font-size: 18px; text-align: center; padding: 10px'&gt;{{payload.name}}, de 0 a 10, qual a probabilidade de você recomendar Horizonte Pet Store a um amigo ou familiar?&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td align="center"&gt;
+      &lt;a href="{{payload.rateLink}}?npsRating=0" style="border-radius:3px;background-color:#fadad9;width:30px;height:30px;display:inline-block;line-height:30px;text-align:center;color:#740000;text-decoration:none;"&gt;0&lt;/a&gt;
+      &lt;a href="{{payload.rateLink}}?npsRating=1" style="border-radius:3px;background-color:#fadad9;width:30px;height:30px;display:inline-block;line-height:30px;text-align:center;color:#740000;text-decoration:none;"&gt;1&lt;/a&gt;
+      &lt;a href="{{payload.rateLink}}?npsRating=2" style="border-radius:3px;background-color:#fadad9;width:30px;height:30px;display:inline-block;line-height:30px;text-align:center;color:#740000;text-decoration:none;"&gt;2&lt;/a&gt;
+      &lt;a href="{{payload.rateLink}}?npsRating=3" style="border-radius:3px;background-color:#fadad9;width:30px;height:30px;display:inline-block;line-height:30px;text-align:center;color:#740000;text-decoration:none;"&gt;3&lt;/a&gt;
+      &lt;a href="{{payload.rateLink}}?npsRating=4" style="border-radius:3px;background-color:#fadad9;width:30px;height:30px;display:inline-block;line-height:30px;text-align:center;color:#740000;text-decoration:none;"&gt;4&lt;/a&gt;
+      &lt;a href="{{payload.rateLink}}?npsRating=5" style="border-radius:3px;background-color:#fadad9;width:30px;height:30px;display:inline-block;line-height:30px;text-align:center;color:#740000;text-decoration:none;"&gt;5&lt;/a&gt;
+      &lt;a href="{{payload.rateLink}}?npsRating=6" style="border-radius:3px;background-color:#fadad9;width:30px;height:30px;display:inline-block;line-height:30px;text-align:center;color:#740000;text-decoration:none;"&gt;6&lt;/a&gt;
+      &lt;a href="{{payload.rateLink}}?npsRating=7" style="border-radius:3px;background-color:#fcead4;width:30px;height:30px;display:inline-block;line-height:30px;text-align:center;color:#986502;text-decoration:none;"&gt;7&lt;/a&gt;
+      &lt;a href="{{payload.rateLink}}?npsRating=8" style="border-radius:3px;background-color:#fcead4;width:30px;height:30px;display:inline-block;line-height:30px;text-align:center;color:#986502;text-decoration:none;"&gt;8&lt;/a&gt;
+      &lt;a href="{{payload.rateLink}}?npsRating=9" style="border-radius:3px;background-color:#d7f0d6;width:30px;height:30px;display:inline-block;line-height:30px;text-align:center;color:#005921;text-decoration:none;"&gt;9&lt;/a&gt;
+      &lt;a href="{{payload.rateLink}}?npsRating=10" style="border-radius:3px;background-color:#d7f0d6;width:30px;height:30px;display:inline-block;line-height:30px;text-align:center;color:#005921;text-decoration:none;"&gt;10&lt;/a&gt;
+    &lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td style="text-align:center;padding-top:20px;padding-bottom:30px;font-size:14px;"&gt;Clique na resposta acima, ou copie o endereço abaixo e cole na barra de endereço: {{payload.rateLink}}&lt;/td&gt;&lt;/tr&gt;
+  &lt;/table&gt;
+  &lt;img src='https://t.konfidency.com.br/tr?action=open&amp;notificationId={{payload._id}}&amp;source=email' width='1' height='1'/&gt;
+  &lt;p style='text-align:center;font-size:14px;color:#777'&gt;se não quiser mais receber e-mails para avaliar nossos produtos, &lt;a href='{{payload.unsubscribeLink}}'&gt;clique aqui&lt;/a&gt;&lt;/p&gt;
+&lt;/body&gt;&lt;/html&gt;</pre></div></div>
+      <div class="codewrap"><div class="clbl"><h4>Novo código (HTML completo)</h4><button class="copybtn" data-code="code-nps">Copiar</button></div><div class="codeblock"><pre id="code-nps">&lt;!DOCTYPE html&gt;
+&lt;html xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"/&gt;
+  &lt;meta content="width=device-width, initial-scale=1" name="viewport"/&gt;
+  &lt;meta name="x-apple-disable-message-reformatting"/&gt;
+  &lt;meta http-equiv="X-UA-Compatible" content="IE=edge"/&gt;
+  &lt;meta content="telephone=no" name="format-detection"/&gt;
+  &lt;meta name="color-scheme" content="light dark"/&gt;
+  &lt;meta name="supported-color-schemes" content="light dark"/&gt;
+  &lt;title&gt;&lt;/title&gt;
+  &lt;link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&amp;display=swap" rel="stylesheet"/&gt;
+&lt;/head&gt;
+&lt;body style="margin:0; padding:0; background:#EDEBE4; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;
+
+  &lt;!-- Preheader --&gt;
+  &lt;div style="display:none; max-height:0; overflow:hidden; mso-hide:all; font-size:1px; line-height:1px; color:#EDEBE4;"&gt;De 0 a 10, você recomendaria a Horizonte? Leva um clique.&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&amp;zwnj;&amp;nbsp;&lt;/div&gt;
+
+  &lt;table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#EDEBE4;"&gt;
+    &lt;tr&gt;&lt;td align="center" style="padding:24px 12px;"&gt;
+      &lt;table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="width:600px; max-width:600px; color:#092312; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;
+
+        &lt;!-- Header creme + logo --&gt;
+        &lt;tr&gt;&lt;td align="center" style="background:#F4F2EC; padding:26px 24px 28px;"&gt;
+          &lt;img src="https://uploads.konfidency.com.br/customers/horizontepetstore.png" alt="Horizonte Pet Store" width="150" style="display:block; margin:0 auto; width:150px; max-width:60%; height:auto; border:0;"/&gt;
+        &lt;/td&gt;&lt;/tr&gt;
+
+        &lt;!-- Corpo branco --&gt;
+        &lt;tr&gt;&lt;td style="background:#ffffff; padding:32px 26px;"&gt;
+          &lt;div style="text-align:center; font-size:34px; line-height:1; margin:0 0 8px;"&gt;📊&lt;/div&gt;
+          &lt;h1 style="margin:0 0 10px; font-weight:700; font-size:23px; line-height:1.2; color:#092312; text-align:center; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;{{payload.name}}, como estamos indo?&lt;/h1&gt;
+          &lt;p style="margin:0 0 8px; font-size:15px; line-height:1.6; color:#092312; text-align:center; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;De 0 a 10, qual a probabilidade de você recomendar a Horizonte a um amigo ou familiar? É só um clique.&lt;/p&gt;
+
+          &lt;!-- Escala NPS 0-10 --&gt;
+          &lt;table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:20px 0 4px;"&gt;
+            &lt;tr&gt;&lt;td align="center"&gt;
+          &lt;a href="{{payload.rateLink}}?npsRating=0" style="border-radius:8px; background:#FADAD9; width:34px; height:34px; display:inline-block; line-height:34px; text-align:center; color:#740000; text-decoration:none; font-weight:700; font-size:14px; margin:3px; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;0&lt;/a&gt;
+          &lt;a href="{{payload.rateLink}}?npsRating=1" style="border-radius:8px; background:#FADAD9; width:34px; height:34px; display:inline-block; line-height:34px; text-align:center; color:#740000; text-decoration:none; font-weight:700; font-size:14px; margin:3px; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;1&lt;/a&gt;
+          &lt;a href="{{payload.rateLink}}?npsRating=2" style="border-radius:8px; background:#FADAD9; width:34px; height:34px; display:inline-block; line-height:34px; text-align:center; color:#740000; text-decoration:none; font-weight:700; font-size:14px; margin:3px; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;2&lt;/a&gt;
+          &lt;a href="{{payload.rateLink}}?npsRating=3" style="border-radius:8px; background:#FADAD9; width:34px; height:34px; display:inline-block; line-height:34px; text-align:center; color:#740000; text-decoration:none; font-weight:700; font-size:14px; margin:3px; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;3&lt;/a&gt;
+          &lt;a href="{{payload.rateLink}}?npsRating=4" style="border-radius:8px; background:#FADAD9; width:34px; height:34px; display:inline-block; line-height:34px; text-align:center; color:#740000; text-decoration:none; font-weight:700; font-size:14px; margin:3px; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;4&lt;/a&gt;
+          &lt;a href="{{payload.rateLink}}?npsRating=5" style="border-radius:8px; background:#FADAD9; width:34px; height:34px; display:inline-block; line-height:34px; text-align:center; color:#740000; text-decoration:none; font-weight:700; font-size:14px; margin:3px; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;5&lt;/a&gt;
+          &lt;a href="{{payload.rateLink}}?npsRating=6" style="border-radius:8px; background:#FADAD9; width:34px; height:34px; display:inline-block; line-height:34px; text-align:center; color:#740000; text-decoration:none; font-weight:700; font-size:14px; margin:3px; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;6&lt;/a&gt;
+          &lt;a href="{{payload.rateLink}}?npsRating=7" style="border-radius:8px; background:#FCEAD4; width:34px; height:34px; display:inline-block; line-height:34px; text-align:center; color:#986502; text-decoration:none; font-weight:700; font-size:14px; margin:3px; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;7&lt;/a&gt;
+          &lt;a href="{{payload.rateLink}}?npsRating=8" style="border-radius:8px; background:#FCEAD4; width:34px; height:34px; display:inline-block; line-height:34px; text-align:center; color:#986502; text-decoration:none; font-weight:700; font-size:14px; margin:3px; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;8&lt;/a&gt;
+          &lt;a href="{{payload.rateLink}}?npsRating=9" style="border-radius:8px; background:#D7F0D6; width:34px; height:34px; display:inline-block; line-height:34px; text-align:center; color:#005921; text-decoration:none; font-weight:700; font-size:14px; margin:3px; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;9&lt;/a&gt;
+          &lt;a href="{{payload.rateLink}}?npsRating=10" style="border-radius:8px; background:#D7F0D6; width:34px; height:34px; display:inline-block; line-height:34px; text-align:center; color:#005921; text-decoration:none; font-weight:700; font-size:14px; margin:3px; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;10&lt;/a&gt;
+            &lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td style="padding:8px 4px 0;"&gt;
+              &lt;table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"&gt;&lt;tr&gt;
+                &lt;td style="font-size:11px; color:#8a857c; text-align:left; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Nada provável&lt;/td&gt;
+                &lt;td style="font-size:11px; color:#8a857c; text-align:right; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Super provável&lt;/td&gt;
+              &lt;/tr&gt;&lt;/table&gt;
+            &lt;/td&gt;&lt;/tr&gt;
+          &lt;/table&gt;
+
+          &lt;p style="text-align:center; font-size:12px; color:#8a857c; margin:18px 0 0; line-height:1.5; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;Clique num número acima, ou copie e cole este link:&lt;br/&gt;&lt;a href="{{payload.rateLink}}" style="color:#3E6B4F; word-break:break-all;"&gt;{{payload.rateLink}}&lt;/a&gt;&lt;/p&gt;
+        &lt;/td&gt;&lt;/tr&gt;
+
+        &lt;!-- Footer verde --&gt;
+        &lt;tr&gt;&lt;td align="center" style="background:#18592F; padding:22px 26px 26px; color:#ffffff; font-size:12px; line-height:1.7; font-family: Poppins, Arial, Helvetica, sans-serif;"&gt;
+          &lt;strong style="color:#ffffff; font-size:13px;"&gt;Precisa de ajuda? Fale com a gente.&lt;/strong&gt;&lt;br/&gt;
+          &lt;a href="https://wa.me/5519998594379" style="color:#FFC100; text-decoration:none;"&gt;WhatsApp (19) 99859-4379&lt;/a&gt; &amp;nbsp;&amp;middot;&amp;nbsp; &lt;a href="tel:+551935771474" style="color:#FFC100; text-decoration:none;"&gt;(19) 3577-1474&lt;/a&gt;&lt;br/&gt;
+          &lt;a href="mailto:contato@horizontepetstore.com.br" style="color:#ffffff; text-decoration:none;"&gt;contato@horizontepetstore.com.br&lt;/a&gt; &amp;nbsp;&amp;middot;&amp;nbsp; Seg a sex, 8h às 18h
+        &lt;/td&gt;&lt;/tr&gt;
+
+      &lt;/table&gt;
+
+      &lt;!-- Descadastro --&gt;
+      &lt;p style="text-align:center; font-size:12px; color:#8a857c; font-family: Poppins, Arial, Helvetica, sans-serif; max-width:600px; margin:14px auto 0;"&gt;Se não quiser mais receber e-mails de pesquisa, &lt;a href="{{payload.unsubscribeLink}}" style="color:#8a857c;"&gt;clique aqui&lt;/a&gt;.&lt;/p&gt;
+
+    &lt;/td&gt;&lt;/tr&gt;
+  &lt;/table&gt;
+
+  &lt;!-- Pixel de rastreio da Konfidency (NAO REMOVER) --&gt;
+  &lt;img src="https://t.konfidency.com.br/tr?action=open&amp;notificationId={{payload._id}}&amp;source=email" width="1" height="1" alt=""/&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div></div>
+    </div>
+    </div>
+  </section>
+
+
+
+
+
+
 
   <!-- 12 REPOSICAO (NOVO) -->
   <section class="panel" id="reposicao">
@@ -1371,65 +2253,32 @@ Veja abaixo detalhes do envio:&lt;/p&gt;
 
       <div class="codewrap">
         <div class="clbl"><h4>Novo código (layout)</h4><span class="tagline">header creme + corpo branco + rodapé verde</span><button class="copybtn" data-code="code-novo">Copiar</button></div>
-        <div class="codeblock"><pre id="code-novo">&lt;meta http-equiv="content-type" content="text/html; charset=utf-8"/&gt;
-&lt;meta name="color-scheme" content="light dark"/&gt;
-&lt;meta name="supported-color-schemes" content="light dark"/&gt;
-
-&lt;!-- Poppins: honrada por Apple Mail e afins; nos demais cai no fallback Arial --&gt;
-&lt;link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&amp;display=swap" rel="stylesheet"/&gt;
-
-&lt;table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:0; padding:0; background:#EDEBE4;"&gt;
-  &lt;tr&gt;
-    &lt;td align="center" style="padding:24px 12px;"&gt;
-
-      &lt;!-- container 600px --&gt;
-      &lt;table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="width:600px; max-width:600px; font-family:Poppins, Arial, Helvetica, sans-serif; color:#092312;"&gt;
-
-        &lt;!-- ===== HEADER: creme + logo ===== --&gt;
-        &lt;tr&gt;
-          &lt;td align="center" style="background:#F4F2EC; padding:28px 24px 30px;"&gt;
-            &lt;!-- Logo hospedada. Ajuste o width (px) para mudar o tamanho da logo. --&gt;
-            &lt;!-- (Sem hospedar, mas sem controle de tamanho: usar a tag [logo_loja] pura.) --&gt;
-            &lt;img src="https://assets.ks-static.com.br/horizontepet/logo_horizonte-pet-store.png" alt="Horizonte Pet Store" width="150" style="display:block; margin:0 auto; width:150px; height:auto; border:0;"/&gt;
-          &lt;/td&gt;
-        &lt;/tr&gt;
-
-        &lt;!-- Curva do header (OPCIONAL): exporte a curva como PNG e hospede.
-             Remova esta &lt;tr&gt; inteira para deixar o header reto (funciona em todo cliente). --&gt;
-        &lt;tr&gt;
-          &lt;td style="font-size:0; line-height:0; background:#ffffff;"&gt;
-            &lt;img src="URL_CURVA_HEADER.png" alt="" width="600" style="display:block; width:100%; height:auto; border:0;"/&gt;
-          &lt;/td&gt;
-        &lt;/tr&gt;
-
-        &lt;!-- ===== CORPO: branco (aqui entra o conteudo de cada e-mail) ===== --&gt;
-        &lt;tr&gt;
-          &lt;td style="background:#ffffff; padding:26px 26px 30px; font-size:15px; line-height:1.6; color:#092312;"&gt;
-            [mensagem]
-          &lt;/td&gt;
-        &lt;/tr&gt;
-
-        &lt;!-- Curva do rodape (OPCIONAL, mesmo esquema da do header) --&gt;
-        &lt;tr&gt;
-          &lt;td style="font-size:0; line-height:0; background:#ffffff;"&gt;
-            &lt;img src="URL_CURVA_RODAPE.png" alt="" width="600" style="display:block; width:100%; height:auto; border:0;"/&gt;
-          &lt;/td&gt;
-        &lt;/tr&gt;
-
-        &lt;!-- ===== RODAPE: verde ===== --&gt;
-        &lt;tr&gt;
-          &lt;td align="center" style="background:#18592F; padding:22px 26px 26px; color:#ffffff; font-size:12px; line-height:1.7;"&gt;
-            &lt;strong style="color:#ffffff; font-size:13px;"&gt;Precisa de ajuda? Fale com a gente.&lt;/strong&gt;&lt;br/&gt;
-            &lt;a href="https://wa.me/5519998594379" style="color:#FFC100; text-decoration:none;"&gt;WhatsApp (19) 99859-4379&lt;/a&gt; &amp;nbsp;&amp;middot;&amp;nbsp; &lt;a href="tel:+551935771474" style="color:#FFC100; text-decoration:none;"&gt;(19) 3577-1474&lt;/a&gt;&lt;br/&gt;
-            &lt;a href="mailto:[email_loja]" style="color:#ffffff; text-decoration:none;"&gt;[email_loja]&lt;/a&gt; &amp;nbsp;&amp;middot;&amp;nbsp; Seg a sex, 8h &amp;agrave;s 18h&lt;br/&gt;
-            &lt;span style="color:#9fb6a6; font-size:10px;"&gt;Horizonte Pet Store &amp;middot; Corumbata&amp;iacute;, SP &amp;middot; Cancelar inscri&amp;ccedil;&amp;atilde;o&lt;/span&gt;
-          &lt;/td&gt;
-        &lt;/tr&gt;
-
-      &lt;/table&gt;
-
-    &lt;/td&gt;
-  &lt;/tr&gt;
+        <div class="codeblock"><pre id="code-novo">&lt;meta http-equiv='content-type' content='text/html; charset=utf-8'/&gt;&lt;meta name='color-scheme' content='light dark'/&gt;&lt;meta name='supported-color-schemes' content='light dark'/&gt;
+&lt;table border="0" cellpadding="0" cellspacing="0" role="presentation" style="margin:0; padding:0; background:#EDEBE4;" width="100%"&gt;
+	&lt;tbody&gt;
+		&lt;tr&gt;
+			&lt;td align="center" style="padding:24px 12px;"&gt;
+			&lt;table border="0" cellpadding="0" cellspacing="0" role="presentation" style="width:600px; max-width:600px; font-family:Poppins, Arial, Helvetica, sans-serif; color:#092312;" width="600"&gt;&lt;!-- HEADER --&gt;
+				&lt;tbody&gt;
+					&lt;tr&gt;
+						&lt;td align="center" style="background:#F4F2EC; padding:28px 24px 30px;"&gt;&lt;img alt="Horizonte Pet Store" src="https://assets.ks-static.com.br/horizontepet/logo_horizonte-pet-store.png" style="display:block; margin:0 auto; width:150px; height:auto; border:0;" width="150" /&gt;&lt;/td&gt;
+					&lt;/tr&gt;
+					&lt;!-- CORPO --&gt;
+					&lt;tr&gt;
+						&lt;td style="background:#ffffff; padding:26px 26px 30px; font-size:15px; line-height:1.6; color:#092312;"&gt;[mensagem]&lt;/td&gt;
+					&lt;/tr&gt;
+					&lt;!-- RODAPE --&gt;
+					&lt;tr&gt;
+						&lt;td align="center" style="background:#18592F; padding:22px 26px 26px; color:#ffffff; font-size:12px; line-height:1.7;"&gt;&lt;strong style="color:#ffffff; font-size:13px;"&gt;Precisa de ajuda? Fale com a gente.&lt;/strong&gt;&lt;br /&gt;
+						&lt;a href="https://wa.me/5519998594379" style="color:#FFC100; text-decoration:none;"&gt;WhatsApp (19) 99859-4379&lt;/a&gt; &amp;nbsp;&amp;middot;&amp;nbsp; &lt;a href="tel:+551935771474" style="color:#FFC100; text-decoration:none;"&gt;(19) 3577-1474&lt;/a&gt;&lt;br /&gt;
+						&lt;a href="mailto:[email_loja]" style="color:#ffffff; text-decoration:none;"&gt;[email_loja]&lt;/a&gt; &amp;nbsp;&amp;middot;&amp;nbsp; Seg a sex, 8h &amp;agrave;s 18h&lt;br /&gt;
+						&lt;span style="color:#9fb6a6; font-size:10px;"&gt;Horizonte Pet Store &amp;middot; Corumbata&amp;iacute;, SP &amp;middot; Cancelar inscri&amp;ccedil;&amp;atilde;o&lt;/span&gt;&lt;/td&gt;
+					&lt;/tr&gt;
+				&lt;/tbody&gt;
+			&lt;/table&gt;
+			&lt;/td&gt;
+		&lt;/tr&gt;
+	&lt;/tbody&gt;
 &lt;/table&gt;</pre></div>
       </div>
 
