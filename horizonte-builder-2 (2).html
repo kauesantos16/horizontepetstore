@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Horizonte Builder 2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+<style>
+html, body { height: 100%; margin: 0; padding: 0; background: #f5f1e8; }
+#hzb *, #hzb *::before, #hzb *::after { box-sizing: border-box; margin: 0; padding: 0; }
+#hzb {
+  --g900:#0f2e13; --g700:#1a4a1f; --g500:#2d6e35; --g400:#4a9155; --g100:#e8f5e9;
+  --am:#c8920a; --al:#f0b429; --ap:#fef9ed;
+  --bg:#f5f1e8; --bgc:#fff; --bgp:#ede9de; --bgi:#faf8f3;
+  --bd:#d4cdb8; --bd2:#e8e2d4; --th:#092312; --tb:#092312; --tm:#7a7a64;
+  --ss:0 1px 4px rgba(0,0,0,.06); --sl:0 8px 32px rgba(0,0,0,.13);
+  --r:12px; --rs:8px; --lw:264px; --rw:320px;
+  font-family:'DM Sans',sans-serif; background:var(--bg); color:var(--tb);
+  height:100vh; display:flex; flex-direction:column; overflow:hidden;
+}
+#hzb button { font-family:inherit; }
+#hzb button:focus-visible, #hzb input:focus-visible, #hzb select:focus-visible, #hzb textarea:focus-visible { outline:2px solid var(--g400); outline-offset:2px; }
+
+/* TOPBAR */
+#hzb .topbar { height:52px; background:var(--g700); display:flex; align-items:center; justify-content:space-between; padding:0 18px 0 20px; flex-shrink:0; z-index:200; box-shadow:0 2px 12px rgba(0,0,0,.25); }
+#hzb .brand { display:flex; align-items:center; gap:10px; font-family:'DM Serif Display',serif; color:#fff; font-size:1.1rem; }
+#hzb .brand .badge { background:var(--am); color:#fff; font-family:'DM Sans',sans-serif; font-size:.64rem; font-weight:700; padding:2px 8px; border-radius:20px; }
+#hzb .topbar-r { display:flex; align-items:center; gap:6px; }
+#hzb .btn-ghost { background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.2); color:#fff; border-radius:20px; padding:6px 13px; font-size:.78rem; font-weight:500; cursor:pointer; transition:background .2s; }
+#hzb .btn-ghost:hover { background:rgba(255,255,255,.22); }
+#hzb .btn-gold { border-radius:20px; padding:7px 15px; font-size:.79rem; font-weight:600; cursor:pointer; border:none; background:var(--am); color:#fff; transition:background .2s; margin-left:6px; }
+#hzb .btn-gold:hover { background:var(--al); }
+
+#hzb .shell { display:flex; flex:1; overflow:hidden; }
+
+/* LEFT */
+#hzb .sb-left { width:var(--lw); background:var(--bgc); border-right:1px solid var(--bd); display:flex; flex-direction:column; flex-shrink:0; overflow:hidden; }
+#hzb .sb-top { padding:14px 13px 10px; border-bottom:1px solid var(--bd2); }
+#hzb .sb-label { font-size:.74rem; font-weight:700; color:var(--tm); margin-bottom:10px; }
+#hzb .add-wrap { position:relative; }
+#hzb .btn-add { width:100%; background:var(--g700); color:#fff; border:none; border-radius:var(--rs); padding:9px 13px; font-size:.82rem; font-weight:600; cursor:pointer; display:flex; justify-content:space-between; transition:background .2s; }
+#hzb .btn-add:hover { background:var(--g500); }
+#hzb .sec-menu { position:absolute; top:calc(100% + 6px); left:0; right:0; background:var(--bgc); border:1px solid var(--bd); border-radius:var(--rs); box-shadow:var(--sl); z-index:300; overflow:hidden; display:none; }
+#hzb .sec-menu.open { display:block; }
+#hzb .mi { display:flex; align-items:center; gap:10px; padding:9px 12px; cursor:pointer; border-bottom:1px solid var(--bd2); transition:background .15s; }
+#hzb .mi:last-child { border-bottom:none; }
+#hzb .mi:hover { background:var(--bgp); }
+#hzb .mi-ico, #hzb .sc-ico { width:30px; height:30px; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:.95rem; flex-shrink:0; }
+#hzb .mi-name { font-weight:600; font-size:.82rem; }
+#hzb .mi-desc { font-size:.71rem; color:var(--tm); }
+#hzb .sec-list { flex:1; overflow-y:auto; padding:10px 10px 16px; display:flex; flex-direction:column; gap:6px; }
+#hzb .sc { border:1px solid var(--bd2); border-radius:var(--rs); background:var(--bgi); cursor:pointer; transition:border-color .2s, background .2s; user-select:none; }
+#hzb .sc:hover, #hzb .sc.drag-ov { border-color:var(--g400); }
+#hzb .sc.active { border-color:var(--g400); background:var(--g100); box-shadow:0 0 0 2px rgba(74,145,85,.14); }
+#hzb .sc-inner { display:flex; align-items:center; gap:8px; padding:8px 9px; }
+#hzb .sc-drag { color:var(--tm); cursor:grab; opacity:.5; }
+#hzb .sc-info { flex:1; min-width:0; }
+#hzb .sc-name { font-size:.82rem; font-weight:500; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+#hzb .sc-type { font-size:.7rem; color:var(--tm); }
+#hzb .sc-acts { display:flex; gap:2px; }
+#hzb .sc-btn { width:22px; height:22px; border:none; background:none; cursor:pointer; border-radius:4px; font-size:.72rem; color:var(--tm); opacity:0; transition:opacity .15s, background .15s; }
+#hzb .sc:hover .sc-btn, #hzb .sc.active .sc-btn, #hzb .sc-btn:focus-visible { opacity:1; }
+#hzb .sc-btn:hover { background:var(--bd); color:var(--th); }
+#hzb .sc-btn.del:hover { background:#ffeaea; color:#c0392b; }
+#hzb .sb-empty { text-align:center; padding:28px 16px; color:var(--tm); font-size:.8rem; line-height:1.6; }
+
+/* CENTER */
+#hzb .center { flex:1; display:flex; flex-direction:column; overflow:hidden; min-width:0; }
+#hzb .center-top { height:44px; background:var(--bgp); border-bottom:1px solid var(--bd2); display:flex; align-items:center; padding:0 16px; gap:10px; flex-shrink:0; }
+#hzb .prev-dots { display:flex; gap:5px; }
+#hzb .prev-dots span { width:9px; height:9px; border-radius:50%; }
+#hzb .ct-lbl { font-size:.76rem; font-weight:600; color:var(--tm); flex:1; }
+#hzb .dev-toggle { display:flex; background:var(--bgc); border:1px solid var(--bd); border-radius:20px; padding:3px; gap:2px; }
+#hzb .dev-btn { border:none; background:none; border-radius:16px; padding:5px 12px; font-size:.76rem; font-weight:600; color:var(--tm); cursor:pointer; transition:background .15s, color .15s; }
+#hzb .dev-btn.active { background:var(--g700); color:#fff; }
+#hzb .center-body { flex:1; overflow:hidden; padding:20px; display:flex; justify-content:center; }
+#hzb .fwrap { width:100%; max-width:1040px; height:100%; background:#fff; border:1px solid var(--bd); border-radius:var(--r); box-shadow:var(--sl); overflow:hidden; transition:max-width .3s ease; }
+#hzb .fwrap.mobile { max-width:410px; border:10px solid #1f2a21; border-radius:38px; }
+#hzb .fwrap iframe { width:100%; height:100%; border:0; display:block; background:#fff; }
+#hzb .dev-size { font-size:.7rem; color:var(--tm); }
+#hzb .pempty { display:none; flex-direction:column; align-items:center; justify-content:center; gap:14px; text-align:center; color:var(--tm); max-width:520px; }
+#hzb .pe-ico { font-size:2rem; }
+#hzb .pe-btns { display:flex; gap:12px; flex-wrap:wrap; justify-content:center; margin-top:6px; }
+#hzb .tpl { background:var(--bgc); border:1px solid var(--bd); border-radius:var(--r); padding:16px 18px; text-align:left; cursor:pointer; width:230px; transition:border-color .2s, transform .15s; }
+#hzb .tpl:hover { border-color:var(--g400); transform:translateY(-2px); }
+#hzb .tpl strong { display:block; color:var(--th); font-size:.9rem; margin-bottom:4px; }
+#hzb .tpl span { font-size:.75rem; color:var(--tm); line-height:1.5; }
+
+/* RIGHT */
+#hzb .sb-right { width:var(--rw); background:var(--bgc); border-left:1px solid var(--bd); display:flex; flex-direction:column; flex-shrink:0; overflow:hidden; transition:width .25s ease; }
+#hzb .sb-right.collapsed { width:0; border-left:none; }
+#hzb .ed-head { height:44px; background:var(--bgp); border-bottom:1px solid var(--bd2); display:flex; align-items:center; padding:0 13px; gap:8px; flex-shrink:0; }
+#hzb .ed-head-title { font-size:.82rem; font-weight:600; flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+#hzb .ed-body { flex:1; overflow-y:auto; padding:14px; }
+#hzb .ep { background:var(--bgc); border:1px solid var(--bd); border-radius:var(--r); margin-bottom:12px; overflow:hidden; box-shadow:var(--ss); }
+#hzb .eh { background:var(--bgp); border-bottom:1px solid var(--bd2); padding:9px 13px; display:flex; align-items:center; gap:7px; font-size:.8rem; font-weight:600; }
+#hzb .eh .dot { width:7px; height:7px; border-radius:50%; }
+#hzb .eb { padding:12px; }
+#hzb .ed-note { background:var(--ap); border:1px solid #e0c97a; color:#7a5000; border-radius:var(--rs); padding:10px 12px; font-size:.78rem; line-height:1.5; margin-bottom:12px; }
+#hzb .fr { margin-bottom:10px; }
+#hzb .fr:last-child { margin-bottom:0; }
+#hzb .lb { display:block; font-size:.73rem; font-weight:600; color:var(--tm); margin-bottom:4px; }
+#hzb .inp { width:100%; background:var(--bgi); border:1px solid var(--bd); border-radius:var(--rs); padding:7px 10px; font-family:'DM Sans',sans-serif; font-size:.85rem; color:var(--tb); outline:none; transition:border-color .2s; resize:vertical; }
+#hzb .inp:focus { border-color:var(--g400); }
+#hzb .chk { display:flex; align-items:center; gap:8px; font-size:.83rem; font-weight:500; cursor:pointer; }
+#hzb .chk input { width:16px; height:16px; accent-color:var(--g500); }
+
+/* RTE */
+#hzb .rte-wrap { border:1px solid var(--bd); border-radius:var(--rs); overflow:hidden; }
+#hzb .rte-toolbar { display:flex; flex-wrap:wrap; gap:2px; padding:5px 7px; background:var(--bgp); border-bottom:1px solid var(--bd2); }
+#hzb .rte-btn { background:none; border:1px solid transparent; border-radius:4px; min-width:26px; height:26px; padding:0 5px; cursor:pointer; font-size:.76rem; font-weight:600; color:var(--tb); }
+#hzb .rte-btn:hover { background:var(--bd2); border-color:var(--bd); }
+#hzb .rte-btn.active { background:var(--g100); border-color:var(--g400); color:var(--g700); }
+#hzb .rte-sep { width:1px; background:var(--bd); margin:3px 2px; }
+#hzb .rte-area { min-height:80px; padding:10px 11px; font-size:.85rem; line-height:1.7; outline:none; background:var(--bgi); }
+#hzb .rte-area[data-size="lg"] { min-height:130px; }
+#hzb .rte-area p { margin:0 0 .4em; }
+#hzb .rte-area ul, #hzb .rte-area ol { padding-left:1.4em; margin:.3em 0; }
+#hzb .rte-area a { color:var(--g500); }
+#hzb .rte-area:empty::before { content:attr(data-placeholder); color:var(--tm); font-style:italic; }
+
+/* REPEATABLE */
+#hzb .rl { display:flex; flex-direction:column; gap:7px; margin-bottom:10px; }
+#hzb .ri { border:1px solid var(--bd2); border-radius:var(--rs); overflow:hidden; background:var(--bgi); }
+#hzb .rh { display:flex; align-items:center; gap:6px; padding:7px 9px; background:var(--bgp); cursor:pointer; }
+#hzb .rarrow { font-size:.7rem; color:var(--tm); transition:transform .2s; }
+#hzb .ri.open .rarrow { transform:rotate(90deg); }
+#hzb .rnum { font-size:.68rem; font-weight:700; color:var(--tm); background:var(--bd2); border-radius:4px; padding:1px 5px; }
+#hzb .rlbl { flex:1; font-size:.8rem; font-weight:500; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; min-width:0; }
+#hzb .rtag { font-size:.64rem; font-weight:700; color:#fff; background:var(--am); border-radius:10px; padding:1px 6px; }
+#hzb .racts { display:flex; gap:2px; }
+#hzb .rbtn { background:none; border:1px solid var(--bd2); border-radius:4px; width:22px; height:22px; font-size:.66rem; cursor:pointer; color:var(--tm); }
+#hzb .rbtn:hover:not(:disabled) { background:var(--bd2); color:var(--th); }
+#hzb .rbtn:disabled { opacity:.3; cursor:default; }
+#hzb .rbtn.del:hover { background:#ffeaea; color:#c0392b; }
+#hzb .rb { display:none; padding:10px 9px; flex-direction:column; gap:8px; border-top:1px solid var(--bd2); }
+#hzb .ri.open .rb { display:flex; }
+#hzb .rb .fr { margin-bottom:0; }
+#hzb .btn-add-rep { width:100%; background:none; border:2px dashed var(--bd); border-radius:var(--rs); padding:7px; font-size:.8rem; color:var(--g500); cursor:pointer; font-weight:600; }
+#hzb .btn-add-rep:hover { border-color:var(--g400); background:var(--bgp); }
+
+/* EXPORT */
+#hzb .exp-overlay { position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:500; display:none; align-items:center; justify-content:center; padding:24px; }
+#hzb .exp-overlay.open { display:flex; }
+#hzb .exp-modal { background:var(--bgc); border-radius:var(--r); box-shadow:var(--sl); width:100%; max-width:760px; max-height:90vh; display:flex; flex-direction:column; overflow:hidden; }
+#hzb .exp-head { background:var(--g700); padding:13px 18px; display:flex; align-items:center; justify-content:space-between; }
+#hzb .exp-head h2 { font-family:'DM Serif Display',serif; font-weight:400; color:#fff; font-size:1.05rem; }
+#hzb .exp-head-r { display:flex; gap:8px; }
+#hzb .btn-copy { background:var(--g400); border:none; color:#fff; border-radius:6px; padding:6px 12px; font-size:.78rem; font-weight:600; cursor:pointer; }
+#hzb .btn-copy.ok { background:#27ae60; }
+#hzb .btn-close-exp { background:rgba(255,255,255,.15); border:1px solid rgba(255,255,255,.25); color:#fff; border-radius:6px; width:28px; height:28px; cursor:pointer; }
+#hzb .exp-info { background:var(--ap); border-bottom:1px solid #e0c97a; padding:10px 18px; font-size:.8rem; color:#7a5000; line-height:1.55; }
+#hzb .carea { background:#0d1117; color:#e6edf3; font-family:'Courier New',monospace; font-size:.72rem; line-height:1.6; padding:16px 18px; overflow:auto; white-space:pre; flex:1; min-height:200px; }
+
+#hzb .toast { position:fixed; bottom:22px; right:22px; background:var(--g700); color:#fff; padding:10px 18px; border-radius:10px; font-size:.82rem; box-shadow:var(--sl); transform:translateY(60px); opacity:0; transition:transform .3s, opacity .3s; z-index:999; pointer-events:none; }
+#hzb .toast.on { transform:translateY(0); opacity:1; }
+
+@media (max-width:1100px) { #hzb { --lw:220px; --rw:280px; } #hzb .btn-ghost { display:none; } }
+@media (prefers-reduced-motion:reduce) { #hzb * { transition:none !important; } }
+</style>
+</head>
+<body>
+<div id="hzb">
+
+  <header class="topbar">
+    <div class="brand">🌿 Horizonte Builder <span class="badge">2.0</span></div>
+    <div class="topbar-r">
+      <button class="btn-ghost" onclick="HZB.openFile()" title="Abrir projeto salvo (.json)">Abrir projeto</button>
+      <button class="btn-ghost" onclick="HZB.saveFile()" title="Baixar projeto (.json)">Salvar projeto</button>
+      <button class="btn-ghost" onclick="HZB.resetAll()">Limpar</button>
+      <button class="btn-gold" onclick="HZB.openExport()">⬇ Exportar HTML</button>
+      <input type="file" id="hzb-file" accept=".json,application/json" hidden>
+    </div>
+  </header>
+
+  <div class="shell">
+    <aside class="sb-left">
+      <div class="sb-top">
+        <div class="sb-label">Seções</div>
+        <div class="add-wrap">
+          <button class="btn-add" onclick="HZB.toggleMenu()">+ Adicionar seção <span>▾</span></button>
+          <div class="sec-menu" id="hzb-smenu"></div>
+        </div>
+      </div>
+      <div class="sec-list" id="hzb-slist"></div>
+    </aside>
+
+    <main class="center">
+      <div class="center-top">
+        <div class="prev-dots"><span style="background:#ff5f57"></span><span style="background:#febc2e"></span><span style="background:#28c840"></span></div>
+        <span class="ct-lbl">Prévia da página do produto</span>
+        <span class="dev-size" id="hzb-devsize"></span>
+        <div class="dev-toggle">
+          <button class="dev-btn active" data-dev="desktop">🖥 Desktop</button>
+          <button class="dev-btn" data-dev="mobile">📱 Mobile</button>
+        </div>
+      </div>
+      <div class="center-body">
+        <div class="pempty" id="hzb-pempty">
+          <div class="pe-ico">🌿</div>
+          <p>Comece por um modelo ou adicione as seções pelo menu à esquerda.</p>
+          <div class="pe-btns">
+            <button class="tpl" onclick="HZB.loadTemplate('mix')"><strong>Mix de sementes</strong><span>Intro, Ingredientes, Informações e Diferenciais</span></button>
+            <button class="tpl" onclick="HZB.loadTemplate('semente')"><strong>Semente única</strong><span>Intro, Benefícios, Informações e Diferenciais</span></button>
+          </div>
+        </div>
+        <div class="fwrap" id="hzb-fwrap"><iframe id="hzb-frame" title="Prévia da página"></iframe></div>
+      </div>
+    </main>
+
+    <aside class="sb-right collapsed" id="hzb-sbright">
+      <div class="ed-head">
+        <span id="hzb-ed-ico">✏️</span>
+        <span class="ed-head-title" id="hzb-ed-title">Editor</span>
+      </div>
+      <div class="ed-body" id="hzb-ed-body"></div>
+    </aside>
+  </div>
+
+  <div class="exp-overlay" id="hzb-exp">
+    <div class="exp-modal">
+      <div class="exp-head">
+        <h2>HTML para a descrição (Tray)</h2>
+        <div class="exp-head-r">
+          <button class="btn-copy" id="hzb-cpy" onclick="HZB.copyCode()">📋 Copiar</button>
+          <button class="btn-close-exp" onclick="HZB.closeExport()" aria-label="Fechar">✕</button>
+        </div>
+      </div>
+      <div class="exp-info" id="hzb-expinfo"></div>
+      <pre class="carea" id="hzb-carea"></pre>
+    </div>
+  </div>
+
+  <div class="toast" id="hzb-toast"></div>
+</div>
+
+<script>
+/* =====================================================
+   RUNTIME exportado para a loja (serializado via toString)
+   ===================================================== */
+function hzRuntime(S){
+  var last = null;
+  function inject(){
+    if (!S) return;
+    for (var k in S) {
+      if (!Object.prototype.hasOwnProperty.call(S, k)) continue;
+      var el = document.getElementById(k);
+      if (el) el.outerHTML = S[k];
+    }
+  }
+  function openM(id, trigger){
+    var m = document.getElementById(id);
+    if (!m) return;
+    last = trigger || null;
+    m.classList.add('is-open');
+    document.documentElement.style.overflow = 'hidden';
+    var x = m.querySelector('.hz-modal-x');
+    if (x) x.focus();
+  }
+  function closeM(m){
+    if (!m) return;
+    m.classList.remove('is-open');
+    document.documentElement.style.overflow = '';
+    if (last) { last.focus(); last = null; }
+  }
+  function init(){
+    inject();
+    var ms = document.querySelectorAll('#hz-pg2 .hz-modal');
+    for (var i = 0; i < ms.length; i++) document.body.appendChild(ms[i]);
+  }
+  document.addEventListener('click', function(e){
+    var t = e.target;
+    if (!t || !t.closest) return;
+    var b = t.closest('[data-hz-modal]');
+    if (b) { e.preventDefault(); openM(b.getAttribute('data-hz-modal'), b); return; }
+    if (t.closest('[data-hz-close]')) { closeM(t.closest('.hz-modal')); return; }
+    if (t.classList.contains('hz-modal')) closeM(t);
+  });
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape') closeM(document.querySelector('.hz-modal.is-open'));
+  });
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
+}
+
+window.HZB = (() => {
+  const STORE = 'hzb2-state';
+  const IMG_LIMPEZA = 'https://pub-83d4132b357942b4b14cc09b0bbfd260.r2.dev/description/sementes-na-mao-granel-ap%C3%B3s-limpeza-1_1.webp';
+  const IMG_EMBALADA = 'https://pub-83d4132b357942b4b14cc09b0bbfd260.r2.dev/description/semente-embalada-final-1.webp';
+  const ICO_PLUS = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" aria-hidden="true"><path d="M11 11V5H13V11H19V13H13V19H11V13H5V11H11Z" fill="currentColor"/></svg>';
+  const ICO_CHK = '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" aria-hidden="true"><path d="M4.5 12.75L10.5 18.75L19.5 5.25" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+  let secs = [], activeId = null, pendingScroll = false, device = 'desktop', dragSrc = null, pvTimer = null;
+  const openItems = new Set();
+  const $ = id => document.getElementById(id);
+  const el = (tag, cls) => { const e = document.createElement(tag); if (cls) e.className = cls; return e; };
+  const uid = () => 'hz' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+
+  const META = {
+    intro: { lbl:'Intro do produto',       ico:'📝', col:'#4a9155', bg:'#e8f5e9', desc:'Descrição + alerta opcional' },
+    ingr:  { lbl:'Ingredientes',           ico:'🌾', col:'#c8920a', bg:'#fff8e1', desc:'Lista com modal + alerta' },
+    benef: { lbl:'Destaque de benefícios', ico:'🌱', col:'#5c6bc0', bg:'#e8eaf6', desc:'Benefícios de uma semente' },
+    info:  { lbl:'Informações adicionais', ico:'📋', col:'#00897b', bg:'#e0f2f1', desc:'Accordion com dados do produto' },
+    dif:   { lbl:'Diferenciais',           ico:'🏆', col:'#e91e63', bg:'#fce4ec', desc:'Só na prévia (a loja usa a do tema)' },
+  };
+
+  const ALERT = [
+    { k:'alertOn', t:'check', l:'Exibir alerta' },
+    { k:'alertTitle', t:'text', l:'Título do alerta' },
+    { k:'alertText', t:'rte', l:'Texto do alerta (opcional)' },
+  ];
+
+  const SCHEMA = {
+    intro: [
+      { title:'Descrição', fields:[{ k:'text', t:'rte', size:'lg', ph:'Escreva a descrição do produto...' }] },
+      { title:'Alerta', fields:ALERT },
+    ],
+    ingr: [
+      { title:'Cabeçalho', fields:[
+        { k:'title', t:'text', l:'Título' },
+        { k:'mobile', t:'select', l:'Layout no mobile', o:[['scroll','Linha com rolagem horizontal'],['list','Lista vertical']] },
+      ]},
+      { title:'Ingredientes', list:'items', item:'Ingrediente', labelKey:'name', fields:[
+        { k:'name', t:'text', l:'Nome' },
+        { k:'img', t:'text', l:'URL da imagem', ph:'https://...' },
+        { k:'hl', t:'check', l:'Marcar como destaque' },
+        { k:'desc', t:'rte', l:'Explicação (abre no modal)' },
+      ], blank:() => ({ name:'', img:'', hl:false, desc:'' }) },
+      { title:'Alerta', fields:ALERT },
+    ],
+    benef: [
+      { title:'Cabeçalho', fields:[
+        { k:'title', t:'text', l:'Título' },
+        { k:'sub', t:'text', l:'Subtítulo (opcional)' },
+        { k:'img', t:'text', l:'URL da imagem da semente', ph:'https://...' },
+      ]},
+      { title:'Benefícios', list:'items', item:'Benefício', labelKey:'title', fields:[
+        { k:'title', t:'text', l:'Título' },
+        { k:'text', t:'textarea', l:'Texto' },
+      ], blank:() => ({ title:'', text:'' }) },
+    ],
+    info: [
+      { title:'Cabeçalho', fields:[{ k:'title', t:'text', l:'Título' }] },
+      { title:'Itens', list:'items', item:'Item', labelKey:'q', fields:[
+        { k:'q', t:'text', l:'Título do item' },
+        { k:'a', t:'rte', l:'Conteúdo' },
+      ], blank:() => ({ q:'', a:'' }) },
+    ],
+    dif: [
+      { title:'Cabeçalho', fields:[{ k:'title', t:'text', l:'Título da seção (opcional)' }] },
+      { title:'Cards', list:'items', item:'Card', labelKey:'title', fields:[
+        { k:'img', t:'text', l:'URL da imagem', ph:'https://...' },
+        { k:'title', t:'textarea', l:'Título (Enter quebra a linha)' },
+        { k:'text', t:'text', l:'Texto' },
+      ], blank:() => ({ img:'', title:'', text:'' }) },
+    ],
+  };
+
+  const GERM = '<p>Sementes que germinam são sementes vivas e frescas, sinal de qualidade e de máximo valor nutricional.</p><p><strong>Como germinar:</strong></p><ol><li>Lave bem as sementes e deixe de molho em água limpa por 8 a 12 horas.</li><li>Escorra, enxágue e deixe em uma peneira coberta, em local arejado.</li><li>Enxágue 2 vezes ao dia. Quando o broto começar a aparecer, está no ponto ideal para servir.</li></ol><p>Ofereça no mesmo dia e retire as sobras do comedouro para evitar fungos.</p>';
+  const CONS = '<p>Mantenha o produto em <strong>ambiente seco e limpo</strong>, sem umidade e protegido da luz solar.</p><p>Depois de aberta, feche bem a embalagem ou transfira para um pote hermético, longe de carunchos e outros insetos.</p>';
+
+  function defData(t) {
+    const w = arr => arr.map(o => ({ id: uid(), ...o }));
+    switch (t) {
+      case 'intro': return {
+        text: '<p>O processo de germinação ativa enzimas e aumenta a concentração de nutrientes, proteínas e gorduras saudáveis, tornando os grãos mais nutritivos do que na forma seca. O nível máximo de nutrientes é atingido quando o broto começa a sair do grão.</p>',
+        alertOn: true, alertTitle: 'Atenção', alertText: '',
+      };
+      case 'ingr': return {
+        title: 'Ingredientes', mobile: 'scroll',
+        items: w(['Alpiste','Painço','Aveia','Linhaça','Níger'].map((n, i) => ({
+          name: n, img: '', hl: i === 0,
+          desc: '<p>Explique aqui o que é este ingrediente e qual benefício ele traz para a ave.</p>',
+        }))),
+        alertOn: false, alertTitle: 'Atenção', alertText: '',
+      };
+      case 'benef': return {
+        title: 'Benefícios da semente', sub: '', img: IMG_LIMPEZA,
+        items: w([1,2,3].map(n => ({ title: 'Benefício ' + n, text: 'Descreva em uma ou duas frases o benefício desta semente para a ave.' }))),
+      };
+      case 'info': return {
+        title: 'Informações',
+        items: w([
+          { q: 'Espécies', a: '<p>Indicado para: <em>liste as espécies</em>.</p>' },
+          { q: 'Destaque ingredientes', a: '<p>Descreva os ingredientes principais da mistura.</p>' },
+          { q: 'Destaque semente', a: '<p>Descreva a semente em destaque deste produto.</p>' },
+          { q: 'Germinação', a: GERM },
+          { q: 'Embalagem e conservação', a: CONS },
+        ]),
+      };
+      case 'dif': return {
+        title: '',
+        items: w([
+          { img: '', title: '+XX anos\nde história', text: 'Experiência de quem cria aves no Criadouro Horizonte' },
+          { img: IMG_LIMPEZA, title: 'Garantia 100%\nde limpeza', text: 'Nosso compromisso com a qualidade' },
+          { img: '', title: 'Sementes\ngerminativas', text: 'Sementes vivas, frescas e nutritivas' },
+          { img: IMG_EMBALADA, title: 'Proporção saudável\npor espécie', text: 'Mistura balanceada para cada ave' },
+        ]),
+      };
+    }
+    return {};
+  }
+
+  const TEMPLATES = { mix: ['intro','ingr','info','dif'], semente: ['intro','benef','info','dif'] };
+
+  /* ================= STATE ================= */
+  function persist() {
+    try { localStorage.setItem(STORE, JSON.stringify({ secs, activeId, device })); } catch (e) {}
+  }
+  function restore() {
+    try {
+      const st = JSON.parse(localStorage.getItem(STORE) || 'null');
+      if (st && Array.isArray(st.secs)) { secs = st.secs; activeId = st.activeId; device = st.device || 'desktop'; }
+    } catch (e) {}
+  }
+  function changed(skipPreview) { persist(); if (!skipPreview) schedulePreview(); }
+
+  /* ================= SECTIONS ================= */
+  const gsec = id => secs.find(s => s.id === id);
+  function mkSec(t) { return { id: uid(), type: t, name: META[t].lbl, data: defData(t) }; }
+
+  function addSec(t) {
+    closeMenu();
+    const s = mkSec(t);
+    secs.push(s);
+    pendingScroll = true;
+    changed();
+    selectSec(s.id, false);
+    toast('Seção "' + META[t].lbl + '" adicionada');
+  }
+  function loadTemplate(name) {
+    secs = TEMPLATES[name].map(mkSec);
+    activeId = secs[0].id;
+    changed(); renderAll();
+  }
+  function delSec(id) {
+    const s = gsec(id);
+    if (!s || !confirm('Remover a seção "' + s.name + '"?')) return;
+    secs = secs.filter(x => x.id !== id);
+    if (activeId === id) activeId = secs.length ? secs[0].id : null;
+    changed(); renderSB(); renderEditor();
+  }
+  function moveSec(id, d) {
+    const i = secs.findIndex(s => s.id === id), j = i + d;
+    if (j < 0 || j >= secs.length) return;
+    [secs[i], secs[j]] = [secs[j], secs[i]];
+    changed(); renderSB();
+  }
+  function selectSec(id, scroll = true) {
+    activeId = id;
+    persist(); renderSB(); renderEditor(); highlightPreview(scroll);
+  }
+  function pick(id) { if (id !== activeId) selectSec(id, false); }
+  function resetAll() {
+    if (!secs.length || !confirm('Apagar todas as seções e começar do zero?')) return;
+    secs = []; activeId = null; openItems.clear();
+    changed(); renderAll();
+  }
+
+  /* ================= SIDEBAR ================= */
+  function renderMenu() {
+    const m = $('hzb-smenu');
+    m.innerHTML = Object.entries(META).map(([k, v]) => `
+      <div class="mi" data-t="${k}">
+        <div class="mi-ico" style="background:${v.bg}">${v.ico}</div>
+        <div><div class="mi-name">${v.lbl}</div><div class="mi-desc">${v.desc}</div></div>
+      </div>`).join('');
+    m.querySelectorAll('.mi').forEach(n => n.addEventListener('click', () => addSec(n.dataset.t)));
+  }
+  function toggleMenu() { $('hzb-smenu').classList.toggle('open'); }
+  function closeMenu() { $('hzb-smenu').classList.remove('open'); }
+
+  function renderSB() {
+    const list = $('hzb-slist');
+    list.innerHTML = '';
+    if (!secs.length) {
+      list.innerHTML = '<div class="sb-empty">Nenhuma seção ainda.<br>Use <strong>+ Adicionar seção</strong> ou escolha um modelo.</div>';
+      return;
+    }
+    secs.forEach((s, i) => {
+      const m = META[s.type];
+      const c = el('div', 'sc' + (s.id === activeId ? ' active' : ''));
+      c.draggable = true;
+      c.innerHTML = `
+        <div class="sc-inner">
+          <span class="sc-drag" title="Arrastar">⠿</span>
+          <div class="sc-ico" style="background:${m.bg}">${m.ico}</div>
+          <div class="sc-info"><div class="sc-name"></div><div class="sc-type">${m.lbl}</div></div>
+          <div class="sc-acts">
+            <button class="sc-btn" data-a="up" title="Subir" ${i === 0 ? 'disabled' : ''}>↑</button>
+            <button class="sc-btn" data-a="down" title="Descer" ${i === secs.length - 1 ? 'disabled' : ''}>↓</button>
+            <button class="sc-btn del" data-a="del" title="Remover">✕</button>
+          </div>
+        </div>`;
+      c.querySelector('.sc-name').textContent = s.name;
+      c.addEventListener('click', e => {
+        const b = e.target.closest('.sc-btn');
+        if (b) {
+          e.stopPropagation();
+          if (b.dataset.a === 'del') delSec(s.id); else moveSec(s.id, b.dataset.a === 'up' ? -1 : 1);
+          return;
+        }
+        selectSec(s.id);
+      });
+      c.addEventListener('dragstart', ev => { dragSrc = s.id; ev.dataTransfer.effectAllowed = 'move'; });
+      c.addEventListener('dragover', ev => { ev.preventDefault(); c.classList.add('drag-ov'); });
+      c.addEventListener('dragleave', () => c.classList.remove('drag-ov'));
+      c.addEventListener('drop', ev => {
+        ev.preventDefault(); c.classList.remove('drag-ov');
+        if (!dragSrc || dragSrc === s.id) return;
+        const [mv] = secs.splice(secs.findIndex(x => x.id === dragSrc), 1);
+        secs.splice(secs.findIndex(x => x.id === s.id), 0, mv);
+        dragSrc = null;
+        changed(); renderSB();
+      });
+      list.appendChild(c);
+    });
+  }
+
+  /* ================= EDITOR ================= */
+  function panel(title, col, build) {
+    const p = el('div', 'ep');
+    const h = el('div', 'eh');
+    h.innerHTML = `<div class="dot" style="background:${col}"></div>`;
+    h.appendChild(document.createTextNode(title));
+    const b = el('div', 'eb');
+    build(b);
+    p.append(h, b);
+    return p;
+  }
+
+  function renderEditor() {
+    const s = gsec(activeId);
+    const sb = $('hzb-sbright'), body = $('hzb-ed-body');
+    if (!s) { sb.classList.add('collapsed'); body.innerHTML = ''; return; }
+    sb.classList.remove('collapsed');
+    const st = body.scrollTop;
+    const m = META[s.type];
+    $('hzb-ed-ico').textContent = m.ico;
+    $('hzb-ed-title').textContent = s.name;
+    body.innerHTML = '';
+    if (s.type === 'dif') {
+      const n = el('div', 'ed-note');
+      n.textContent = 'Esta seção aparece só na prévia. Na loja, o tema insere os Diferenciais fixos, então ela não entra no HTML exportado.';
+      body.appendChild(n);
+    }
+    body.appendChild(panel('Nome da seção', m.col, eb => {
+      eb.appendChild(field({ k:'name', t:'text', l:'Rótulo interno (não aparece na loja)' }, s, v => {
+        $('hzb-ed-title').textContent = v;
+        const n = document.querySelector('#hzb-slist .sc.active .sc-name');
+        if (n) n.textContent = v;
+      }, true));
+    }));
+    SCHEMA[s.type].forEach(p => {
+      body.appendChild(panel(p.title, m.col, eb => {
+        if (p.list) buildList(eb, s, p);
+        else p.fields.forEach(f => eb.appendChild(field(f, s.data)));
+      }));
+    });
+    body.scrollTop = st;
+  }
+
+  function field(f, obj, after, skipPreview) {
+    const w = el('div', 'fr');
+    const done = v => { obj[f.k] = v; changed(skipPreview); if (after) after(v); };
+    if (f.t === 'check') {
+      const lb = el('label', 'chk');
+      const cb = document.createElement('input');
+      cb.type = 'checkbox'; cb.checked = !!obj[f.k];
+      cb.addEventListener('change', () => done(cb.checked));
+      lb.append(cb, document.createTextNode(f.l));
+      w.appendChild(lb);
+      return w;
+    }
+    if (f.l) { const lb = el('label', 'lb'); lb.textContent = f.l; w.appendChild(lb); }
+    if (f.t === 'rte') { w.appendChild(rte(obj[f.k], f.size, f.ph, done)); return w; }
+    let c;
+    if (f.t === 'select') {
+      c = el('select', 'inp');
+      f.o.forEach(([v, t]) => { const o = document.createElement('option'); o.value = v; o.textContent = t; o.selected = obj[f.k] === v; c.appendChild(o); });
+      c.addEventListener('change', () => done(c.value));
+    } else {
+      c = el(f.t === 'textarea' ? 'textarea' : 'input', 'inp');
+      if (f.t === 'textarea') c.rows = 2; else c.type = 'text';
+      c.value = obj[f.k] || '';
+      if (f.ph) c.placeholder = f.ph;
+      c.addEventListener('input', () => done(c.value));
+    }
+    w.appendChild(c);
+    return w;
+  }
+
+  function buildList(eb, s, p) {
+    const arr = s.data[p.list];
+    const wrap = el('div', 'rl');
+    arr.forEach((it, i) => {
+      const ri = el('div', 'ri' + (openItems.has(it.id) ? ' open' : ''));
+      const rh = el('div', 'rh');
+      rh.innerHTML = `
+        <span class="rarrow">▸</span>
+        <span class="rnum">#${i + 1}</span>
+        <span class="rlbl"></span>
+        ${it.hl ? '<span class="rtag">destaque</span>' : ''}
+        <span class="racts">
+          <button class="rbtn" data-a="up" title="Subir" ${i === 0 ? 'disabled' : ''}>▲</button>
+          <button class="rbtn" data-a="down" title="Descer" ${i === arr.length - 1 ? 'disabled' : ''}>▼</button>
+          <button class="rbtn del" data-a="del" title="Remover">✕</button>
+        </span>`;
+      const lbl = rh.querySelector('.rlbl');
+      const setL = () => { lbl.textContent = String(it[p.labelKey] || '').replace(/\n/g, ' ') || p.item; };
+      setL();
+      rh.addEventListener('click', e => {
+        const b = e.target.closest('.rbtn');
+        if (b) {
+          e.stopPropagation();
+          if (b.dataset.a === 'del') arr.splice(i, 1);
+          else { const j = b.dataset.a === 'up' ? i - 1 : i + 1; [arr[i], arr[j]] = [arr[j], arr[i]]; }
+          changed(); renderEditor();
+          return;
+        }
+        if (openItems.has(it.id)) openItems.delete(it.id); else openItems.add(it.id);
+        ri.classList.toggle('open');
+      });
+      const rb = el('div', 'rb');
+      p.fields.forEach(f => rb.appendChild(field(f, it, () => {
+        if (f.k === p.labelKey) setL();
+        if (f.k === 'hl') renderEditor();
+      })));
+      ri.append(rh, rb);
+      wrap.appendChild(ri);
+    });
+    eb.appendChild(wrap);
+    const add = el('button', 'btn-add-rep');
+    add.textContent = '+ Adicionar ' + p.item.toLowerCase();
+    add.addEventListener('click', () => {
+      const n = { id: uid(), ...p.blank() };
+      arr.push(n); openItems.add(n.id);
+      changed(); renderEditor();
+    });
+    eb.appendChild(add);
+  }
+
+  /* ================= RICH TEXT ================= */
+  const RTE_BTNS = [
+    ['bold', '<b>B</b>', 'Negrito'], ['italic', '<i>I</i>', 'Itálico'], null,
+    ['insertUnorderedList', '• Lista', 'Lista'], ['insertOrderedList', '1. Lista', 'Lista numerada'], null,
+    ['createLink', '🔗', 'Inserir link'], ['removeFormat', 'Limpar', 'Limpar formatação'],
+  ];
+  function rte(val, size, ph, onInput) {
+    const w = el('div', 'rte-wrap');
+    const tb = el('div', 'rte-toolbar');
+    const area = el('div', 'rte-area');
+    area.contentEditable = 'true';
+    area.dataset.size = size || 'sm';
+    area.dataset.placeholder = ph || 'Escreva aqui...';
+    area.innerHTML = val || '';
+    const emit = () => {
+      if (area.innerHTML === '<br>') area.innerHTML = '';
+      onInput(area.innerHTML);
+      syncTb();
+    };
+    const syncTb = () => tb.querySelectorAll('.rte-btn').forEach(b => {
+      try { b.classList.toggle('active', document.queryCommandState(b.dataset.cmd)); } catch (e) {}
+    });
+    RTE_BTNS.forEach(d => {
+      if (!d) { tb.appendChild(el('div', 'rte-sep')); return; }
+      const b = el('button', 'rte-btn');
+      b.type = 'button'; b.dataset.cmd = d[0]; b.title = d[2]; b.innerHTML = d[1];
+      b.addEventListener('mousedown', e => {
+        e.preventDefault();
+        if (d[0] === 'createLink') {
+          const u = prompt('URL do link:');
+          if (!u) return;
+          document.execCommand('createLink', false, u);
+        } else {
+          document.execCommand(d[0], false, null);
+        }
+        emit();
+      });
+      tb.appendChild(b);
+    });
+    area.addEventListener('input', emit);
+    area.addEventListener('keyup', syncTb);
+    area.addEventListener('mouseup', syncTb);
+    area.addEventListener('paste', e => {
+      e.preventDefault();
+      const t = (e.clipboardData || window.clipboardData).getData('text/plain');
+      document.execCommand('insertText', false, t);
+    });
+    w.append(tb, area);
+    return w;
+  }
+
+  /* ================= GERADORES (loja) ================= */
+  function xe(s) {
+    return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+  const encEnt = s => String(s).replace(/[^\x00-\x7E]/gu, c => '&#' + c.codePointAt(0) + ';');
+  const jsonSafe = v => JSON.stringify(v)
+    .replace(/[^\x00-\x7E]/g, c => '\\u' + c.charCodeAt(0).toString(16).padStart(4, '0'))
+    .replace(/<\//g, '<\\/');
+  const img = (src, alt, extra) => src ? `<img src="${xe(src)}" alt="${xe(alt)}" loading="lazy" decoding="async"${extra || ''}>` : '';
+
+  function alertHTML(d) {
+    if (!d.alertOn) return '';
+    const t = d.alertTitle ? `<strong class="hz-alert-t">${xe(d.alertTitle)}</strong>` : '';
+    const x = d.alertText ? `<div class="hz-rt">${d.alertText}</div>` : '';
+    return `\n    <div class="hz-alert" role="note">${t}${x}</div>`;
+  }
+
+  function secHTML(s, i) {
+    const d = s.data, n = i + 1;
+    switch (s.type) {
+      case 'intro':
+        return `<section class="hz-sec hz-intro">
+    <div class="hz-rt">${d.text || ''}</div>${alertHTML(d)}
+  </section>`;
+
+      case 'ingr': {
+        const items = d.items.map((it, j) => `
+      <li><button type="button" class="hz-ingr-it${it.hl ? ' is-hl' : ''}" data-hz-modal="hz-m-${n}-${j + 1}" aria-haspopup="dialog"><span class="hz-ingr-img">${img(it.img, '', ' width="88" height="88"')}</span>${it.hl ? '<span class="hz-ingr-badge">Destaque</span>' : ''}<span class="hz-ingr-nm">${xe(it.name)}</span></button></li>`).join('');
+        const modals = d.items.map((it, j) => {
+          const mid = `hz-m-${n}-${j + 1}`;
+          return `
+    <div class="hz-modal" id="${mid}" role="dialog" aria-modal="true" aria-labelledby="${mid}-t">
+      <div class="hz-modal-box">
+        <button type="button" class="hz-modal-x" data-hz-close aria-label="Fechar">&times;</button>
+        ${it.img ? `<img class="hz-modal-img" src="${xe(it.img)}" alt="${xe(it.name)}" loading="lazy">` : ''}
+        ${it.hl ? '<span class="hz-modal-tag">Ingrediente destaque</span>' : ''}
+        <h3 class="hz-modal-t" id="${mid}-t">${xe(it.name)}</h3>
+        <div class="hz-rt">${it.desc || ''}</div>
+      </div>
+    </div>`;
+        }).join('');
+        return `<section class="hz-sec hz-ingr${d.mobile === 'list' ? ' hz-ingr--list' : ''}">
+    ${d.title ? `<h2 class="hz-h2">${xe(d.title)}</h2>` : ''}
+    <ul class="hz-ingr-list">${items}
+    </ul>${alertHTML(d)}${modals}
+  </section>`;
+      }
+
+      case 'benef': {
+        const items = d.items.map(b => `
+        <li class="hz-ben-it"><span class="hz-ben-ic">${ICO_CHK}</span><div>${b.title ? `<strong>${xe(b.title)}</strong>` : ''}${b.text ? `<p>${xe(b.text)}</p>` : ''}</div></li>`).join('');
+        return `<section class="hz-sec hz-ben">
+    <div class="hz-ben-head">
+      ${d.title ? `<h2 class="hz-h2">${xe(d.title)}</h2>` : ''}
+      ${d.sub ? `<p class="hz-ben-sub">${xe(d.sub)}</p>` : ''}
+    </div>
+    <div class="hz-ben-grid">
+      <div class="hz-ben-media">${img(d.img, d.title)}</div>
+      <ul class="hz-ben-list">${items}
+      </ul>
+    </div>
+  </section>`;
+      }
+
+      case 'info': {
+        const items = d.items.map(f => `
+      <details class="hz-fi">
+        <summary class="hz-ft"><span>${xe(f.q)}</span><span class="hz-fic">${ICO_PLUS}</span></summary>
+        <div class="hz-fb hz-rt">${f.a || ''}</div>
+      </details>`).join('');
+        return `<section class="hz-sec hz-info">
+    ${d.title ? `<h2 class="hz-h2">${xe(d.title)}</h2>` : ''}
+    <div class="hz-acc">${items}
+    </div>
+  </section>`;
+      }
+
+      case 'dif': {
+        const cards = d.items.map(c => `
+      <li class="hz-dif-card">
+        <div class="hz-dif-img">${img(c.img, String(c.title || '').replace(/\n/g, ' '))}</div>
+        <h3 class="hz-dif-t">${xe(c.title).replace(/\n/g, '<br>')}</h3>
+        ${c.text ? `<p class="hz-dif-x">${xe(c.text)}</p>` : ''}
+      </li>`).join('');
+        return `<section class="hz-sec hz-dif">
+    ${d.title ? `<h2 class="hz-h2">${xe(d.title)}</h2>` : ''}
+    <ul class="hz-dif-track">${cards}
+    </ul>
+  </section>`;
+      }
+    }
+    return '';
+  }
+
+  function genHTML(mode, preview) {
+    if (!secs.length) return '<!-- Nenhuma seção adicionada. -->';
+    const list = secs.map((s, i) => ({ s, i })).filter(x => preview || x.s.type !== 'dif');
+    if (!list.length) return '<!-- Nenhuma seção exportável (Diferenciais vem do tema). -->';
+    const parts = list.map(({ s, i }) => {
+      const cm = `  <!-- ${META[s.type].lbl}: ${s.name.replace(/--/g, '-')} -->\n`;
+      if (mode === 'js') return cm + `  <div id="hz-s-${i + 1}"></div>`;
+      let h = '  ' + secHTML(s, i);
+      if (preview) h = h.replace('<section ', `<section data-hzb-sec="${s.id}" `);
+      return cm + h;
+    });
+    return `<!-- Horizonte Builder 2 -->\n<div id="hz-pg2">\n${parts.join('\n\n')}\n</div>`;
+  }
+
+  function genJS(mode) {
+    const hasIngr = secs.some(s => s.type === 'ingr');
+    if (mode !== 'js' && !hasIngr) return '/* Nenhum JS necessário para as seções atuais. */';
+    let arg = 'null';
+    if (mode === 'js') {
+      arg = '{\n' + secs.map((s, i) => `  "hz-s-${i + 1}": ${jsonSafe(secHTML(s, i))}`).join(',\n') + '\n}';
+    }
+    return `/* Horizonte Builder 2 */\n(${hzRuntime.toString()})(${arg});`;
+  }
+
+  function genCSS() {
+    return `/* Horizonte Builder 2 */
+#hz-pg2{--hz-tx:#092312;--hz-mt:#5d6b5f;--hz-g:#4a9155;--hz-au:#c8920a;--hz-bd:#e3ded2;--hz-ph:#e6e6e6;--hz-al:#f6fbd8;--hz-alb:#dfe9a8;color:var(--hz-tx);line-height:1.6}
+#hz-pg2 *,#hz-pg2 *::before,#hz-pg2 *::after{box-sizing:border-box}
+#hz-pg2 .hz-sec{padding:36px 0;margin:0}
+#hz-pg2 .hz-h2{font-size:1.5rem;font-weight:700;line-height:1.2;margin:0 0 20px;color:var(--hz-tx)}
+#hz-pg2 p{margin:0}
+#hz-pg2 .hz-rt p+p,.hz-modal .hz-rt p+p{margin-top:.8em}
+#hz-pg2 .hz-rt ul,#hz-pg2 .hz-rt ol,.hz-modal .hz-rt ul,.hz-modal .hz-rt ol{margin:.5em 0;padding-left:1.4em}
+#hz-pg2 .hz-rt li{margin-bottom:.25em}
+#hz-pg2 .hz-rt a{color:#2d6e35;text-decoration:underline}
+#hz-pg2 img{max-width:100%}
+
+/* Alerta */
+#hz-pg2 .hz-alert{margin-top:20px;background:var(--hz-al);border:1px solid var(--hz-alb);border-radius:8px;padding:12px 16px;font-size:.92rem}
+#hz-pg2 .hz-alert-t{display:block;font-weight:700}
+#hz-pg2 .hz-alert-t+.hz-rt{margin-top:4px}
+
+/* Intro */
+#hz-pg2 .hz-intro .hz-rt{font-size:1rem;max-width:760px}
+
+/* Ingredientes */
+#hz-pg2 .hz-ingr-list{list-style:none;margin:0;padding:6px 2px 0;display:flex;flex-wrap:wrap;gap:24px}
+#hz-pg2 .hz-ingr-list li{margin:0;padding:0}
+#hz-pg2 .hz-ingr-it{position:relative;appearance:none;background:none;border:0;padding:0;margin:0;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:12px;width:104px;font:inherit;color:inherit;text-align:center}
+#hz-pg2 .hz-ingr-img{display:block;width:88px;height:88px;border-radius:50%;background:var(--hz-ph);overflow:hidden;transition:transform .2s}
+#hz-pg2 .hz-ingr-img img{width:100%;height:100%;object-fit:cover;display:block}
+#hz-pg2 .hz-ingr-it:hover .hz-ingr-img{transform:translateY(-2px)}
+#hz-pg2 .hz-ingr-it.is-hl .hz-ingr-img{box-shadow:0 0 0 3px #fff,0 0 0 5px var(--hz-au)}
+#hz-pg2 .hz-ingr-badge{position:absolute;top:78px;left:50%;transform:translateX(-50%);background:var(--hz-au);color:#fff;font-size:.62rem;font-weight:700;line-height:1.5;padding:1px 8px;border-radius:20px;white-space:nowrap}
+#hz-pg2 .hz-ingr-it.is-hl .hz-ingr-nm{margin-top:4px}
+#hz-pg2 .hz-ingr-nm{font-size:.9rem;font-weight:500;line-height:1.3}
+#hz-pg2 .hz-ingr-it:focus-visible{outline:2px solid var(--hz-g);outline-offset:4px;border-radius:8px}
+
+/* Modal ingrediente (movido para o body pelo JS) */
+.hz-modal{position:fixed;inset:0;z-index:99999;background:rgba(9,35,18,.6);display:none;align-items:center;justify-content:center;padding:20px}
+.hz-modal.is-open{display:flex}
+.hz-modal-box{position:relative;background:#fff;color:#092312;border-radius:16px;width:100%;max-width:440px;max-height:85vh;overflow:auto;padding:28px;line-height:1.6;animation:hzIn .2s ease}
+.hz-modal-x{position:absolute;top:12px;right:12px;width:34px;height:34px;border-radius:50%;border:0;background:#f1efe8;color:#092312;font-size:1.3rem;line-height:1;cursor:pointer}
+.hz-modal-img{width:96px;height:96px;border-radius:50%;object-fit:cover;display:block;margin:0 0 16px}
+.hz-modal-tag{display:inline-block;background:#c8920a;color:#fff;font-size:.7rem;font-weight:700;padding:2px 9px;border-radius:20px;margin-bottom:8px}
+.hz-modal-t{font-size:1.25rem;font-weight:700;margin:0 0 8px;color:#092312}
+@keyframes hzIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+
+/* Beneficios */
+#hz-pg2 .hz-ben-head{margin-bottom:24px}
+#hz-pg2 .hz-ben-head .hz-h2{margin-bottom:6px}
+#hz-pg2 .hz-ben-sub{color:var(--hz-mt)}
+#hz-pg2 .hz-ben-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+#hz-pg2 .hz-ben-media{border-radius:16px;overflow:hidden;background:var(--hz-ph);aspect-ratio:1/1}
+#hz-pg2 .hz-ben-media img{width:100%;height:100%;object-fit:cover;display:block}
+#hz-pg2 .hz-ben-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:20px}
+#hz-pg2 .hz-ben-it{display:flex;gap:14px;align-items:flex-start;margin:0}
+#hz-pg2 .hz-ben-ic{width:28px;height:28px;border-radius:50%;background:var(--hz-g);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+#hz-pg2 .hz-ben-it strong{display:block;font-size:1rem;font-weight:700;margin-bottom:2px}
+#hz-pg2 .hz-ben-it p{font-size:.92rem;color:var(--hz-mt)}
+
+/* Informacoes */
+#hz-pg2 .hz-acc{border-top:1px solid var(--hz-bd)}
+#hz-pg2 .hz-fi{border-bottom:1px solid var(--hz-bd)}
+#hz-pg2 .hz-ft{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 0;cursor:pointer;list-style:none;font-weight:500;color:var(--hz-tx)}
+#hz-pg2 .hz-ft::-webkit-details-marker{display:none}
+#hz-pg2 .hz-ft::marker{content:""}
+#hz-pg2 .hz-fic{flex-shrink:0;display:flex;color:var(--hz-mt);transition:transform .3s}
+#hz-pg2 .hz-fi[open] .hz-fic{transform:rotate(45deg);color:var(--hz-g)}
+#hz-pg2 .hz-fb{padding:0 0 18px;font-size:.95rem}
+
+/* Diferenciais */
+#hz-pg2 .hz-dif-track{list-style:none;margin:0;padding:0 0 8px;display:grid;grid-auto-flow:column;grid-auto-columns:calc((100% - 60px) / 4);gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:thin}
+#hz-pg2 .hz-dif-card{scroll-snap-align:start;margin:0}
+#hz-pg2 .hz-dif-img{aspect-ratio:10/11;background:var(--hz-ph);border-radius:4px;overflow:hidden;margin-bottom:16px}
+#hz-pg2 .hz-dif-img img{width:100%;height:100%;object-fit:cover;display:block}
+#hz-pg2 .hz-dif-t{font-size:1.25rem;font-weight:700;line-height:1.3;margin:0 0 8px;color:var(--hz-tx)}
+#hz-pg2 .hz-dif-x{font-size:.9rem;color:var(--hz-mt)}
+
+/* Mobile */
+@media(max-width:640px){
+  #hz-pg2 .hz-sec{padding:24px 0}
+  #hz-pg2 .hz-h2{font-size:1.25rem;margin-bottom:16px}
+  #hz-pg2 .hz-ingr-list{flex-wrap:nowrap;overflow-x:auto;gap:16px;padding:6px 2px 12px;scroll-snap-type:x mandatory;scrollbar-width:none}
+  #hz-pg2 .hz-ingr-list::-webkit-scrollbar{display:none}
+  #hz-pg2 .hz-ingr-list li{flex-shrink:0;scroll-snap-align:start}
+  #hz-pg2 .hz-ingr-it{width:76px;gap:10px}
+  #hz-pg2 .hz-ingr-img{width:64px;height:64px}
+  #hz-pg2 .hz-ingr-badge{top:55px;font-size:.56rem;padding:1px 6px}
+  #hz-pg2 .hz-ingr-nm{font-size:.82rem}
+  #hz-pg2 .hz-ingr--list .hz-ingr-list{flex-direction:column;overflow:visible;gap:10px}
+  #hz-pg2 .hz-ingr--list .hz-ingr-it{width:100%;flex-direction:row;gap:14px;text-align:left}
+  #hz-pg2 .hz-ingr--list .hz-ingr-img{width:52px;height:52px;flex-shrink:0}
+  #hz-pg2 .hz-ingr--list .hz-ingr-badge{position:static;transform:none;order:3;margin-left:auto}
+  #hz-pg2 .hz-ingr--list .hz-ingr-it.is-hl .hz-ingr-nm{margin-top:0}
+  #hz-pg2 .hz-ben-grid{grid-template-columns:1fr;gap:20px}
+  #hz-pg2 .hz-ben-head{margin-bottom:16px}
+  #hz-pg2 .hz-dif-track{grid-auto-columns:72%;gap:12px}
+  #hz-pg2 .hz-dif-t{font-size:1.1rem}
+  .hz-modal{align-items:flex-end;padding:0}
+  .hz-modal-box{max-width:none;border-radius:16px 16px 0 0;padding:24px 20px 28px}
+}
+@media(prefers-reduced-motion:reduce){#hz-pg2 *,.hz-modal-box{transition:none!important;animation:none!important}}`;
+  }
+
+  /* ================= PREVIEW ================= */
+  function buildDoc() {
+    return `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap" rel="stylesheet">
+<style>html,body{margin:0}body{font-family:'DM Sans',system-ui,sans-serif;background:#fff;padding:24px 40px 60px}
+@media(max-width:640px){body{padding:12px 16px 40px}}
+[data-hzb-sec]{cursor:pointer;outline:2px dashed transparent;outline-offset:6px;border-radius:2px;transition:outline-color .2s}
+[data-hzb-sec]:hover{outline-color:rgba(74,145,85,.3)}
+[data-hzb-sec].hzb-on{outline-color:#4a9155}
+${genCSS()}</style></head><body>
+${genHTML('direct', true)}
+<script>${genJS('direct')}
+document.addEventListener('click',function(e){
+  if(e.target.closest('a'))e.preventDefault();
+  var s=e.target.closest('[data-hzb-sec]');
+  if(s&&parent.HZB)parent.HZB.pick(s.getAttribute('data-hzb-sec'));
+});
+<\/script></body></html>`;
+  }
+
+  function schedulePreview() { clearTimeout(pvTimer); pvTimer = setTimeout(renderPreview, 250); }
+
+  function renderPreview() {
+    const fr = $('hzb-frame');
+    const empty = !secs.length;
+    $('hzb-pempty').style.display = empty ? 'flex' : 'none';
+    $('hzb-fwrap').style.display = empty ? 'none' : 'block';
+    if (empty) return;
+    let y = 0;
+    try { y = fr.contentWindow.scrollY || 0; } catch (e) {}
+    fr.onload = () => {
+      try { fr.contentWindow.scrollTo(0, y); } catch (e) {}
+      highlightPreview(pendingScroll);
+      pendingScroll = false;
+    };
+    fr.srcdoc = buildDoc();
+  }
+
+  function highlightPreview(scroll) {
+    let doc;
+    try { doc = $('hzb-frame').contentDocument; } catch (e) { return; }
+    if (!doc) return;
+    doc.querySelectorAll('.hzb-on').forEach(n => n.classList.remove('hzb-on'));
+    const t = activeId && doc.querySelector(`[data-hzb-sec="${activeId}"]`);
+    if (!t) return;
+    t.classList.add('hzb-on');
+    if (scroll) t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function setDevice(d) {
+    device = d;
+    document.querySelectorAll('#hzb .dev-btn').forEach(b => b.classList.toggle('active', b.dataset.dev === d));
+    $('hzb-fwrap').classList.toggle('mobile', d === 'mobile');
+    $('hzb-devsize').textContent = d === 'mobile' ? '390 px' : '';
+    persist();
+  }
+
+  /* ================= EXPORT ================= */
+  const EXP_INFO = 'Cole no campo <strong>Descrição</strong> do produto. CSS, JS e a seção Diferenciais já vêm do tema da loja.';
+  function openExport() {
+    if (!secs.length) { toast('Adicione ao menos uma seção para exportar'); return; }
+    refreshExport();
+    $('hzb-exp').classList.add('open');
+  }
+  function closeExport() { $('hzb-exp').classList.remove('open'); }
+  function refreshExport() {
+    $('hzb-expinfo').innerHTML = EXP_INFO;
+    $('hzb-carea').textContent = encEnt(genHTML('direct', false));
+  }
+  function copyCode() {
+    navigator.clipboard.writeText($('hzb-carea').textContent).then(() => {
+      const b = $('hzb-cpy');
+      b.textContent = '✓ Copiado'; b.classList.add('ok');
+      toast('HTML copiado');
+      setTimeout(() => { b.textContent = '📋 Copiar'; b.classList.remove('ok'); }, 2000);
+    }).catch(() => toast('Não foi possível copiar. Selecione o código e use Ctrl+C.'));
+  }
+
+  /* ================= ARQUIVO DO PROJETO ================= */
+  function saveFile() {
+    if (!secs.length) { toast('Nada para salvar ainda'); return; }
+    const blob = new Blob([JSON.stringify({ app: 'horizonte-builder', v: 2, secs }, null, 2)], { type: 'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'horizonte-projeto-' + new Date().toISOString().slice(0, 10) + '.json';
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+    toast('Projeto salvo');
+  }
+  function openFile() { $('hzb-file').click(); }
+  function onFile(e) {
+    const f = e.target.files[0];
+    if (!f) return;
+    const r = new FileReader();
+    r.onload = () => {
+      try {
+        const st = JSON.parse(r.result);
+        if (!st || !Array.isArray(st.secs) || st.secs.some(s => !META[s.type])) throw new Error();
+        secs = st.secs; activeId = secs[0] ? secs[0].id : null; openItems.clear();
+        changed(); renderAll();
+        toast('Projeto aberto');
+      } catch (err) {
+        toast('Arquivo inválido. Use um .json salvo por este builder.');
+      }
+      e.target.value = '';
+    };
+    r.readAsText(f);
+  }
+
+  /* ================= UTILS / INIT ================= */
+  let toastT;
+  function toast(msg) {
+    const t = $('hzb-toast');
+    t.textContent = msg; t.classList.add('on');
+    clearTimeout(toastT);
+    toastT = setTimeout(() => t.classList.remove('on'), 2400);
+  }
+
+  function renderAll() {
+    renderSB(); renderEditor(); renderPreview();
+  }
+
+  function init() {
+    renderMenu();
+    restore();
+    if (activeId && !gsec(activeId)) activeId = secs[0] ? secs[0].id : null;
+    setDevice(device);
+    document.querySelectorAll('#hzb .dev-btn').forEach(b => b.addEventListener('click', () => setDevice(b.dataset.dev)));
+    $('hzb-exp').addEventListener('click', e => { if (e.target.id === 'hzb-exp') closeExport(); });
+    $('hzb-file').addEventListener('change', onFile);
+    document.addEventListener('click', e => { if (!e.target.closest('.add-wrap')) closeMenu(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeExport(); closeMenu(); } });
+    renderAll();
+  }
+
+  document.addEventListener('DOMContentLoaded', init);
+
+  return {
+    addSec, delSec, moveSec, selectSec, pick, loadTemplate, resetAll,
+    toggleMenu, openExport, closeExport, copyCode, saveFile, openFile,
+  };
+})();
+</script>
+</body>
+</html>
